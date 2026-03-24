@@ -1,0 +1,83 @@
+gdpr_kw = [
+    "slobodnom prístupe k informáciám",
+    "ochrana osobných údajov",
+    "osobné údaje",
+    "k ochrane osobných údajov",
+    "spracovanie osobných údajov",
+    "zabezpečenie údajov",
+    "GDPR",
+    "prístup k údajom",
+    "dátová ochrana",
+    "citlivé údaje",
+    "zákon o ochrane osobných údajov",
+    "osobných údajov",
+    "Personal data protection",
+    "Informácie o spracúvaní osobných údajov zákazníkov"
+]
+contact_kw = [
+    "kontakt",
+    "kontaktné informácie",
+    "telefon",
+    "email",
+    "adresa",
+    "sídlo",
+    "pobočka",
+    "napíšte nám",
+    "kontaktujte nás",
+    "informácie o kontakte",
+    "úradné hodiny",
+    "contact",
+    "contact information",
+    "email",
+    "phone",
+    "address",
+    "office",
+    "branch",
+    "write to us",
+    "get in touch",
+    "contact us",
+    "office hours",
+    "Všetky kontakty"
+]
+
+tabule_kw = [
+    "úradná tabuľa",
+    "oficiálna tabuľa",
+    "tabuľa úradu",
+    "tabuľa verejnej správy",
+    "úradná oznamovacia tabuľa",
+    "oficiálna oznamovacia tabuľa",
+    "oznamovacia tabuľa",
+    "informačná tabuľa",
+    "oznamová tabuľa",
+    "informačný panel",
+    "oznamovací panel",
+    "verejná oznamovacia tabuľa",
+    "verejná informačná tabuľa",
+    "elektronická tabuľa",
+    "digitálna tabuľa",
+    "elektronická oznamovacia tabuľa",
+    "digitálna oznamovacia tabuľa",
+    "elektronická informačná tabuľa",
+    "digitálny informačný panel",
+    "online oznamovacia tabuľa",
+    "virtuálna oznamovacia tabuľa",
+    "centrálna oznamovacia tabuľa",
+    "verejný informačný systém",
+    "elektronický informačný systém",
+    "systém zverejňovania oznamov",
+    "miesto úradného zverejňovania",
+]
+
+pristupnost_kw = [
+    "vyhlásenie o prístupnosti",
+    "Vyhlásenie o prístupnosti",
+
+    "vyhlasenie o prístupnosti",
+    "vyhlásenie o pristupnosti",
+    "vyhlasenie o pristupnosti",
+
+    "Vyhlasenie o prístupnosti",
+    "Vyhlásenie o pristupnosti",
+    "Vyhlasenie o pristupnosti"
+]
