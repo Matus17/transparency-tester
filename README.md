@@ -8,13 +8,14 @@
   
 - Playwright
 
-- Download https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.10.3/axe.min.js and add it to your source file
 
 # Installation ----
 
-pip install pytest pytest-playwright
+- Download https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.10.3/axe.min.js and add it to your source file
 
-python -m playwright install
+pip install playwright
+
+playwright install
 
 pip install streamlit
 
