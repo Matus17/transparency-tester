@@ -19,6 +19,8 @@ playwright install
 
 pip install streamlit
 
+pip install python-dotenv
+
 # Run app ---------
 
 streamlit run app.py
