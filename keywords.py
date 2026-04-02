@@ -14,8 +14,11 @@ gdpr_kw = [
     "Personal data protection",
     "Informácie o spracúvaní osobných údajov zákazníkov"
 ]
-contact_kw = [
+contact_spravca_kw = [
+    "správca",
     "kontakt",
+    "o obsah sa stará",
+    "za obsah zodpovedá",
     "kontaktné informácie",
     "telefon",
     "email",
@@ -80,4 +83,7 @@ pristupnost_kw = [
     "Vyhlasenie o prístupnosti",
     "Vyhlásenie o pristupnosti",
     "Vyhlasenie o pristupnosti"
+]
+obstaravanie_kw = [
+    "Verejné obstarávanie"
 ]

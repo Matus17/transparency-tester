@@ -5,6 +5,8 @@ from urllib.robotparser import RobotFileParser #https://docs.python.org/3/librar
 from playwright.async_api import async_playwright
 import asyncio
 import re
+from ai_prompts import PROMPTS, agent
+import keywords as k
 #aszncio crawler
 #https://gist.github.com/justynroberts/996118684a5de2cf9d305e217c3bd1e4
 
@@ -15,12 +17,7 @@ import re
 # stale to najde viac slov z rovnakeho zoznamu, asi kvoli async
 # zjednodusit citanie z Axe-core vystupu
 
-pristupnost_kw = [
-    "vyhlásenie o prístupnosti", "Vyhlásenie o prístupnosti",
-    "vyhlasenie o prístupnosti", "vyhlásenie o pristupnosti",
-    "vyhlasenie o pristupnosti", "Vyhlasenie o prístupnosti",
-    "Vyhlásenie o pristupnosti", "Vyhlasenie o pristupnosti",
-]
+
 
 other_kw = ["primátor"]
 
@@ -34,7 +31,7 @@ class Scraper:
                     # stranka je (depth 0), linky na nej (depth 1)
 
     def __init__(self, start_url):
-        self.robots_txt = RobotFileParser() #
+        self.robots_txt = RobotFileParser()
         self.queue_lock = asyncio.Lock()
         self.counter_lock = asyncio.Lock()
         self.accessibility_lock = asyncio.Lock()
@@ -45,13 +42,22 @@ class Scraper:
         self.admitted_rule_breaks = [] #najdene WCAG paravidla vo Vyhlásení o prístupnosti
         self.page_counter = 0 #helper page counter
         self.max_sempaphore = 5 # pocet podstranok spracovavanzch naraz
-        self.pristupnost_keywords = {wrd: False for wrd in pristupnost_kw}
-        self.other_keywords = {wrd: False for wrd in other_kw}
+        self.gdpr_keywords = {word: False for word in k.gdpr_kw}
+        self.contact_spravca_keywords = {word: False for word in k.contact_spravca_kw}
+        self.tabule_keywords = {word: False for word in k.tabule_kw}
+        self.pristupnost_keywords = {word: False for word in k.pristupnost_kw}
+
+        self.type_of_text_element = [self.gdpr_keywords, self.contact_spravca_keywords, self.tabule_keywords, self.pristupnost_keywords]
         
         self.semaphore = None
-        self.type_of_text_element = [ self.pristupnost_keywords, self.other_keywords]
-
-
+        
+        
+        self.search_state = {
+            "accessibility": {"found": False, "searching": False},
+            "gdpr": {"found": False, "searching": False}, 
+            "spravca": {"found": False, "searching": False}, 
+        }
+        self.search_lock = asyncio.Lock()
     async def start(self):
         # ulozenie ../robots.txt suboru zo stranky
         #robots_link_parts= urlparse(self.start_url)
@@ -149,98 +155,132 @@ class Scraper:
         # hladanie viditelneho textu na current page
         if word_dict is self.pristupnost_keywords:
             await self.accessibility_find(browser, word_dict, current_url, current_page)
-        else:
-            await self.other_find(browser, word_dict, current_url, current_page)
+        elif word_dict == self.gdpr_keywords:
+            await self.gdpr_find(browser, word_dict, current_url, current_page)
+        elif word_dict == self.contact_spravca_keywords:
+            await self.contact_spravca_find(browser, word_dict, current_url, current_page)
 
-    async def other_find(self, browser, word_dict, current_url, current_page):
-        #print("HLADAM OTHER KEYWORDS")
-        for word, found in word_dict.items():
-            if found:
-                continue
-            #https://playwright.dev/python/docs/api/class-locator#locator-is-visible
-            locator = current_page.get_by_text(word, exact=False)
-
-            count = await locator.count()
-
-            if  count == 0:
-                word_dict[word] = False
-                continue
-            
-
-            for i in range(count):
-                element = locator.nth(i)
-
-                # iba viditelny text, po prvom matchi skoci
-                if await element.is_visible():
-                    print(f"Found '{word}' on {current_url}")
-                    self.found_text_elements.append(f"Found '{word}' on {current_url}")
-                    word_dict[word] = True
-                    break
+    async def contact_spravca_find(self, browser, word_dict, current_url, current_page):
+        #print("HLADAM SPRAVCA KEYWORDS")
+        search_type = "spravca"
+        result = await self.general_find(search_type, browser, word_dict, current_url, current_page)
+        if not result:
+            return
+        text, found_href = result
+        #print(f"Found accessibility on {found_href}")
+        
+    async def gdpr_find(self, browser, word_dict, current_url, current_page):
+        #print("HLADAM GDPR KEYWORDS")
+        search_type = "gdpr"
+        result = await self.general_find(search_type, browser, word_dict, current_url, current_page)
+        if not result:
+            return
+        text, found_href = result
+        await self.check_content(text, found_href, search_type)
 
     async def accessibility_find(self, browser, word_dict, current_url, current_page):
         # hladanie "Vyhlásenia o prístupnosti" a WCAG pravidiel v nom
+
         #print("HLADAM ACCESSIBILITY KEYWORDS")
+        
+        search_type = "accessibility"
+        result = await self.general_find(search_type, browser, word_dict, current_url, current_page)
+        if not result:
+            return
+        text, found_href = result
+        # hladanie regexom Wcag pravidlá v texte
+        regex = r"\b\d{1,2}\.\d{1,2}\.\d{1,2}\.?\b"
+        matches = re.findall(regex, text)
+        print(matches)
+        self.admitted_rule_breaks.append(matches)
+
+                    
+        
+    async def general_find(self, search_type, browser, word_dict, current_url, current_page):
+        async with self.search_lock:
+            state = self.search_state[search_type]
+            if state["found"] or state["searching"]:
+                return
+            state["searching"] = True
+            print(f"SEARCHING {search_type} on {current_url}")
+
+        result = await self.word_link_find(word_dict,current_page)
+        
+        if not result:
+            async with self.search_lock:
+                state["searching"] = False
+            return
+        word, found_href = result
+        full_link = urljoin(current_url, found_href)
+
+        # otvori novu izolovanu page a hlada 
+        accessibility_page = await browser.new_page()
+        try:
+            await accessibility_page.goto(full_link, wait_until="domcontentloaded")
+            #inner_text vrati iba viditelny text
+            text = await accessibility_page.locator("body").inner_text()
+            async with self.search_lock:
+                state["found"] = True
+            print(f"Found {search_type}: {word} on {found_href}")
+            return ([text, found_href])
+        except Exception as e:
+            print(f"Nepodarilo sa otvorit pristupnost link {found_href}: {e}")
+            
+        finally:
+            await accessibility_page.close()
+            async with self.search_lock:
+                state["searching"] = False
+
+    async def word_link_find(self, word_dict,current_page):
         for word, found in word_dict.items():
             if found:
                 continue
 
-            
-            async with self.accessibility_lock:
-                if any(value == True for value in word_dict.values()):
-                    break
-                for k in word_dict:
-                    word_dict[k] = True
-
-            
             locator = current_page.get_by_text(word, exact=False)
-
             count = await locator.count()
 
             if  count == 0:
-                word_dict[word] = False
                 continue
             
-            found_href = None
             for i in range(count):
                 element = locator.nth(i)
-
-                # iba viditelny text, po prvom matchi skoci
-                if not await element.is_visible():
+                if not await element.is_visible(): # iba viditelny text, po prvom matchi skoci
                     continue
                 tag_name = (await element.evaluate("el => el.tagName")).lower()
                 href = await element.get_attribute("href") if tag_name == "a" else None
+                # musi ist o konkretny link na napr. "Vyhásenie o prístupnosti"
                 if href:
-                    found_href = href
-                    break
-            # musi ist o konkretny link na "Vyhásenie o prístupnosti"
-            if not found_href:
-                for k in word_dict:
-                    word_dict[k] = False
-                continue
+                    return ([word, href])
 
-                
-            full_link = urljoin(current_url, href)
-            # otvori novu izolovanu accessibility_page a hlada 
-            # regexom Wcag pravidlá v texte
-            accessibility_page = await browser.new_page()
-            try:
-                await accessibility_page.goto(full_link, wait_until="domcontentloaded")
-                text = await accessibility_page.locator("body").inner_text()
-                regex = r"\b\d{1,2}\.\d{1,2}\.\d{1,2}\.?\b"
-                matches = re.findall(regex, text)
-                print(f"Hladam WCAG na stranke {href}")
-                print(matches)
-                self.admitted_rule_breaks.append(matches)
-            except Exception as e:
-                print(f"Nepodarilo sa otvorit pristupnost link {href}: {e}")
-            finally:
-                await accessibility_page.close()
+        return None
     
+    async def check_content(self, text, found_href, search_type):
+
+        # vlozit do promptu text
+        prompt = PROMPTS[search_type].replace("{text}", text[:2000])
+        
+        #https://milvus.io/ai-quick-reference/how-do-i-call-openais-api-asynchronously-in-python
+        response = await agent.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[{"role": "user", "content": prompt}],
+            temperature= 0 
+        )
+        #print(f"prompt: {prompt}")
+        # konzistentnosto odpovedi temperature = 0
+        out = response.choices[0].message.content.strip()
+        #prompt vracia vystup v zlom formate
+        out = out.replace("```json", "").replace("```", "").strip()
+        result = json.loads(out)
+        
+        print(f"hodnotenie ({search_type}) pre {found_href}:")
+        for key, value in result.items():
+            print(f" --- {key}: {value}/10")
+        
+        return result
     async def check_wcag(self,page, url):
         # pustenie Axe-Core scriptu na najdenie WCAG 
         # pravidiel a ich zapisanie do zoznamu 
         # !! STIAHNUT axe.min.js podľa README !!
-        #print(f"CHECKING WCAG ON {url}")
         await page.add_script_tag(path="axe.min.js") #https://docs.loadforge.com/examples/qa-testing/axe-accessibility-testing#axe-core-accessibility-testing  to to je cez cdnjs
         results = await page.evaluate("""
             () => {
@@ -287,11 +327,11 @@ class Scraper:
 
     
     def check_if_skip_url(self, url):
-        # nepridavat do queue oprazky, subory !!! neskor upravit
+        # nepridavat do queue obrazky, subory !!! neskor upravit
         pic_extension = (".pdf", ".jpg", ".jpeg", ".png", ".gif",".svg", ".zip", ".docx", ".xlsx")
         path = urlparse(url).path.lower()
         return any(path.endswith(f) for f in pic_extension) or "cookies" in path
     
 
-s = Scraper("ISVS link")
+s = Scraper("ISVS url")
 asyncio.run(s.start())
