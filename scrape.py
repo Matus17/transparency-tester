@@ -7,235 +7,314 @@ import asyncio
 import re
 from ai_prompts import PROMPTS, agent
 import keywords as k
+from loguru import logger
 #aszncio crawler
 #https://gist.github.com/justynroberts/996118684a5de2cf9d305e217c3bd1e4
 
 #to fix:
-#viacnasobne prehladavanie pristupnost page
-#nekoyistentny pocet stranok -> too many requesst error
+#nekozistentny pocet stranok -> too many requesst error
 # pred regexom filtorvat iba viditelny text
-# stale to najde viac slov z rovnakeho zoznamu, asi kvoli async
 # zjednodusit citanie z Axe-core vystupu
 
+#https://loguru.readthedocs.io/en/stable/api/logger.html
+logger.remove()
+logger.add(
+    lambda msg: print(msg, end=""),
+    level="DEBUG",
+    format="<green>{time:HH:mm:ss}</green> - <level>{level:<8}</level> - {message}",
+    colorize=True, )
 
 
-other_kw = ["primátor"]
-
-async def transp_test_start(start_url):
-    s2 = Scraper(start_url)
-    await s2.start()
 
 
 class Scraper:
-    MAX_DEPTH = 2   # maximalna hlbka hladania linkov, domovska
-                    # stranka je (depth 0), linky na nej (depth 1)
-
+    MAX_DEPTH = 2
+    MAX_PAGES_AT_ONCE = 5
     def __init__(self, start_url):
         self.robots_txt = RobotFileParser()
         self.queue_lock = asyncio.Lock()
         self.counter_lock = asyncio.Lock()
-        self.accessibility_lock = asyncio.Lock()
-        self.start_url = start_url #main page, !!! pridat urlparse
-        self.visitedpages = set() # navstivene stranky 
-        self.page_report_final = {} #vysledny zoznam pre zapis do jsonu
-        self.found_text_elements = [] #najdene textove obsahy, podla kriterii !!! string potom zmenit 
-        self.admitted_rule_breaks = [] #najdene WCAG paravidla vo Vyhlásení o prístupnosti
-        self.page_counter = 0 #helper page counter
-        self.max_sempaphore = 5 # pocet podstranok spracovavanzch naraz
-        self.gdpr_keywords = {word: False for word in k.gdpr_kw}
-        self.contact_spravca_keywords = {word: False for word in k.contact_spravca_kw}
-        self.tabule_keywords = {word: False for word in k.tabule_kw}
-        self.pristupnost_keywords = {word: False for word in k.pristupnost_kw}
-
-        self.type_of_text_element = [self.gdpr_keywords, self.contact_spravca_keywords, self.tabule_keywords, self.pristupnost_keywords]
-        
-        self.semaphore = None
-        
-        
-        self.search_state = {
-            "accessibility": {"found": False, "searching": False},
-            "gdpr": {"found": False, "searching": False}, 
-            "spravca": {"found": False, "searching": False}, 
-        }
         self.search_lock = asyncio.Lock()
-    async def start(self):
-        # ulozenie ../robots.txt suboru zo stranky
-        #robots_link_parts= urlparse(self.start_url)
-        #robots_url = f"{robots_link_parts.scheme}://{robots_link_parts.netloc}/robots.txt"
-        #self.robots_txt.set_url(robots_url)
-        #self.robots_txt.read()
-        # ---------------------
-        time_start = time.time()
+
+        self.page_counter = 0
+        self.fail_counter = 0
         
-        self.semaphore = asyncio.Semaphore(self.max_sempaphore)
-        async with async_playwright() as p: #https://playwright.dev/python/docs/library
+        self.start_url = f"{urlparse(start_url).scheme}://{urlparse(start_url).netloc}/"
+
+        self.type_of_keyword = {
+            "gdpr": k.gdpr_kw, "spravca": k.contact_spravca_kw,
+            "tabula": k.tabule_kw, "vyhlaseniePristupnost": k.pristupnost_kw,
+            "rss": k.rss_kw
+        }
+        
+        self.search_state = {key: {"found": False, "searching": False} for key in self.type_of_keyword}
+        self.depth_of_found_element ={key: None for key in self.type_of_keyword}
+        self.found_text_keywords = {key: [] for key in self.type_of_keyword}
+
+        self.visitedpages = set()
+        self.page_report_final = {}
+        self.admitted_rule_breaks = set()
+        self.found_spravca= ""
+
+
+        self.semaphore = None
+
+
+        self.subdomain_counter = {}
+        self.seen_subdomain_links = set()
+        self.max_pages_per_subdomain = 20
+
+    async def start(self):
+        robots_url = f"{self.start_url}robots.txt"
+        self.robots_txt.set_url(robots_url)
+        self.robots_txt.read()
+        time_start = time.time()
+        self.semaphore = asyncio.Semaphore(self.MAX_PAGES_AT_ONCE)
+
+        async with async_playwright() as p:
             browser = await p.chromium.launch(headless=True)
             queue = [(self.start_url, 0)]
-            #self.visitedpages.add(self.start_url)
-            
+
             while queue:
                 tasks_list = []
-                while queue and len(tasks_list) < self.max_sempaphore:
+                while queue and len(tasks_list) < self.MAX_PAGES_AT_ONCE:
                     url, curr_depth = queue.pop(0)
                     scrape_res = self.scrape_curr_page(url, curr_depth, queue, browser)
                     tasks_list.append(scrape_res)
                 await asyncio.gather(*tasks_list)
             await browser.close()
-            
 
-        data = {
-            "wcag_type_count": len(self.page_report_final),
-            "rules": self.page_report_final,
-            "links": self.found_text_elements,
-            "admitted_rule_breaks": self.admitted_rule_breaks,
-        }
+        self.save_json()
+        logger.success(f"SUBDOMAIN COUNTER: {self.subdomain_counter}")
+        logger.success(f"Searched {self.start_url} for {int(time.time() - time_start)} seconds")
+        logger.success(f"VISITED {len(self.visitedpages)}, FAILED {self.fail_counter}")
 
-        with open("accesibilty_report.json", "w", encoding="utf-8") as subor:
-            json.dump(data, subor)
 
-        print(f"Searched {self.start_url} for {int(time.time() - time_start)} seconds")
-
-   
     async def scrape_curr_page(self, url, curr_depth, queue, browser):
-        # prehladanie text. emementov aktualnej stranky, 
-        # viac stranok naraz podla parametru max_semaphore
+        # otvori stranku -> zavola hladanie klucovych slov
+        # -> zavola kontrolu WCAG -> pozbiera linky na stranke
         async with self.semaphore:
-            if url in self.visitedpages:
-                return
-            self.visitedpages.add(url)
+            async with self.queue_lock:
+                if url in self.visitedpages:
+                    return
+                self.visitedpages.add(url)
 
-            #delay = self.robots_txt.crawl_delay("*")
-            #if delay:
-            #    print(delay)
-            #    await asyncio.sleep(delay)
-            if self.page_counter >= 10:
+            async with self.counter_lock:
                 self.page_counter += 1
-                do_check = False
-            else:
-                self.page_counter += 1
-                do_check = True
+                if self.page_counter >= 100:
+                    do_wcag_check = False
+                else:
+                    do_wcag_check = True
 
-            print(f"ON PAGE: {url} (depth {curr_depth}) {self.page_counter}")
+            logger.info(f"ON PAGE: {url} (depth {curr_depth}) {self.page_counter}")
 
             page = await browser.new_page()
             try:
                 await page.goto(url, wait_until="domcontentloaded")
             except Exception as e:
-                print(f"Failed to open 1 {url}: {e}")
+                logger.warning(f"Failed to open {url}: {e}")
+                async with self.counter_lock:
+                    self.fail_counter +=1
                 await page.close()
                 return
 
-            
-            for text_element_dict in self.type_of_text_element:
-                async with self.counter_lock:
-                    if all(value == False for value in text_element_dict.values()):
-                        await self.which_text_to_find(browser,text_element_dict, url, page)
-                    
-            if do_check:
-                await self.check_wcag(page, url)
-            
-            # pridanie linkov z current page
-            if curr_depth < self.MAX_DEPTH:
-                links = await page.locator("a[href]").evaluate_all("x => x.map(y => y.href)")
-                #print(f"Added {len(links)} links")
-                async with self.queue_lock:
-                    for link in links:
-                        link_parts = urlparse(link)
-                        if link_parts.netloc == urlparse(self.start_url).netloc:
-                            if link not in self.visitedpages:
-                                #if self.robots_txt.can_fetch("*", link):
-                                if not self.check_if_skip_url(link):
+            await self.keyword_search(browser, url, page, curr_depth)
 
-                                    queue.append((link, curr_depth + 1))
-          
+            if do_wcag_check:
+                await self.check_wcag(page, url)
+
+            if curr_depth < self.MAX_DEPTH:
+                await self.get_all_links( page, url, curr_depth, queue)
+
             await page.close()
 
-    
-    async def which_text_to_find(self, browser, word_dict, current_url, current_page):
-        # hladanie viditelneho textu na current page
-        if word_dict is self.pristupnost_keywords:
-            await self.accessibility_find(browser, word_dict, current_url, current_page)
-        elif word_dict == self.gdpr_keywords:
-            await self.gdpr_find(browser, word_dict, current_url, current_page)
-        elif word_dict == self.contact_spravca_keywords:
-            await self.contact_spravca_find(browser, word_dict, current_url, current_page)
+    async def keyword_search(self, browser, url, page, curr_depth):
+        for word_type in self.type_of_keyword.keys():
+            await self.which_text_to_find(browser, word_type, url, page, curr_depth)
 
-    async def contact_spravca_find(self, browser, word_dict, current_url, current_page):
-        #print("HLADAM SPRAVCA KEYWORDS")
-        search_type = "spravca"
-        result = await self.general_find(search_type, browser, word_dict, current_url, current_page)
+    async def get_all_links(self, page, url, curr_depth, queue):
+        #hlada vsetky linky na aktualnej stranke, kontroluje ci patria dodomeny
+        # alebo subdomeny a prida ich do queue
+        # a[href] 
+        links = await page.locator("a").evaluate_all("x => x.map(y => y.href)")
+        main_domain_netloc = urlparse(self.start_url).netloc.removeprefix("www.")
+        async with self.queue_lock:
+            for link in links:
+                link_parts = urlparse(link)
+                current_netloc = link_parts.netloc.removeprefix("www.")
+
+                # pridavaju sa linky lez hlavnej domeny a subdomeny
+                if self.check_if_skip_link(link, main_domain_netloc, current_netloc):
+                    continue
+                if current_netloc !=main_domain_netloc:
+                    if link in self.seen_subdomain_links:
+                        continue
+                    subdomain_count = self.subdomain_counter.get(current_netloc, 0)
+                    if subdomain_count >= self.max_pages_per_subdomain:
+                        continue
+                    self.subdomain_counter[current_netloc] = subdomain_count + 1
+                    self.seen_subdomain_links.add(link)
+
+                queue.append((link, curr_depth + 1))
+
+    def save_json(self):
+        # ulozi vysledky testu do json suboru
+        data = {
+            "wcag_type_count": len(self.page_report_final),
+            "rules": self.page_report_final,
+            "links": self.found_text_keywords,
+            "admitted_rule_breaks": self.admitted_rule_breaks,
+            "spravca": self.found_spravca,
+        }
+        with open("end_report.json", "w", encoding="utf-8") as subor:
+            json.dump(data, subor)
+        logger.info("Saved end_report.json")
+
+
+
+
+    async def which_text_to_find(self, browser, search_type, current_url, current_page, depth):
+        # sprostredkuje hladanie klucovych slov (keywords)
+        result = await self.general_find(search_type, browser, current_url, current_page, depth)
         if not result:
             return
         text, found_href = result
-        #print(f"Found accessibility on {found_href}")
-        
-    async def gdpr_find(self, browser, word_dict, current_url, current_page):
-        #print("HLADAM GDPR KEYWORDS")
-        search_type = "gdpr"
-        result = await self.general_find(search_type, browser, word_dict, current_url, current_page)
-        if not result:
-            return
-        text, found_href = result
-        await self.check_content(text, found_href, search_type)
 
-    async def accessibility_find(self, browser, word_dict, current_url, current_page):
-        # hladanie "Vyhlásenia o prístupnosti" a WCAG pravidiel v nom
+        if search_type == "spravca":
+            text += await self.get_page_header_footer_text(browser)
+            check_result = await self.check_content(text,found_href, search_type)
+            self.found_spravca = check_result
 
-        #print("HLADAM ACCESSIBILITY KEYWORDS")
-        
-        search_type = "accessibility"
-        result = await self.general_find(search_type, browser, word_dict, current_url, current_page)
-        if not result:
-            return
-        text, found_href = result
-        # hladanie regexom Wcag pravidlá v texte
-        regex = r"\b\d{1,2}\.\d{1,2}\.\d{1,2}\.?\b"
-        matches = re.findall(regex, text)
-        print(matches)
-        self.admitted_rule_breaks.append(matches)
+        if search_type == "gdpr":
+            await self.check_content(text,found_href, search_type)
 
-                    
+        if search_type == "tabula":
+            await self.check_content(text,found_href, search_type)
         
-    async def general_find(self, search_type, browser, word_dict, current_url, current_page):
+        if search_type == "vyhlaseniePristupnost":
+            regex1= r"\b[1-4]\.[1-9]\.[1-9]\.?(?!\s*\d{4})\b"
+            regex2 = r"\b[1-4]\.[1-9]\.?(?!\.\s*\d{4}|\s*\d{4})\b"
+            
+            matches1 = re.findall(regex1, text)
+            matches2 = re.findall(regex2, text)
+            matches = set(matches1 + matches2)
+            self.admitted_rule_breaks.update(matches)
+            self.accessibility_url = current_url
+            logger.debug(f"AMDITTED RULE BREAKS { self.admitted_rule_breaks}")
+
+        if search_type == "rss":
+            pass
+
+    async def get_page_header_footer_text(self, browser):
+        # vrati 1. text  (header a footer)
+        helper_page = await browser.new_page()
+        try:
+            await helper_page.goto(self.start_url, wait_until="domcontentloaded")
+            header= await helper_page.locator("header").inner_text()
+            footer= await helper_page.locator("footer").inner_text()
+            return header + "\n" + footer
+        except Exception as e:
+            logger.warning(f"Nepodarilo sa otvorit start stranku: {e}")
+            return ""
+        finally:
+            await helper_page.close()
+
+    async def general_find(self, search_type, browser, current_url, current_page, depth):
+        # sprostredkuje hladanie href so slovom a otvorenie stranky
+        # slovo sa oznaci ako hladane aby sa sucasne neoznacilo ako najdene 
+        # na viacerych miestach
+        # vrati 1. (text, found_href) "text stranky"
+        #       2. None
         async with self.search_lock:
             state = self.search_state[search_type]
+            word_set = self.type_of_keyword[search_type]
             if state["found"] or state["searching"]:
                 return
             state["searching"] = True
-            print(f"SEARCHING {search_type} on {current_url}")
+            logger.debug(f"SEARCHING {search_type} on {current_url}")
 
-        result = await self.word_link_find(word_dict,current_page)
-        
-        if not result:
-            async with self.search_lock:
-                state["searching"] = False
-            return
-        word, found_href = result
-        full_link = urljoin(current_url, found_href)
-
-        # otvori novu izolovanu page a hlada 
-        accessibility_page = await browser.new_page()
         try:
-            await accessibility_page.goto(full_link, wait_until="domcontentloaded")
-            #inner_text vrati iba viditelny text
-            text = await accessibility_page.locator("body").inner_text()
-            async with self.search_lock:
-                state["found"] = True
-            print(f"Found {search_type}: {word} on {found_href}")
-            return ([text, found_href])
-        except Exception as e:
-            print(f"Nepodarilo sa otvorit pristupnost link {found_href}: {e}")
+            # zisti ci sa na stranke nachadza slovo, ktore patri k linku
+            result = await self.word_link_find(word_set, current_page, depth)
             
+            if not result:
+                
+                word = await self.fallback_page_title_find(word_set, current_page)
+                if not word:
+                    return None
+                text = await current_page.locator("body").inner_text()
+                async with self.search_lock:
+                    self.search_state[search_type]["found"] = True
+                    self.found_text_keywords[search_type].append(current_url)
+                logger.success(f"FOUND {search_type}:  '{word}' ON {current_url} (title fallback)")
+                return_value = [text, current_url]
+                return return_value
+
+            locator, word, found_href, depth = result
+
+            found_href = await self.fallback_anchor_find(found_href, locator, current_page,current_url)
+            if found_href is None:
+                return None
+
+            text, found_href = await self.open_target_page(search_type, word, found_href, current_url, depth, browser)
+
+            return_value = [text, found_href]
+            return return_value
+
         finally:
-            await accessibility_page.close()
             async with self.search_lock:
                 state["searching"] = False
 
-    async def word_link_find(self, word_dict,current_page):
-        for word, found in word_dict.items():
-            if found:
-                continue
 
+    async def fallback_anchor_find(self,found_href,locator, current_page,current_url):
+        # skontroluej, ci found_href nie je takzvany anchor link, 
+        # ktory sa oznacuje "#"
+        # vrati 1. found_href ak to nie je anchor 
+        #       2. anchor_href ak odkazuje na inu stranku
+        #       3. current_url ak je anchor a obsah je generovany na aktualnej stranke
+        #       4. None pri Exception 
+        
+        if "#" not in found_href or found_href.startswith("http"):
+            return found_href
+
+        anchor_id = found_href.split("#")[-1]
+        logger.debug(f"fallback_anchor_find FOUND: {anchor_id}")
+        try: 
+            await locator.click()
+            anchor_href = await current_page.locator(f"[id='{anchor_id}'] a[href]").first.get_attribute("href")
+            if anchor_href and not anchor_href.startswith("#"):
+                return anchor_href 
+            else:
+                return current_url
+        except Exception as e:
+            logger.warning(f"fallback_anchor_find ERROR: {e}")
+            return None
+
+    async def open_target_page(self, search_type, word, found_href, current_url, depth, browser):
+        # otvori cielovu stranku, na ktoru odkazuje klucove slovo + href
+
+        full_url = urljoin(current_url, found_href)
+        helper_page = await browser.new_page()
+        try:
+            await helper_page.goto(full_url, wait_until="domcontentloaded")
+            text = await helper_page.locator("body").inner_text()
+            async with self.search_lock:
+                self.search_state[search_type]["found"] = True
+                self.found_text_keywords[search_type].append(full_url)
+            logger.success(f"FOUND {search_type}: -{word}- ON {found_href} depth {depth}")
+            return [text, found_href]
+        except Exception as e:
+            logger.warning(f"open_target_page ERROR  {found_href}: {e}")
+            return None
+        finally:
+            await helper_page.close()
+
+    async def word_link_find(self, word_set,current_page,depth):
+        # hlada slovo, viditelne na stranke z vybraneho 
+        # word_set (klucove slovo)
+        # vrati 1. locator, word, href, depth (pri uspesnom pokuse)
+        #       2. None
+        for word in word_set:
             locator = current_page.get_by_text(word, exact=False)
             count = await locator.count()
 
@@ -248,16 +327,31 @@ class Scraper:
                     continue
                 tag_name = (await element.evaluate("el => el.tagName")).lower()
                 href = await element.get_attribute("href") if tag_name == "a" else None
-                # musi ist o konkretny link na napr. "Vyhásenie o prístupnosti"
+
                 if href:
-                    return ([word, href])
-
+                    return ([locator, word, href, depth])
         return None
-    
-    async def check_content(self, text, found_href, search_type):
 
-        # vlozit do promptu text
-        prompt = PROMPTS[search_type].replace("{text}", text[:2000])
+    async def fallback_page_title_find(self, word_set, current_page):
+        # fallback ak sa nic nenajde, skonroluje nadpis aktualnej 
+        # stranky. Edge case: ak nie je viditelny text priamo asociovany
+        # s elementom href
+        # vrati 1. word
+        #       2. None
+        for word in word_set:
+           
+            locator = current_page.locator("h1").get_by_text(word, exact=False)
+            if await locator.count() == 0:
+                continue
+            if await locator.first.is_visible():
+                return word
+        return None
+
+    async def check_content(self, text, found_href, search_type):
+        # vklada najdeny text do promptu a zavola opeani API
+        # na vyhodnotenie obsahu
+        # vrati 1. hodnotenie definovane v ai_prompts.py
+        prompt = PROMPTS[search_type].replace("{text}", text[:10000])
         
         #https://milvus.io/ai-quick-reference/how-do-i-call-openais-api-asynchronously-in-python
         response = await agent.chat.completions.create(
@@ -272,11 +366,13 @@ class Scraper:
         out = out.replace("```json", "").replace("```", "").strip()
         result = json.loads(out)
         
-        print(f"hodnotenie ({search_type}) pre {found_href}:")
+        logger.debug(f"hodnotenie ({search_type}) pre {found_href}:")
+        #vymysliet zapisovanie??
         for key, value in result.items():
-            print(f" --- {key}: {value}/10")
+            print(f" --- {key}: {value}")
         
         return result
+
     async def check_wcag(self,page, url):
         # pustenie Axe-Core scriptu na najdenie WCAG 
         # pravidiel a ich zapisanie do zoznamu 
@@ -323,15 +419,23 @@ class Scraper:
                 self.page_report_final[final_rule]["count"] += count
                 if url not in self.page_report_final[final_rule]["url"]:
                     self.page_report_final[final_rule]["url"].append(url)
-    
+           
 
-    
-    def check_if_skip_url(self, url):
-        # nepridavat do queue obrazky, subory !!! neskor upravit
-        pic_extension = (".pdf", ".jpg", ".jpeg", ".png", ".gif",".svg", ".zip", ".docx", ".xlsx")
-        path = urlparse(url).path.lower()
-        return any(path.endswith(f) for f in pic_extension) or "cookies" in path
-    
+    def check_if_skip_link(self, link, main_domain_netloc, current_netloc):
+        # nepridavat do queue obrazky, subory, visited/zakazane/ mimo domain url, 
+        extension = (".pdf", ".jpg", ".jpeg", ".png", ".gif",".svg", ".zip", ".docx", ".xlsx")
+        
+        path = urlparse(link).path.lower()
+        if any(path.endswith(f) for f in extension) or any(w in path for w in ["cookies", "download"]):
+            return True
+        if not (current_netloc == main_domain_netloc or current_netloc.endswith("." + main_domain_netloc)):
+            return True
+        if link in self.visitedpages: #!
+            return True
+        if self.robots_txt.can_fetch("*", link) ==False:
+            return True
+        return False
+
 
 s = Scraper("ISVS url")
 asyncio.run(s.start())

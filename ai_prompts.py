@@ -34,9 +34,9 @@ Nevracaj žiadny ďalší text ani vysvetlenie.
     "rights": <0-10>,
     "priemer": <0-10>
 }}
-Text:
+Text: 
 {text}
-    """,
+""",
 
 #ÚRADNÁ TABUĽA
 "tabula": """
@@ -57,7 +57,7 @@ Kritériá:
 1. documents: Sú zverejnené elektronické dokumenty orgánu verejnej moci?
 2. date: Je pri dokumentoch uvedený dátum zverejnenia?
 3. up_to_date: Sú dokumenty aktuálne a zverejnené bez zbytočného odkladu?
-4. activities: Sú zverejnené informácie o činnostiach orgánu verejnej moci?
+
 
 Výstup:
 Odpovedz IBA v JSON formáte bez iného textu:
@@ -66,11 +66,37 @@ Nevracaj žiadny ďalší text ani vysvetlenie.
     "documents": <0-10>,
     "date": <0-10>,
     "up_to_date": <0-10>,
-    "activities": <0-10>,
     "priemer": <0-10>
 }}
 
-Text:
+Text: 
+{text}
+""",
+# SPRÁVCA
+"spravca": 
+"""Si používateľ informačného systému verejnej správy. Našiel si 
+stránku s textom, ktorý je uvedený úplne dole a chceš v ňom nájsť 
+správcu obsahu, ktorý zodpovedá za obsah. Hladame niečo 
+na tento štýl, :
+        KONTAKT
+        Ministerstvo vnútra SR
+        Pribinova 2
+        812 72 Bratislava
+        Telefón: +421 2 5094 1111
+        Fax: +421 2 5094 4397
+        E-mail: public@minv.sk
+        ...
+Tu by si vybral "Ministerstvo vnútra SR". Vyberaj 
+konkrétne a oficiálne názvy bez adresy, čísel a mailov.
+
+
+Výstup:
+Odpovedz IBA v JSON formáte bez iného textu:
+Nevracaj žiadny ďalší text ani vysvetlenie.
+{{
+    "spravca"
+}}
+Teraz zhodnoť tento text: 
 {text}
 """
 

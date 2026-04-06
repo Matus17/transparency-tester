@@ -1,8 +1,9 @@
-gdpr_kw = [
-    "slobodnom prístupe k informáciám",
+gdpr_kw = (
     "ochrana osobných údajov",
     "osobné údaje",
-    "k ochrane osobných údajov",
+    "ochrane osobných údajov",
+    "ochrane údajov",
+    "ochrana údajov",
     "spracovanie osobných údajov",
     "zabezpečenie údajov",
     "GDPR",
@@ -11,10 +12,11 @@ gdpr_kw = [
     "citlivé údaje",
     "zákon o ochrane osobných údajov",
     "osobných údajov",
+    "osobné údaje",
     "Personal data protection",
-    "Informácie o spracúvaní osobných údajov zákazníkov"
-]
-contact_spravca_kw = [
+    "data protection regulation"
+)
+contact_spravca_kw = (
     "správca",
     "kontakt",
     "o obsah sa stará",
@@ -41,10 +43,11 @@ contact_spravca_kw = [
     "contact us",
     "office hours",
     "Všetky kontakty"
-]
+)
 
-tabule_kw = [
+tabule_kw = (
     "úradná tabuľa",
+    "elektronická tabuľa",
     "oficiálna tabuľa",
     "tabuľa úradu",
     "tabuľa verejnej správy",
@@ -57,7 +60,6 @@ tabule_kw = [
     "oznamovací panel",
     "verejná oznamovacia tabuľa",
     "verejná informačná tabuľa",
-    "elektronická tabuľa",
     "digitálna tabuľa",
     "elektronická oznamovacia tabuľa",
     "digitálna oznamovacia tabuľa",
@@ -66,24 +68,20 @@ tabule_kw = [
     "online oznamovacia tabuľa",
     "virtuálna oznamovacia tabuľa",
     "centrálna oznamovacia tabuľa",
-    "verejný informačný systém",
     "elektronický informačný systém",
     "systém zverejňovania oznamov",
-    "miesto úradného zverejňovania",
-]
+)
 
-pristupnost_kw = [
+pristupnost_kw = (
     "vyhlásenie o prístupnosti",
-    "Vyhlásenie o prístupnosti",
+    "prístupnosť"
+)
+obstaravanie_kw = (
+    "obstarávanie",
+    "obstarávania",
+)
 
-    "vyhlasenie o prístupnosti",
-    "vyhlásenie o pristupnosti",
-    "vyhlasenie o pristupnosti",
-
-    "Vyhlasenie o prístupnosti",
-    "Vyhlásenie o pristupnosti",
-    "Vyhlasenie o pristupnosti"
-]
-obstaravanie_kw = [
-    "Verejné obstarávanie"
-]
+rss_kw = (
+    "rss",
+    "Really Simple Syndication"
+)
