@@ -17,7 +17,7 @@ pip install playwright
 
 playwright install
 
-pip install streamlit
+#pip install streamlit
 
 pip install openai
 
@@ -25,4 +25,6 @@ pip install python-dotenv
 
 # Run app ---------
 
-streamlit run app.py
+python scrape.py
+
+#streamlit run app.py
