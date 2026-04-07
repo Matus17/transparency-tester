@@ -16,33 +16,29 @@ gdpr_kw = (
     "Personal data protection",
     "data protection regulation"
 )
-contact_spravca_kw = (
+spravca_kw = (
     "správca",
+    "spravovateľ",
+    "spravuje",
+    "zodpovedný"
+)
+prevadzkovatel_kw = (
+    "prevádzkovateľ",
+    "technická podpora",
+    "webmaster", "web master",
+    "poskytovateľ", 
+    "technologická podpora"
+
+)
+kontakt_kw = (
     "kontakt",
-    "o obsah sa stará",
-    "za obsah zodpovedá",
+    "contacts",
     "kontaktné informácie",
-    "telefon",
-    "email",
-    "adresa",
-    "sídlo",
     "pobočka",
     "napíšte nám",
     "kontaktujte nás",
     "informácie o kontakte",
-    "úradné hodiny",
     "contact",
-    "contact information",
-    "email",
-    "phone",
-    "address",
-    "office",
-    "branch",
-    "write to us",
-    "get in touch",
-    "contact us",
-    "office hours",
-    "Všetky kontakty"
 )
 
 tabule_kw = (
@@ -50,6 +46,7 @@ tabule_kw = (
     "elektronická tabuľa",
     "oficiálna tabuľa",
     "tabuľa úradu",
+    "úradné oznamy",
     "tabuľa verejnej správy",
     "úradná oznamovacia tabuľa",
     "oficiálna oznamovacia tabuľa",
@@ -68,8 +65,6 @@ tabule_kw = (
     "online oznamovacia tabuľa",
     "virtuálna oznamovacia tabuľa",
     "centrálna oznamovacia tabuľa",
-    "elektronický informačný systém",
-    "systém zverejňovania oznamov",
 )
 
 pristupnost_kw = (
@@ -82,6 +77,11 @@ obstaravanie_kw = (
 )
 
 rss_kw = (
+    "rss",
+    "Really Simple Syndication"
+)
+
+mapa_stranky_kw = (
     "rss",
     "Really Simple Syndication"
 )

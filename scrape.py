@@ -15,7 +15,7 @@ from loguru import logger
 #nekozistentny pocet stranok -> too many requesst error
 # pred regexom filtorvat iba viditelny text
 # zjednodusit citanie z Axe-core vystupu
-
+# header a footer sa checkene az ke sa najde odkaz
 #https://loguru.readthedocs.io/en/stable/api/logger.html
 logger.remove()
 logger.add(
@@ -42,9 +42,10 @@ class Scraper:
         self.start_url = f"{urlparse(start_url).scheme}://{urlparse(start_url).netloc}/"
 
         self.type_of_keyword = {
-            "gdpr": k.gdpr_kw, "spravca": k.contact_spravca_kw,
+            "gdpr": k.gdpr_kw, "spravca": k.spravca_kw,
             "tabula": k.tabule_kw, "vyhlaseniePristupnost": k.pristupnost_kw,
-            "rss": k.rss_kw
+            "rss": k.rss_kw, "prevadzkovatel": k.prevadzkovatel_kw, 
+            "kontakt": k.kontakt_kw
         }
         
         self.search_state = {key: {"found": False, "searching": False} for key in self.type_of_keyword}
@@ -79,8 +80,8 @@ class Scraper:
                 tasks_list = []
                 while queue and len(tasks_list) < self.MAX_PAGES_AT_ONCE:
                     url, curr_depth = queue.pop(0)
-                    scrape_res = self.scrape_curr_page(url, curr_depth, queue, browser)
-                    tasks_list.append(scrape_res)
+                    scrape_result = self.scrape_curr_page(url, curr_depth, queue, browser)
+                    tasks_list.append(scrape_result)
                 await asyncio.gather(*tasks_list)
             await browser.close()
 
@@ -120,7 +121,7 @@ class Scraper:
 
             await self.keyword_search(browser, url, page, curr_depth)
 
-            if do_wcag_check:
+            if do_wcag_check and urlparse(url).netloc == urlparse(self.start_url).netloc:
                 await self.check_wcag(page, url)
 
             if curr_depth < self.MAX_DEPTH:
@@ -163,7 +164,7 @@ class Scraper:
             "wcag_type_count": len(self.page_report_final),
             "rules": self.page_report_final,
             "links": self.found_text_keywords,
-            "admitted_rule_breaks": self.admitted_rule_breaks,
+            "admitted_rule_breaks": list(self.admitted_rule_breaks),
             "spravca": self.found_spravca,
         }
         with open("end_report.json", "w", encoding="utf-8") as subor:
@@ -175,43 +176,68 @@ class Scraper:
 
     async def which_text_to_find(self, browser, search_type, current_url, current_page, depth):
         # sprostredkuje hladanie klucovych slov (keywords)
+        text = ""
         result = await self.general_find(search_type, browser, current_url, current_page, depth)
+        
         if not result:
-            return
-        text, found_href = result
+            if current_url == self.start_url and search_type in ["spravca","prevadzkovatel"]:
+                found_url= current_url
+            else:
+                return
+        
+        else:
+            text, found_url = result
 
-        if search_type == "spravca":
+        # check bude vzdy na prvej stranke aj ked sa nenachadza odkaz
+        if search_type in ["spravca"]:
             text += await self.get_page_header_footer_text(browser)
-            check_result = await self.check_content(text,found_href, search_type)
+            print(f"tuuuuuuuuuuuu")
+            check_result = await self.check_content(text,found_url, search_type)
             self.found_spravca = check_result
 
+        if search_type in ["prevadzkovatel"]:
+            text += await self.get_page_header_footer_text(browser)
+            check_result = await self.check_content(text,found_url, search_type)
+            #self.found_spravca = check_result
+
         if search_type == "gdpr":
-            await self.check_content(text,found_href, search_type)
+            await self.check_content(text,found_url, search_type)
 
         if search_type == "tabula":
-            await self.check_content(text,found_href, search_type)
+            await self.check_content(text,found_url, search_type)
         
         if search_type == "vyhlaseniePristupnost":
-            regex1= r"\b[1-4]\.[1-9]\.[1-9]\.?(?!\s*\d{4})\b"
-            regex2 = r"\b[1-4]\.[1-9]\.?(?!\.\s*\d{4}|\s*\d{4})\b"
+            # treba to zlepit ako predtym
+            regex1= r"\b[1-4]\.[1-9]\.[1-9]\.?(?!\s*\d{4})\b|\b[1-4]\.[1-9]\.?(?!\.\s*\d{4}|\s*\d{4})\b"
             
-            matches1 = re.findall(regex1, text)
-            matches2 = re.findall(regex2, text)
-            matches = set(matches1 + matches2)
+            matches = re.findall(regex1, text)
+            #matches2 = re.findall(regex2, text)
+            #matches = set(matches1 + matches2)
             self.admitted_rule_breaks.update(matches)
             self.accessibility_url = current_url
             logger.debug(f"AMDITTED RULE BREAKS { self.admitted_rule_breaks}")
 
         if search_type == "rss":
             pass
+        
+        if search_type == "mapa_stranky":
+            pass
 
     async def get_page_header_footer_text(self, browser):
         # vrati 1. text  (header a footer)
         helper_page = await browser.new_page()
+        header =""
+        footer = ""
         try:
             await helper_page.goto(self.start_url, wait_until="domcontentloaded")
-            header= await helper_page.locator("header").inner_text()
-            footer= await helper_page.locator("footer").inner_text()
+            try:
+                header= await helper_page.locator("header").inner_text(timeout=3000)
+            except Exception:
+                pass
+            try:
+                footer= await helper_page.locator("footer").inner_text(timeout=3000)
+            except Exception:
+                pass
             return header + "\n" + footer
         except Exception as e:
             logger.warning(f"Nepodarilo sa otvorit start stranku: {e}")
@@ -256,9 +282,9 @@ class Scraper:
             if found_href is None:
                 return None
 
-            text, found_href = await self.open_target_page(search_type, word, found_href, current_url, depth, browser)
+            text, new_url = await self.open_target_page(search_type, word, found_href, current_url, depth, browser)
 
-            return_value = [text, found_href]
+            return_value = [text, new_url]
             return return_value
 
         finally:
@@ -301,10 +327,10 @@ class Scraper:
             async with self.search_lock:
                 self.search_state[search_type]["found"] = True
                 self.found_text_keywords[search_type].append(full_url)
-            logger.success(f"FOUND {search_type}: -{word}- ON {found_href} depth {depth}")
-            return [text, found_href]
+            logger.success(f"FOUND {search_type}: -{word}- ON {full_url} depth {depth}")
+            return [text, full_url]
         except Exception as e:
-            logger.warning(f"open_target_page ERROR  {found_href}: {e}")
+            logger.warning(f"open_target_page ERROR  {full_url}: {e}")
             return None
         finally:
             await helper_page.close()
@@ -377,49 +403,52 @@ class Scraper:
         # pustenie Axe-Core scriptu na najdenie WCAG 
         # pravidiel a ich zapisanie do zoznamu 
         # !! STIAHNUT axe.min.js podľa README !!
-        await page.add_script_tag(path="axe.min.js") #https://docs.loadforge.com/examples/qa-testing/axe-accessibility-testing#axe-core-accessibility-testing  to to je cez cdnjs
-        results = await page.evaluate("""
-            () => {
-                return axe.run({
-                    runOnly: {
-                        type: 'tag',
-                        values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']
-                    }
-                                        });}""")
-        #print(results["violations"]) 
-        for res in results["violations"]: #jeden prvok -> jedno pravidlo
-            current_tags = res.get("tags",[])
-            #print(f"{current_tags} {url}")
-            found_wcag_tags = []
-            for t in current_tags:
+        try:
+            await page.add_script_tag(path="axe.min.js") #https://docs.loadforge.com/examples/qa-testing/axe-accessibility-testing#axe-core-accessibility-testing  to to je cez cdnjs
+            results = await page.evaluate("""
+                () => {
+                    return axe.run({
+                        runOnly: {
+                            type: 'tag',
+                            values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']
+                        }
+                                            });}""")
+            #print(results["violations"]) 
+            for res in results["violations"]: #jeden prvok -> jedno pravidlo
+                current_tags = res.get("tags",[])
+                #print(f"{current_tags} {url}")
+                found_wcag_tags = []
+                for t in current_tags:
 
-                if t.startswith("wcag"):
+                    if t.startswith("wcag"):
+                        #print(found_wcag_tags)
+                        found_wcag_tags.append(t)
+                        if len(found_wcag_tags) >= 2:
+                            break
+                final_rule = None #finalny string v tvare "WCAGx.x.x LEVEL YY"
+                if len(found_wcag_tags) >= 2:
                     #print(found_wcag_tags)
-                    found_wcag_tags.append(t)
-                    if len(found_wcag_tags) >= 2:
-                        break
-            final_rule = None #finalny string v tvare "WCAGx.x.x LEVEL YY"
-            if len(found_wcag_tags) >= 2:
-                #print(found_wcag_tags)
-                for t in found_wcag_tags:
-                    if t[5] == "a":
-                        wcag_level = t[5:].upper()
-                    else:
-                        wcag_number = t[:4].upper() + t[4] + "." +t[5] + "." +t[6] + "."
-                final_rule = wcag_number + " LEVEL: " + wcag_level
-            count = len(res.get("nodes", []))
-            
-            if final_rule != None and final_rule not in self.page_report_final:
-                self.page_report_final[final_rule] = {
-                    "count": 1,
-                    "description of curr rule": res.get("description", ""),
-                    "url": [url]
-                }
-            elif final_rule != None and final_rule in self.page_report_final:
-                self.page_report_final[final_rule]["count"] += count
-                if url not in self.page_report_final[final_rule]["url"]:
-                    self.page_report_final[final_rule]["url"].append(url)
-           
+                    for t in found_wcag_tags:
+                        if t[5] == "a":
+                            wcag_level = t[5:].upper()
+                        else:
+                            wcag_number = t[:4].upper() + t[4] + "." +t[5] + "." +t[6] + "."
+                    final_rule = wcag_number + " LEVEL: " + wcag_level
+                count = len(res.get("nodes", []))
+                
+                if final_rule != None and final_rule not in self.page_report_final:
+                    self.page_report_final[final_rule] = {
+                        "count": 1,
+                        "description of curr rule": res.get("description", ""),
+                        "url": [url]
+                    }
+                elif final_rule != None and final_rule in self.page_report_final:
+                    self.page_report_final[final_rule]["count"] += count
+                    if url not in self.page_report_final[final_rule]["url"]:
+                        self.page_report_final[final_rule]["url"].append(url)
+        #niekedy nemusi prejst axe-core kvoli TrustedScript
+        except Exception as e:
+            logger.warning(f"Failed Axe-Core {url}: {e}")  
 
     def check_if_skip_link(self, link, main_domain_netloc, current_netloc):
         # nepridavat do queue obrazky, subory, visited/zakazane/ mimo domain url, 
@@ -437,5 +466,5 @@ class Scraper:
         return False
 
 
-s = Scraper("ISVS url")
+s = Scraper("https://www.levice.sk/")
 asyncio.run(s.start())

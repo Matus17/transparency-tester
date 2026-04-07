@@ -98,6 +98,24 @@ Nevracaj žiadny ďalší text ani vysvetlenie.
 }}
 Teraz zhodnoť tento text: 
 {text}
+""",
+
+# PREVÁDZKOVATEĽ
+"prevadzkovatel": 
+"""Si používateľ informačného systému verejnej správy. Našiel si 
+stránku s textom, ktorý je uvedený úplne dole a chceš v ňom nájsť 
+tecnického prevádzovatela obsahu, ktorý zodpovedá za fungovanie 
+stránky alebo systému.
+
+
+Výstup:
+Odpovedz IBA v JSON formáte bez iného textu:
+Nevracaj žiadny ďalší text ani vysvetlenie.
+{{
+    "prevadzkovatel"
+}}
+Teraz zhodnoť tento text: 
+{text}
 """
 
 }
