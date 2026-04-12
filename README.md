@@ -23,6 +23,7 @@ pip install openai
 
 pip install python-dotenv
 
+pip install httpx
 # Run app ---------
 
 python scrape.py
