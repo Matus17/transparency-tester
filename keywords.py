@@ -82,6 +82,6 @@ rss_kw = (
 )
 
 mapa_stranky_kw = (
-    "rss",
-    "Really Simple Syndication"
+    "mapa stránky", "mapa web", "štruktúra web"
+    "sitemap", "štruktúra stránky"
 )
