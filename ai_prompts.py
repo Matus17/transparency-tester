@@ -76,17 +76,7 @@ Text:
 "spravca": 
 """Si používateľ informačného systému verejnej správy. Našiel si 
 stránku s textom, ktorý je uvedený úplne dole a chceš v ňom nájsť 
-správcu obsahu, ktorý zodpovedá za obsah. Hladame niečo 
-na tento štýl, :
-        KONTAKT
-        Ministerstvo vnútra SR
-        Pribinova 2
-        812 72 Bratislava
-        Telefón: +421 2 5094 1111
-        Fax: +421 2 5094 4397
-        E-mail: public@minv.sk
-        ...
-Tu by si vybral "Ministerstvo vnútra SR". Vyberaj 
+správcu obsahu, ktorý zodpovedá za obsah. Kto to spravuje?
 konkrétne a oficiálne názvy bez adresy, čísel a mailov.
 
 
@@ -105,7 +95,7 @@ Teraz zhodnoť tento text:
 """Si používateľ informačného systému verejnej správy. Našiel si 
 stránku s textom, ktorý je uvedený úplne dole a chceš v ňom nájsť 
 tecnického prevádzovatela obsahu, ktorý zodpovedá za fungovanie 
-stránky alebo systému.
+stránky alebo systému. Kto je to?
 
 
 Výstup:

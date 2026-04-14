@@ -65,7 +65,8 @@ class Scraper:
         self.visitedpages = set()
         self.page_report_final = {}
         self.admitted_rule_breaks = set()
-        self.found_spravca= ""
+        self.spravca_result = None
+        self.prevdzkovatel_result = None
         
 
         self.semaphore = None
@@ -189,17 +190,40 @@ class Scraper:
             #logger.debug(f"ADDED {added} links to queue from {url}")
 
     def save_json(self):
-        # ulozi vysledky testu do json suboru
-        data = {
-            "wcag_type_count": len(self.page_report_final),
-            "rules": self.page_report_final,
-            "links": self.found_text_keywords,
-            "admitted_rule_breaks": list(self.admitted_rule_breaks),
-            "spravca": self.found_spravca,
+        keywords_data = {
+            "spravca": self.spravca_result,
+            "prevadzkovatel": self.prevadzkovatel_result,
+            "keywords": {
+                k: {
+                    "priemer": v["score"].get("priemer") if v else None,
+                    "found_on": self.found_text_keywords.get(k, []),
+                    "depth": self.depth_of_found_element.get(k)
+                }
+                for k, v in self.content_scores.items()
+                if k not in ["rss", "vyhlaseniePristupnost","spravca","prevadzkovatel"]
+            },
         }
-        with open("end_report.json", "w", encoding="utf-8") as subor:
-            json.dump(data, subor, indent= 2)
-        logger.info("Saved end_report.json")
+        
+        accessibility_data = {
+            "wcag": {
+                "count": len(self.page_report_final),
+                "rules": self.page_report_final
+            },
+            "vyhlaseniePristupnost": {
+                "url": self.found_text_keywords.get("vyhlaseniePristupnost", []),
+                "rule_breaks": list(self.admitted_rule_breaks)
+            },
+            "pages_visited": len(self.visitedpages),
+            "pages_failed": self.fail_counter
+        }
+
+        with open("keywords_report.json", "w", encoding="utf-8") as f:
+            json.dump(keywords_data, f, indent=2, ensure_ascii=False)
+        
+        with open("accessibility_report.json", "w", encoding="utf-8") as f:
+            json.dump(accessibility_data, f, indent=2, ensure_ascii=False)
+        
+        logger.info("Saved keywords_report.json and accessibility_report.json")
 
 
     async def main_page_content_search(self, browser, search_type, current_url, current_page, depth):
@@ -214,8 +238,12 @@ class Scraper:
             text, found_url = result
 
         text += await self.get_page_header_footer_text(browser)
-        check_result = await self.check_content(text,found_url,search_type)
-        #self.found_spravca = check_result
+        check_result = await self.check_content(text, found_url, search_type)
+        print(text)
+        if search_type == "spravca":
+            self.spravca_result = {"url": found_url, "result": check_result}
+        if search_type == "prevadzkovatel":
+            self.prevadzkovatel_result = {"url": found_url, "result": check_result}
 
     async def page_content_search(self, browser, search_type, current_url, current_page, depth):
         # sprostredkuje hladanie klucovych slov (keywords) na stranke
@@ -350,6 +378,7 @@ class Scraper:
                 self.search_state[search_type]["found"] = True
                 self.found_text_keywords[search_type].append(target_url)
             logger.success(f"FOUND {search_type} ON {target_url} depth {depth}")
+            self.depth_of_found_element[search_type] = depth
             return [text, target_url]
         except Exception as e:
             logger.warning(f"open_target_page ERROR {target_url}: {e}")
@@ -543,5 +572,5 @@ class Scraper:
         return True
 
 
-s = Scraper("https://levice.sk/")
+s = Scraper("https://santovka.sk/")
 asyncio.run(s.start())
