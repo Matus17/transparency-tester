@@ -11,6 +11,7 @@ from loguru import logger
 import httpx
 import feedparser
 
+
 #to fix:
 #nekozistentny pocet stranok -> too many requesst error
 # pred regexom filtorvat iba viditelny text
@@ -41,6 +42,7 @@ class BaseScraper:
         self.found_text_keywords = {}
         self.content_ai_scores = {}
         self.depth_of_found_element = {}
+
 
     def load_robots_txt(self):
         robots_url= f"{self.start_url}robots.txt"
@@ -172,7 +174,6 @@ class BaseScraper:
         # na vyhodnotenie obsahu
         # vrati 1. hodnotenie definovane v ai_prompts.py
         prompt = PROMPTS[search_type].replace("{text}", text[:10000])
-        
         #logger.debug(f"TEXT PREVIEW ({search_type}): {text[:3000]}")
         #https://milvus.io/ai-quick-reference/how-do-i-call-openais-api-asynchronously-in-python
         response = await agent.chat.completions.create(
@@ -202,7 +203,7 @@ class BaseScraper:
 
     def update_best_ai_score(self, search_type, found_href, result):
         priemer = result.get("priemer", 0)
-        if priemer == 0:
+        if priemer < 5:
             return False
         
         prev_score = self.content_ai_scores.get(search_type)
@@ -219,6 +220,7 @@ class MainPageScraper(BaseScraper):
         self.type_of_keyword = {
             "spravca": k.spravca_kw,
             "prevadzkovatel": k.prevadzkovatel_kw,
+            "mapa_stranky": k.mapa_stranky_kw,
         }
         self.search_state = {key: {"found": False, "searching": False} for key in self.type_of_keyword}
         self.found_text_keywords = {key: [] for key in self.type_of_keyword}
@@ -227,6 +229,7 @@ class MainPageScraper(BaseScraper):
             "search_element": False,
             "spravca": None,
             "prevadzkovatel": None,
+            "mapa_stranky":False
         }
 
     async def load_main_page(self, browser):
@@ -275,10 +278,12 @@ class MainPageScraper(BaseScraper):
         else:
             text, found_url = result
 
-        text += await self.get_page_header_footer_text(browser)
-        check_result = await self.check_content(text, found_url, search_type)
-        
-        self.result[search_type] = check_result.get(search_type)
+        if search_type in ["spravca", "prevadzkovatel"]:
+            text += await self.get_page_header_footer_text(browser)
+            check_result = await self.check_content(text, found_url, search_type)
+            self.result[search_type] = check_result.get(search_type)
+        else:
+            self.result[search_type] = True
     async def get_page_header_footer_text(self, browser):
         # vrati 1. text  (header a footer)
         helper_page = await browser.new_page()
@@ -302,7 +307,7 @@ class MainPageScraper(BaseScraper):
             await helper_page.close()
 
 class Scraper(BaseScraper):
-    MAX_DEPTH = 3
+    MAX_DEPTH = 2
     MAX_PAGES_AT_ONCE = 5
 
     def __init__(self, start_url):
@@ -311,8 +316,8 @@ class Scraper(BaseScraper):
             "gdpr": k.gdpr_kw, 
             "tabula": k.tabule_kw, "vyhlaseniePristupnost": k.pristupnost_kw,
             "rss": k.rss_kw, 
-            "kontakt": k.kontakt_kw, "mapa_stranky": k.mapa_stranky_kw,
-            "obstaravanie": k.obstaravanie_kw
+            "sluzby": k.sluzby,
+            "objednavky": k.objednavky_kw, "faktury": k.faktury_kw, 
         }
         
         self.search_state = {key: {"found": False, "searching": False} for key in self.type_of_keyword}
@@ -323,6 +328,7 @@ class Scraper(BaseScraper):
         self.visitedpages = set()
         self.page_report_final = {}
         self.admitted_rule_breaks = set()
+        self.found_rule_breaks = set()
 
         self.semaphore = None
         self.queue_lock = asyncio.Lock()
@@ -350,6 +356,9 @@ class Scraper(BaseScraper):
                 tasks_list = []
                 while queue and len(tasks_list) < self.MAX_PAGES_AT_ONCE:
                     url, curr_depth = queue.pop(0)
+                    if url in self.visitedpages:  # ← pridaj kontrolu
+                        continue
+                    self.visitedpages.add(url)
                     scrape_result = self.scrape_curr_page(url, curr_depth, queue, browser)
                     tasks_list.append(scrape_result)
                 await asyncio.gather(*tasks_list)
@@ -364,11 +373,7 @@ class Scraper(BaseScraper):
         # otvori stranku -> zavola hladanie klucovych slov
         # -> zavola kontrolu WCAG -> pozbiera linky na stranke
         async with self.semaphore:
-            async with self.queue_lock:
-                if url in self.visitedpages:
-                    return
-                self.visitedpages.add(url)
-
+            
             if not self.is_robots_allowed(url):
                 return
             
@@ -417,6 +422,7 @@ class Scraper(BaseScraper):
         added = 0
         async with self.queue_lock:
             for link in links:
+                link = urlparse(link)._replace(fragment="").geturl()
                 link_parts = urlparse(link)
                 current_netloc = link_parts.netloc.removeprefix("www.")
 
@@ -451,6 +457,7 @@ class Scraper(BaseScraper):
         accessibility_data = {
             "wcag": {
                 "count": len(self.page_report_final),
+                "found_rules": list(self.found_rule_breaks),
                 "rules": self.page_report_final
             },
             "vyhlaseniePristupnost": {
@@ -531,11 +538,13 @@ class Scraper(BaseScraper):
                     else:
                         logger.warning(f"NON-VALID RSS: {found_url}")
 
-        if search_type == "mapa_stranky":
-            pass
-        if search_type == "obstaravanie":
-            pass
         
+        if search_type == "objednavky":
+            await self.check_content(text,found_url, search_type)
+        if search_type == "faktury":
+            await self.check_content(text,found_url, search_type)
+        if search_type == "sluzby":
+            await self.check_content(text,found_url, search_type)
     
     async def check_wcag(self,page, url):
         logger.debug(f"=====CHECKING WCAG ON {url}")
@@ -572,9 +581,9 @@ class Scraper(BaseScraper):
                             wcag_level = t[5:].upper()
                         else:
                             wcag_number = t[:4].upper() + t[4] + "." +t[5] + "." +t[6] + "."
-                    final_rule = wcag_number + " LEVEL: " + wcag_level
+                    final_rule = wcag_number  # + " LEVEL: " + wcag_level
                 count = len(res.get("nodes", []))
-                
+                self.found_rule_breaks.add(final_rule[4:-1])
                 if final_rule != None and final_rule not in self.page_report_final:
                     self.page_report_final[final_rule] = {
                         "count": 1,
@@ -606,5 +615,9 @@ class Scraper(BaseScraper):
             return True
         return False
     
-s = Scraper("ISVS url")
+#def start_app(url):
+#    s = Scraper(url)
+#    asyncio.run(s.start())
+
+s = Scraper("https://www.minzp.sk/gdpr/")
 asyncio.run(s.start())

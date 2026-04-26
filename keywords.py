@@ -7,9 +7,6 @@ gdpr_kw = (
     "spracovanie osobných údajov",
     "zabezpečenie údajov",
     "GDPR",
-    "prístup k údajom",
-    "dátová ochrana",
-    "citlivé údaje",
     "zákon o ochrane osobných údajov",
     "osobných údajov",
     "osobné údaje",
@@ -76,9 +73,27 @@ obstaravanie_kw = (
     "obstarávania",
 )
 
+objednavky_kw = (
+    "objednávky", "obstarávanie",
+    "obstarávania",
+)
+
+faktury_kw = (
+    "faktúry", "obstarávanie",
+    "obstarávania",
+)
+
 rss_kw = (
     "rss",
     "Really Simple Syndication"
+)
+
+sluzby = (
+    "služby",
+    "elektronické služby",
+    "poskytované služby",
+    "e-služby",
+    "eslužby"
 )
 
 mapa_stranky_kw = (
