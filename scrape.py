@@ -356,7 +356,7 @@ class Scraper(BaseScraper):
                 tasks_list = []
                 while queue and len(tasks_list) < self.MAX_PAGES_AT_ONCE:
                     url, curr_depth = queue.pop(0)
-                    if url in self.visitedpages:  # ← pridaj kontrolu
+                    if url in self.visitedpages:
                         continue
                     self.visitedpages.add(url)
                     scrape_result = self.scrape_curr_page(url, curr_depth, queue, browser)
