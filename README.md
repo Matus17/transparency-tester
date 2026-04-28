@@ -24,8 +24,11 @@ pip install openai
 pip install python-dotenv
 
 pip install httpx
+
+pip install uvicorn fastapi
 # Run app ---------
 
 python scrape.py
 
 #streamlit run app.py
+
