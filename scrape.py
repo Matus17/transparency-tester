@@ -10,7 +10,7 @@ import keywords as k
 from loguru import logger
 import httpx
 import feedparser
-
+from collections import deque
 
 #to fix:
 #nekozistentny pocet stranok -> too many requesst error
@@ -63,32 +63,42 @@ class BaseScraper:
         async with self.search_lock:
             state = self.search_state[search_type]
             word_set = self.type_of_keyword[search_type]
-            if state["found"] or state["searching"]:
+            if state["found"]: #or state["searching"]:
                 return
-            state["searching"] = True
+            #state["searching"] = True
             logger.debug(f"SEARCHING {search_type} on {current_url}")
+            if current_url == "https://www.bratislava.sk/mesto-bratislava/transparentne-mesto":
+                logger.success(f"/////////////////////// //////////////// ////////////////////////////////////// ///////////////////")
+        
+       
+        # 1. hladaj link na stranke
+        target_url = await self.find_target_url(word_set, current_page, current_url, browser)
+        
+        # 2. ak nenajde link, skontroluj ci sme uz na spravnej stranke
+        if not target_url:
+            word = await self.fallback_page_title_find(word_set, current_page)
+            if not word:
+                return None
+            target_url = current_url
 
-        try:
-            # 1. hladaj link na stranke
-            target_url = await self.find_target_url(word_set, current_page, current_url, browser)
-            
-            # 2. ak nenajde link, skontroluj ci sme uz na spravnej stranke
-            if not target_url:
-                word = await self.fallback_page_title_find(word_set, current_page)
-                if not word:
-                    return None
-                target_url = current_url
+        # 3. otvor cielovu stranku
+        async with self.search_lock:
+            if state["found"]:  # niekto iný našiel medzitým
+                return None
+        return await self.open_target_page(search_type, target_url, depth, browser)
 
-            # 3. otvor cielovu stranku
-            return await self.open_target_page(search_type, target_url, depth, browser)
-
-        finally:
-            async with self.search_lock:
-                state["searching"] = False
+       
 
     async def open_target_page(self, search_type, target_url, depth, browser):
+        # check na self.found_text_keywords[search_type].append(target_url)
+        # race condition?
         if not self.is_robots_allowed(target_url):
             return None
+        async with self.search_lock:
+            if target_url in self.found_text_keywords[search_type]:
+                return None
+            self.found_text_keywords[search_type].append(target_url)
+            
         helper_page = await browser.new_page()
         try:
             await helper_page.goto(target_url, wait_until="networkidle")
@@ -96,12 +106,16 @@ class BaseScraper:
             text = await helper_page.locator("body").inner_text()
             async with self.search_lock:
                 self.search_state[search_type]["found"] = True
-                self.found_text_keywords[search_type].append(target_url)
+                #self.found_text_keywords[search_type].append(target_url)
+                self.depth_of_found_element[search_type] = depth
             logger.success(f"FOUND {search_type} ON {target_url} depth {depth}")
-            self.depth_of_found_element[search_type] = depth
+            
             return [text, target_url]
         except Exception as e:
             logger.warning(f"open_target_page ERROR {target_url}: {e}")
+            
+            async with self.search_lock:
+                self.found_text_keywords[search_type].remove(target_url)
             return None
         finally:
             await helper_page.close()
@@ -115,45 +129,38 @@ class BaseScraper:
             
             for i in range(count):
                 element = locator.nth(i)
-                if not await element.is_visible():
-                    continue
-                
-                # hladanie href
-                tag_name = (await element.evaluate("el => el.tagName")).lower()
-                href = await element.get_attribute("href") if tag_name == "a" else None
-                
-                # 2. AI fallback
+                visible = await element.is_visible()
+               
+                # https://developer.mozilla.org/en-US/docs/Web/API/Element/previousElementSibling
+                href = await element.evaluate("""
+                    el => {
+                        let curr_el = el;
+                        while (curr_el && curr_el !== document.body) {
+                            if (curr_el.tagName === 'A' && curr_el.href) {
+                                return curr_el.href; }
+                            
+                            let sibling_el = curr_el.previousElementSibling;
+                            while (sibling_el) {
+                                if (sibling_el.tagName === 'A' && sibling_el.href) {
+                                    return sibling_el.href; }
+                                sibling_el = sibling_el.previousElementSibling;
+                            }
+                            curr_el = curr_el.parentElement;
+                        }
+                        return null;
+                    }
+                """)
+                logger.debug(f"  href={href}")
                 if not href:
-                    href = await self.ai_find_href(element, word)
-                
-                if not href:
                     continue
                 
-                full_url = urljoin(current_url, href)
-                if not full_url.startswith("http"):
+                if not self.is_robots_allowed(href):
                     continue
-                if not self.is_robots_allowed(full_url):
-                    continue
-                return full_url
+                
+                return href
         
         return None
-    async def ai_find_href(self, element, word):
-        try:
-            surrounding_html = await element.locator("xpath=../../../../../..").inner_html()
-            
-            response = await agent.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=[{"role": "user", 
-                           "content": f"V tomto HTML nájdi href odkaz ktorý najviac súvisí s textom '{word}'. Vráť iba samotný href string, nič iné. Ak nenájdeš, vráť NULL.\n\n{surrounding_html[:3000]}"}],
-                temperature=0
-            )
-            
-            href = response.choices[0].message.content.strip()
-            logger.debug(f"AI found href: {href} for word: {word}")
-            return None if href == "NULL" else href
-        except Exception as e:
-            logger.warning(f"ai_find_href error: {e}")
-            return None
+    
     async def fallback_page_title_find(self, word_set, current_page):
         # fallback ak sa nic nenajde, skonroluje nadpis aktualnej 
         # stranky. Edge case: ak nie je viditelny text priamo asociovany
@@ -197,7 +204,7 @@ class BaseScraper:
         if not valid:
             async with self.search_lock:
                 self.search_state[search_type]["found"] = False
-                self.search_state[search_type]["searching"] = False
+                #self.search_state[search_type]["searching"] = False
 
         return result
 
@@ -236,7 +243,7 @@ class MainPageScraper(BaseScraper):
         await self.check_https()
         page = await browser.new_page()
         try:
-            await page.goto(self.start_url, wait_until="domcontentloaded")
+            await page.goto(self.start_url, wait_until="networkidle")
             await self.check_search_element(page)
             for search_type in self.type_of_keyword.keys():
                 await self.main_page_content_search(browser, search_type, self.start_url, page, 0)
@@ -290,7 +297,7 @@ class MainPageScraper(BaseScraper):
         header =""
         footer = ""
         try:
-            await helper_page.goto(self.start_url, wait_until="domcontentloaded")
+            await helper_page.goto(self.start_url, wait_until="networkidle")
             try:
                 header= await helper_page.locator("header").inner_text(timeout=3000)
             except Exception:
@@ -307,8 +314,8 @@ class MainPageScraper(BaseScraper):
             await helper_page.close()
 
 class Scraper(BaseScraper):
-    MAX_DEPTH = 2
-    MAX_PAGES_AT_ONCE = 5
+    MAX_DEPTH = 3
+    MAX_PAGES_AT_ONCE = 10
 
     def __init__(self, start_url):
         super().__init__(start_url)
@@ -350,18 +357,23 @@ class Scraper(BaseScraper):
             browser = await p.chromium.launch(headless=True)
             main_page_scraper = MainPageScraper(self.start_url)
             await main_page_scraper.load_main_page(browser)
-            queue = [(self.start_url, 0)]
+            queue = deque([(self.start_url, 0)])
 
-            while queue:
-                tasks_list = []
-                while queue and len(tasks_list) < self.MAX_PAGES_AT_ONCE:
-                    url, curr_depth = queue.pop(0)
-                    if url in self.visitedpages:
-                        continue
-                    self.visitedpages.add(url)
-                    scrape_result = self.scrape_curr_page(url, curr_depth, queue, browser)
-                    tasks_list.append(scrape_result)
-                await asyncio.gather(*tasks_list)
+            self.visitedpages.add(self.start_url)
+            tasks_set = set()
+            while queue or tasks_set:
+                while len(tasks_set) < self.MAX_PAGES_AT_ONCE:
+                    async with self.queue_lock:
+                        if not queue:
+                            break
+                        url, curr_depth = queue.popleft()
+                    task = asyncio.create_task(
+                        self.scrape_curr_page(url, curr_depth, queue, browser)
+                    )
+                    tasks_set.add(task)
+                if not tasks_set:
+                    break
+                x, tasks_set = await asyncio.wait(tasks_set, return_when=asyncio.FIRST_COMPLETED)
             await browser.close()
 
         self.save_json()
@@ -372,42 +384,43 @@ class Scraper(BaseScraper):
     async def scrape_curr_page(self, url, curr_depth, queue, browser):
         # otvori stranku -> zavola hladanie klucovych slov
         # -> zavola kontrolu WCAG -> pozbiera linky na stranke
-        async with self.semaphore:
+        #async with self.semaphore:
             
-            if not self.is_robots_allowed(url):
-                return
+        if not self.is_robots_allowed(url):
+            return
             
+        async with self.counter_lock:
+            self.page_counter += 1
+            
+            if self.page_counter >= 100:
+                do_wcag_check = False
+            else:
+                do_wcag_check = True
+            
+        logger.info(f"ON PAGE: {url} (depth {curr_depth}) {self.page_counter}")
+        if url == "https://www.bratislava.sk/mesto-bratislava/transparentne-mesto":
+            logger.success(f"/////////////////////// //////////////// ////////////////////////////////////// ///////////////////")
+        # otovrenie stranky
+        page = await browser.new_page()
+        try:
+            if self.is_robots_allowed(url):
+                await page.goto(url, wait_until="networkidle")
+        except Exception as e:
+            logger.warning(f"FAILED TO OPEN {url}: {e}")
             async with self.counter_lock:
-                self.page_counter += 1
-                
-                if self.page_counter >= 100:
-                    do_wcag_check = False
-                else:
-                    do_wcag_check = True
-                
-            logger.info(f"ON PAGE: {url} (depth {curr_depth}) {self.page_counter}")
-
-            # otovrenie stranky
-            page = await browser.new_page()
-            try:
-                if self.is_robots_allowed(url):
-                    await page.goto(url, wait_until="domcontentloaded")
-            except Exception as e:
-                logger.warning(f"FAILED TO OPEN {url}: {e}")
-                async with self.counter_lock:
-                    self.fail_counter +=1
-                await page.close()
-                return
-
-            await self.keyword_search(browser, url, page, curr_depth)
-
-            if do_wcag_check and urlparse(url).netloc.removeprefix("www.") == urlparse(self.start_url).netloc.removeprefix("www."):
-                await self.check_wcag(page, url)
-
-            if curr_depth < self.MAX_DEPTH:
-                await self.get_all_links( page, url, curr_depth, queue)
-
+                self.fail_counter +=1
             await page.close()
+            return
+
+        await self.keyword_search(browser, url, page, curr_depth)
+
+        if do_wcag_check and urlparse(url).netloc.removeprefix("www.") == urlparse(self.start_url).netloc.removeprefix("www."):
+            await self.check_wcag(page, url)
+
+        if curr_depth < self.MAX_DEPTH:
+            await self.get_all_links( page, url, curr_depth, queue)
+
+        await page.close()
 
     async def keyword_search(self, browser, url, page, curr_depth):
         for word_type in self.type_of_keyword.keys():
@@ -437,9 +450,15 @@ class Scraper(BaseScraper):
                         continue
                     self.subdomain_counter[current_netloc] = subdomain_count + 1
                     self.seen_subdomain_links.add(link)
-                added += 1
+                
+                if link in self.visitedpages:
+                    continue
+
+                self.visitedpages.add(link)
                 queue.append((link, curr_depth + 1))
-            #logger.debug(f"ADDED {added} links to queue from {url}")
+                added += 1
+                
+            logger.debug(f"ADDED {added} links to queue from {url}")
 
     def save_json(self):
         keywords_data = {
@@ -450,7 +469,6 @@ class Scraper(BaseScraper):
                     "depth": self.depth_of_found_element.get(k)
                 }
                 for k, v in self.content_ai_scores.items()
-                
             },
         }
         
@@ -496,16 +514,18 @@ class Scraper(BaseScraper):
         
         if search_type == "vyhlaseniePristupnost":
             # treba to zlepit ako predtym
-            regex1= r"\b[1-4]\.[1-9]\.[1-9]\.?(?!\s*\d{4})\b|\b[1-4]\.[1-9]\.?(?!\.\s*\d{4}|\s*\d{4})\b"
+            #regex1 = r"\b[1-4]\.[1-9]\.[1-9]\.?"
             
-            matches = re.findall(regex1, text)
-            self.admitted_rule_breaks.update(matches)
+            #matches = re.findall(regex1, text)
+            #self.admitted_rule_breaks.update(matches)
             self.accessibility_url = current_url
+            await self.check_content(text,found_url, search_type)
             logger.debug(f"AMDITTED RULE BREAKS { self.admitted_rule_breaks}")
 
         if search_type == "rss":
             #kontroluje validitu rss kanalu
             headers ={"user-agent":"Mozilla/5.0"}
+            valid_rss = False
             with httpx.Client(headers=headers, follow_redirects=True) as usrClient:
                 response = usrClient.get(found_url)
                 content_type = response.headers.get("content-type", "")
@@ -514,6 +534,7 @@ class Scraper(BaseScraper):
                     feed = feedparser.parse(response.text)
                     if not feed.bozo and len(feed.entries) > 0:
                         logger.success(f"VALID RSS: {found_url}")
+                        valid_rss == True
                 else:
                     if self.is_robots_allowed(found_url):
                         rss_page = await browser.new_page()
@@ -531,6 +552,7 @@ class Scraper(BaseScraper):
                                 feed = feedparser.parse(response.text)
                                 if not feed.bozo and len(feed.entries) >0:
                                     logger.success(f"VALID RSS: {rss_url}")
+                                    valid_rss = True
                                 else:
                                     logger.warning(f"NON-VALID RSS: {rss_url}")
                         finally:
@@ -538,6 +560,9 @@ class Scraper(BaseScraper):
                     else:
                         logger.warning(f"NON-VALID RSS: {found_url}")
 
+            self.content_ai_scores["rss"] = {
+            "url": found_url,
+            "score": {"priemer": 10 if valid_rss else 0}}
         
         if search_type == "objednavky":
             await self.check_content(text,found_url, search_type)
@@ -619,5 +644,5 @@ class Scraper(BaseScraper):
 #    s = Scraper(url)
 #    asyncio.run(s.start())
 
-s = Scraper("https://www.minzp.sk/gdpr/")
+s = Scraper("https://www.levice.sk")
 asyncio.run(s.start())

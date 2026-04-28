@@ -41,8 +41,8 @@ kontakt_kw = (
 tabule_kw = (
     "úradná tabuľa",
     "elektronická tabuľa",
-    "oficiálna tabuľa",
     "tabuľa úradu",
+    "tabuľu",
     "úradné oznamy",
     "tabuľa verejnej správy",
     "úradná oznamovacia tabuľa",

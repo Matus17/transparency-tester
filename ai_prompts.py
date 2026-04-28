@@ -19,19 +19,21 @@ Hodnotenie:
 - 1–5 = informácia je uvedená čiastočne
 -> 6–10 = informácia je jasne a dobre vysvetlená
 
+
+
 Kritériá:
-1. what_data: kategórie osobných údajov, ktoré sa zbierajú
-2. why: účel spracovania údajov
-3. rights: práva používateľa (prístup k dátam, vymazanie dát, ...)
+1. ake_udaje: kategórie osobných údajov, ktoré sa zbierajú
+2. preco: účel spracovania údajov
+3. prava: práva používateľa (prístup k dátam, vymazanie dát, ...)
 
 
 Výstup:
 Odpovedz IBA v JSON formáte bez iného textu:
 Nevracaj žiadny ďalší text ani vysvetlenie.
 {{
-    "what_data": <0-10>,
-    "why": <0-10>,
-    "rights": <0-10>,
+    "ake_udaje": <0-10>,
+    "preco": <0-10>,
+    "prava": <0-10>,
     "priemer": <0-10>
 }}
 Text: 
@@ -45,20 +47,21 @@ Ohodnoť text podľa kritérií úradnej tabule (0-10). Text
 môže obsahovať navigáciu, pätičku 
 alebo nerelevantný obsah ten ignoruj. Zameraj sa iba na obsah 
 týkajúci sa elektronickej úradnej tabule.
-Hodnoť len na základe toho čo je v texte, ak informácia 
-chýba daj 0, ak je čiastočná daj 1-5, ak je dobrá daj 6-10.
+Hodnoť len na základe toho čo je v texte. Ak text obsahuje iba 
+jeden dokument alebo detail jednej zmluvy/oznamu a ni cely zoznam, 
+vráť priemer 0. 
 
 Znenie zákona:
 (1)Elektronická úradná tabuľa je elektronické úložisko, na ktoré sú zasielané a na ktorom sú zverejňované elektronické úradné dokumenty, ak to ustanovuje zákon.
 (2)Elektronické úradné dokumenty, ktoré sú podľa tohto zákona z hľadiska právnych účinkov totožné s dokumentom v listinnej podobe, o ktorom osobitné predpisy ustanovujú, že sa doručuje vyvesením na úradnej tabuli orgánu verejnej moci, verejnou vyhláškou alebo iným obdobným spôsobom zverejnenia pre neurčitý okruh osôb, orgán verejnej moci ich zverejňuje na elektronickej úradnej tabuli
 
 Hodnotenie:
--> 0 = informáce o dokumentoch úplne chýbajú/ nachádza sa tu len jeden dokument
+-> 0 = nexistuje tu zoznam s informáciami o dokumentoch úplne chýbajú/ nachádza sa tu len jeden dokument, ak ide len o jeden dokument, vyhodnoť preimer ako 0
 - 1–5 = informácie sú uvedené čiastočne
 -> 6–10 = informácie o oznamoch sú jasne definované
 
 Kritériá:
-1. dokumenty: Sú zverejnené viaceré elektronické dokumenty orgánu verejnej moci?
+1. dokumenty: Je zverejnený ZOZNAM elektronických dokumentov? (ak je len jeden/dva = 0)
 2. datum: Je pri dokumentoch uvedený dátum zverejnenia?
 3. aktualnost: Sú dokumenty aktuálne?
 
@@ -216,7 +219,7 @@ Text:
 
 #SLUŽBY
 "sluzby": """
-Si hodnotiteľ zverejňovania služieb na webovom sídle verejnej správy.
+Si hodnotiteľ zverejňovania poskytovaných elektronických služieb na webovom sídle verejnej správy.
 Ohodnoť text na danej stránke podľa kritérií (0-10). Text 
 môže obsahovať navigáciu, pätičku 
 alebo nerelevantný obsah ten ignoruj. Zameraj sa iba na obsah 
@@ -250,7 +253,55 @@ Nevracaj žiadny ďalší text ani vysvetlenie.
 
 Text: 
 {text}
+""",
+
+
+#PRÍSTUPNOSŤ
+"vyhlaseniePristupnost": """
+Si hodnotiteľ zverejňovania Vyhlásenia o prístupnosti na webovom sídle verejnej správy.
+Ohodnoť text na danej stránke podľa kritérií (0-10). Text 
+môže obsahovať navigáciu, pätičku 
+alebo nerelevantný obsah ten ignoruj. Zameraj sa iba na obsah 
+týkajúci sa vyhláseniu o prístupnosti.
+Hodnoť len na základe toho čo je v texte, ak informácia 
+chýba daj 0, ak je čiastočná daj 1-5, ak je dobrá daj 6-10.
+
+Znenie zákona:
+Štandardy prístupnosti a funkčnosti webových sídiel a mobilných aplikácií
+§ 14 Prístupnosť webových sídiel a mobilných aplikácií
+(1)Štandardom prístupnosti webových sídiel je zabezpečenie vnímateľnosti, ovládateľnosti, zrozumiteľnosti a robustnosti webových sídiel, a to dodržiavaním pravidiel podľa slovenskej technickej normy,4) najmä pravidiel úrovní A a AA osobitnej špecifikácie World Wide Web Consortium (W3C) pre prístupnosť webového obsahu vo verzii 2.1.
+§ 15 Minimálne požiadavky obsahu webového sídla
+(1)Štandardom minimálnych požiadaviek obsahu webového sídla je
+a)uvedenie zrozumiteľného a aktuálneho vyhlásenia o prístupnosti webového sídla alebo jeho časti v prístupnom formáte podľa pravidiel uvedených v § 14 ods. 1, pričom vyhlásenie obsahuje najmenej
+1.opis nesplnenia konkrétnych bodov alebo pravidiel prístupnosti webových stránok,
+2.opis nedodržania pravidiel prístupnosti týkajúci sa konkrétnych častí obsahu webového sídla, najmä v podobe uvedenia konkrétnych nedodržaných pravidiel, uvedenie dôvodov ich nedodržania a opis poskytnutých prístupných alternatív, ak existujú,
+3.opis mechanizmu s uvedením odkazu naň, prostredníctvom ktorého môže každá osoba oznámiť správcovi obsahu webového sídla zlyhanie webového sídla, ak ide o plnenie požiadaviek na prístupnosť podľa § 14 a požiadať o informáciu, ktoré časti webového sídla nemusia spĺňať štandardy prístupnosti a z akého dôvodu,
+4.odkaz na postup vykonania nápravy, ak použitie mechanizmu podľa tretieho bodu neviedlo k náprave,
+Hodnotenie:
+-> 0 = informácia úplne chýba/ nachádza sa tu len jeden dokument
+- 1–5 = informácie sú uvedené čiastočne
+-> 6–10 = informácie o oznamoch sú jasne definované
+
+Kritériá:
+1. nesplnenie: Sú opísané konkrétne body pravidiel?
+2. dovod: Sú uvedené dôvody nesplnenia pravidiel?
+3. oznamenie: Opisuje mechanizmus na nahlásenie zlyhanie webového sídla?
+
+
+Výstup:
+Odpovedz IBA v JSON formáte bez iného textu:
+Nevracaj žiadny ďalší text ani vysvetlenie.
+{{
+    "nesplnenie": <0-10>,
+    "dovod": <0-10>,
+    "oznamenie": <0-10>,
+    "priemer": <0-10>
+}}
+
+Text: 
+{text}
 """
+
 
 }
 
