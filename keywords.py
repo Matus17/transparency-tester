@@ -1,17 +1,8 @@
 gdpr_kw = (
     "ochrana osobných údajov",
-    "osobné údaje",
-    "ochrane osobných údajov",
-    "ochrane údajov",
-    "ochrana údajov",
-    "spracovanie osobných údajov",
-    "zabezpečenie údajov",
+    "osobn",
     "GDPR",
-    "zákon o ochrane osobných údajov",
-    "osobných údajov",
-    "osobné údaje",
-    "Personal data protection",
-    "data protection regulation"
+    "data protection",
 )
 spravca_kw = (
     "správca",
@@ -24,79 +15,40 @@ prevadzkovatel_kw = (
     "technická podpora",
     "webmaster", "web master",
     "poskytovateľ", 
-    "technologická podpora"
 
 )
-kontakt_kw = (
-    "kontakt",
-    "contacts",
-    "kontaktné informácie",
-    "pobočka",
-    "napíšte nám",
-    "kontaktujte nás",
-    "informácie o kontakte",
-    "contact",
-)
+
 
 tabule_kw = (
-    "úradná tabuľa",
-    "elektronická tabuľa",
-    "tabuľa úradu",
-    "tabuľu",
-    "úradné oznamy",
-    "tabuľa verejnej správy",
-    "úradná oznamovacia tabuľa",
-    "oficiálna oznamovacia tabuľa",
-    "oznamovacia tabuľa",
-    "informačná tabuľa",
-    "oznamová tabuľa",
-    "informačný panel",
-    "oznamovací panel",
-    "verejná oznamovacia tabuľa",
-    "verejná informačná tabuľa",
-    "digitálna tabuľa",
-    "elektronická oznamovacia tabuľa",
-    "digitálna oznamovacia tabuľa",
-    "elektronická informačná tabuľa",
-    "digitálny informačný panel",
-    "online oznamovacia tabuľa",
-    "virtuálna oznamovacia tabuľa",
-    "centrálna oznamovacia tabuľa",
+    "úradn", "uradn", "tabu",
 )
 
 pristupnost_kw = (
     "vyhlásenie o prístupnosti",
-    "prístupnosť"
-)
-obstaravanie_kw = (
-    "obstarávanie",
-    "obstarávania",
+    "prístup", "pristup"
 )
 
+
 objednavky_kw = (
-    "objednávky", "obstarávanie",
-    "obstarávania",
+    "objednávky", "objedn", "obstar",
+
 )
 
 faktury_kw = (
-    "faktúry", "obstarávanie",
-    "obstarávania",
+    "faktúry","faktú", "faktu","obstar",
 )
 
 rss_kw = (
     "rss",
-    "Really Simple Syndication"
+    "Really Simple Syndication",
 )
 
-sluzby = (
-    "služby",
-    "elektronické služby",
-    "poskytované služby",
-    "e-služby",
-    "eslužby"
+kompetencie = (
+    "kompeten",
 )
+
 
 mapa_stranky_kw = (
-    "mapa stránky", "mapa web", "štruktúra web"
-    "sitemap", "štruktúra stránky"
+    "mapa stránky", "mapa webu", "štruktúra webu"
+    "sitemap", "štruktúra stránky",
 )

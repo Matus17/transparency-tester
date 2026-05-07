@@ -12,12 +12,7 @@ import httpx
 import feedparser
 from collections import deque
 
-#to fix:
-#nekozistentny pocet stranok -> too many requesst error
-# pred regexom filtorvat iba viditelny text
-# zjednodusit citanie z Axe-core vystupu
-# header a footer sa checkene az ke sa najde odkaz
-# kucove slova mozu odkazovat na dropdown menu
+
 #https://loguru.readthedocs.io/en/stable/api/logger.html
 
 logger.remove()
@@ -26,7 +21,7 @@ logger.add(
     level="DEBUG",
     format="<green>{time:HH:mm:ss}</green> - <level>{level:<8}</level> - {message}",
     colorize=True, )
-
+logger.add("scrape.log", level="DEBUG", format="{time:HH:mm:ss} - {level:<8} - {message}", mode="w")
 class BaseScraper:
     def __init__(self, start_url):
         parsed = urlparse(start_url)
@@ -34,27 +29,38 @@ class BaseScraper:
         if not netloc.startswith("www."):
             netloc = "www." +netloc
         self.start_url = f"{parsed.scheme}://{netloc}/"
-        self.robots_txt = RobotFileParser()
+        
         self.search_lock = asyncio.Lock()
 
         self.search_state = {}
         self.type_of_keyword = {}
         self.found_text_keywords = {}
         self.content_ai_scores = {}
-        self.depth_of_found_element = {}
 
+        self.robots_cache = {}
 
     def load_robots_txt(self):
-        robots_url= f"{self.start_url}robots.txt"
-        headers ={"user-agent":"Mozilla/5.0"}
-        #https://www.python-httpx.org/advanced/clients/
-        with httpx.Client(headers=headers, follow_redirects=True) as usrClient:
-            response = usrClient.get(robots_url)
-            self.robots_txt.set_url(robots_url)
-            self.robots_txt.parse(response.text.splitlines())
+        self.robots_cache[urlparse(self.start_url).netloc]= self.get_domain_robots(self.start_url)
+
+    def get_domain_robots(self, url):
+        parsed = urlparse(url)
+        robots_url = f"{parsed.scheme}://{parsed.netloc}/robots.txt"
+        rp = RobotFileParser()
+        try:
+            with httpx.Client(headers={"user-agent": "Mozilla/5.0"}, follow_redirects=True, timeout=5) as c:
+                response = c.get(robots_url)
+                rp.set_url(robots_url)
+                rp.parse(response.text.splitlines())
+        except Exception:
+            pass  #ak neexistuje, vsetko povolene
+        return rp
 
     def is_robots_allowed(self, url):
-        if not self.robots_txt.can_fetch("*", url):
+        netloc = urlparse(url).netloc
+        if netloc not in self.robots_cache:
+            self.robots_cache[netloc] = self.get_domain_robots(url)
+        rp = self.robots_cache[netloc]
+        if not rp.can_fetch("*", url):
             logger.warning(f"FORBIDDEN BY robots.txt: {url}")
             return False
         return True
@@ -72,23 +78,22 @@ class BaseScraper:
         
        
         # 1. hladaj link na stranke
-        target_url = await self.find_target_url(word_set, current_page, current_url, browser)
+        target_url_list = await self.find_target_url(word_set, current_page, current_url, browser)
         
-        # 2. ak nenajde link, skontroluj ci sme uz na spravnej stranke
-        if not target_url:
-            word = await self.fallback_page_title_find(word_set, current_page)
-            if not word:
-                return None
-            target_url = current_url
 
-        # 3. otvor cielovu stranku
-        async with self.search_lock:
-            if state["found"]:  # niekto iný našiel medzitým
-                return None
-        return await self.open_target_page(search_type, target_url, depth, browser)
+        # 2. otvor cielovu stranku
+        results = []
+        for target_url in target_url_list:
+            async with self.search_lock:
+                if state["found"]:
+                    return None
+            result = await self.open_target_page(search_type, target_url, depth, browser)
+            if result:
+                results.append(result)
 
+        return results if results else None
        
-
+    
     async def open_target_page(self, search_type, target_url, depth, browser):
         # check na self.found_text_keywords[search_type].append(target_url)
         # race condition?
@@ -102,13 +107,19 @@ class BaseScraper:
         helper_page = await browser.new_page()
         try:
             await helper_page.goto(target_url, wait_until="networkidle")
+            
             await helper_page.wait_for_timeout(2000)
-            text = await helper_page.locator("body").inner_text()
-            async with self.search_lock:
-                self.search_state[search_type]["found"] = True
-                #self.found_text_keywords[search_type].append(target_url)
-                self.depth_of_found_element[search_type] = depth
-            logger.success(f"FOUND {search_type} ON {target_url} depth {depth}")
+            frames = helper_page.frames
+            body_text = await helper_page.locator("body").inner_text()
+            for frame in frames[1:]:
+                try:
+                    frame_text = await frame.locator("body").inner_text()
+                    body_text +="\n" + frame_text
+                except Exception:
+                    pass
+            text = body_text
+            #logger.debug(f"TEXT IS: {text[:10000]}")
+            logger.success(f"OPENED {search_type} ON {target_url} depth {depth}")
             
             return [text, target_url]
         except Exception as e:
@@ -121,21 +132,28 @@ class BaseScraper:
             await helper_page.close()
 
     async def find_target_url(self, word_set, current_page, current_url, browser):
+        found_hrefs = set() # zoznam vsetkych najdenych href ukazka zo zvrejnovanie.bratislav
         for word in word_set:
-            locator = current_page.get_by_text(word, exact=False)
+            regex = re.compile(word, re.IGNORECASE)
+            locator = current_page.get_by_text(regex)
             count = await locator.count()
+            if count > 0:
+                logger.debug(f"  '{word}' -> {count} on {current_url}")
             if count == 0:
                 continue
             
             for i in range(count):
                 element = locator.nth(i)
                 visible = await element.is_visible()
-               
+                if not visible:
+                    continue
                 # https://developer.mozilla.org/en-US/docs/Web/API/Element/previousElementSibling
                 href = await element.evaluate("""
                     el => {
                         let curr_el = el;
-                        while (curr_el && curr_el !== document.body) {
+                        let level = 0;
+                        let max_level = 2;
+                        while (curr_el && curr_el !== document.body && level < max_level) {
                             if (curr_el.tagName === 'A' && curr_el.href) {
                                 return curr_el.href; }
                             
@@ -146,42 +164,29 @@ class BaseScraper:
                                 sibling_el = sibling_el.previousElementSibling;
                             }
                             curr_el = curr_el.parentElement;
+                            level++;
                         }
                         return null;
                     }
                 """)
-                logger.debug(f"  href={href}")
+                logger.debug(f"  href={href} for word {word} on {current_url}")
                 if not href:
                     continue
                 
                 if not self.is_robots_allowed(href):
                     continue
                 
-                return href
+                found_hrefs.add(href)
         
-        return None
+        return list(found_hrefs)
     
-    async def fallback_page_title_find(self, word_set, current_page):
-        # fallback ak sa nic nenajde, skonroluje nadpis aktualnej 
-        # stranky. Edge case: ak nie je viditelny text priamo asociovany
-        # s elementom href
-        # vrati 1. word
-        #       2. None
-        for word in word_set:
-           
-            locator = current_page.locator("h1").get_by_text(word, exact=False)
-            if await locator.count() == 0:
-                continue
-            if await locator.first.is_visible():
-                return word
-        return None
     
-    async def check_content(self, text, found_href, search_type):
+    async def check_content(self, text, found_href, search_type, depth):
         # vklada najdeny text do promptu a zavola opeani API
         # na vyhodnotenie obsahu
         # vrati 1. hodnotenie definovane v ai_prompts.py
         prompt = PROMPTS[search_type].replace("{text}", text[:10000])
-        #logger.debug(f"TEXT PREVIEW ({search_type}): {text[:3000]}")
+        #logger.debug(f"TEXT: ({search_type}): {text[:3000]}")
         #https://milvus.io/ai-quick-reference/how-do-i-call-openais-api-asynchronously-in-python
         response = await agent.chat.completions.create(
             model="gpt-4o-mini",
@@ -195,31 +200,31 @@ class BaseScraper:
         out = out.replace("```json", "").replace("```", "").strip()
         result = json.loads(out)
         
-        logger.debug(f"hodnotenie ({search_type}) pre {found_href}:")
+        logger.debug(f"rating ({search_type}) for {found_href}:")
         #vymysliet zapisovanie??
         for key, value in result.items():
-            print(f" --- {key}: {value}")
+            logger.debug(f" --- {key}: {value}")
             
-        valid = self.update_best_ai_score(search_type, found_href, result)
-        if not valid:
-            async with self.search_lock:
-                self.search_state[search_type]["found"] = False
-                #self.search_state[search_type]["searching"] = False
+        async with self.search_lock:
+            self.update_best_ai_score(search_type, found_href, result,depth)
+            if result.get("priemer", 0) >= 7: #potom uz nehladame lepsie
+                self.search_state[search_type]["found"] = True
 
         return result
 
-    def update_best_ai_score(self, search_type, found_href, result):
+    def update_best_ai_score(self, search_type, found_href, result, depth):
         priemer = result.get("priemer", 0)
         if priemer < 5:
-            return False
+            return
         
         prev_score = self.content_ai_scores.get(search_type)
         if not prev_score or priemer > prev_score.get("score", {}).get("priemer", 0):
             self.content_ai_scores[search_type] = {
-                "url": found_href,
-                "score": result
-            }
-        return True
+                    "url": found_href,
+                    "score": result,
+                    "depth": depth
+                }
+        
     
 class MainPageScraper(BaseScraper):
     def __init__(self, start_url):
@@ -243,7 +248,7 @@ class MainPageScraper(BaseScraper):
         await self.check_https()
         page = await browser.new_page()
         try:
-            await page.goto(self.start_url, wait_until="networkidle")
+            await page.goto(self.start_url, wait_until="domcontentloaded")
             await self.check_search_element(page)
             for search_type in self.type_of_keyword.keys():
                 await self.main_page_content_search(browser, search_type, self.start_url, page, 0)
@@ -259,11 +264,11 @@ class MainPageScraper(BaseScraper):
 
 
     async def check_search_element(self, page):
-        inputs = await page.locator("input").all()
+        inputs = await page.locator("input, button").all()
         for i in inputs:
-            for attr in ["placeholder", "aria-label","title"]:
-                value = await i.get_attribute(attr)
-                if value and re.search(r"hľadaj|vyhľadaj|search|vyhľadávanie", value, re.IGNORECASE):
+            for attr in ["id", "type","class", "name"]:
+                value = await i.get_attribute(attr) or ""
+                if "search" in value.lower():
                     self.result["search_element"] = True
                     return
 
@@ -280,24 +285,25 @@ class MainPageScraper(BaseScraper):
         text = ""
         result = await self.general_find(search_type, browser, current_url, current_page, depth)
         
-        if not result:
-            found_url= current_url
+        if result:
+            text, found_url= result[0]
         else:
-            text, found_url = result
+            found_url = current_url
 
         if search_type in ["spravca", "prevadzkovatel"]:
             text += await self.get_page_header_footer_text(browser)
-            check_result = await self.check_content(text, found_url, search_type)
+            check_result = await self.check_content(text, found_url, search_type, depth)
             self.result[search_type] = check_result.get(search_type)
         else:
             self.result[search_type] = True
+        
     async def get_page_header_footer_text(self, browser):
         # vrati 1. text  (header a footer)
         helper_page = await browser.new_page()
         header =""
         footer = ""
         try:
-            await helper_page.goto(self.start_url, wait_until="networkidle")
+            await helper_page.goto(self.start_url, wait_until="domcontentloaded")
             try:
                 header= await helper_page.locator("header").inner_text(timeout=3000)
             except Exception:
@@ -315,26 +321,24 @@ class MainPageScraper(BaseScraper):
 
 class Scraper(BaseScraper):
     MAX_DEPTH = 3
-    MAX_PAGES_AT_ONCE = 10
-
+    MAX_PAGES_AT_ONCE = 5
+    MAX_PAGE_COUNT = 2000
     def __init__(self, start_url):
         super().__init__(start_url)
         self.type_of_keyword = {
             "gdpr": k.gdpr_kw, 
             "tabula": k.tabule_kw, "vyhlaseniePristupnost": k.pristupnost_kw,
             "rss": k.rss_kw, 
-            "sluzby": k.sluzby,
+            "kompetencie": k.kompetencie,
             "objednavky": k.objednavky_kw, "faktury": k.faktury_kw, 
         }
         
         self.search_state = {key: {"found": False, "searching": False} for key in self.type_of_keyword}
-        self.depth_of_found_element ={key: None for key in self.type_of_keyword}
         self.found_text_keywords = {key: [] for key in self.type_of_keyword}
         self.content_ai_scores = {key: None for key in self.type_of_keyword}
 
         self.visitedpages = set()
         self.page_report_final = {}
-        self.admitted_rule_breaks = set()
         self.found_rule_breaks = set()
 
         self.semaphore = None
@@ -366,6 +370,8 @@ class Scraper(BaseScraper):
                     async with self.queue_lock:
                         if not queue:
                             break
+                        if self.page_counter >= self.MAX_PAGE_COUNT:
+                            break
                         url, curr_depth = queue.popleft()
                     task = asyncio.create_task(
                         self.scrape_curr_page(url, curr_depth, queue, browser)
@@ -379,7 +385,9 @@ class Scraper(BaseScraper):
         self.save_json()
         logger.success(f"SUBDOMAIN COUNTER: {self.subdomain_counter}")
         logger.success(f"Searched {self.start_url} for {int(time.time() - time_start)} seconds")
-        logger.success(f"VISITED {len(self.visitedpages)}, FAILED {self.fail_counter}")
+        logger.success(f"BFS searched to depth: {self.MAX_DEPTH}")
+        logger.success(f"Search limit of {self.MAX_PAGE_COUNT} reached: {self.page_counter>=self.MAX_PAGE_COUNT}")
+        logger.success(f"FOUND {len(self.visitedpages)} pages, OPENED {self.page_counter-self.fail_counter}, FAILED {self.fail_counter}")
 
     async def scrape_curr_page(self, url, curr_depth, queue, browser):
         # otvori stranku -> zavola hladanie klucovych slov
@@ -404,7 +412,7 @@ class Scraper(BaseScraper):
         page = await browser.new_page()
         try:
             if self.is_robots_allowed(url):
-                await page.goto(url, wait_until="networkidle")
+                await page.goto(url, wait_until="domcontentloaded")
         except Exception as e:
             logger.warning(f"FAILED TO OPEN {url}: {e}")
             async with self.counter_lock:
@@ -424,6 +432,10 @@ class Scraper(BaseScraper):
 
     async def keyword_search(self, browser, url, page, curr_depth):
         for word_type in self.type_of_keyword.keys():
+            async with self.search_lock:
+                is_found = self.search_state[word_type]["found"]
+            if is_found:
+                continue
             await self.page_content_search(browser, word_type, url, page, curr_depth)
 
     async def get_all_links(self, page, url, curr_depth, queue):
@@ -443,6 +455,7 @@ class Scraper(BaseScraper):
                 if self.check_if_skip_link(link, main_domain_netloc, current_netloc):
                     continue
                 if current_netloc !=main_domain_netloc:
+
                     if link in self.seen_subdomain_links:
                         continue
                     subdomain_count = self.subdomain_counter.get(current_netloc, 0)
@@ -465,8 +478,8 @@ class Scraper(BaseScraper):
             "keywords": {
                 k: {
                     "priemer": v["score"].get("priemer") if v else None,
-                    "found_on": self.found_text_keywords.get(k, []),
-                    "depth": self.depth_of_found_element.get(k)
+                    "found_on":v["url"] if v else None,
+                    "depth": v["depth"] if v else None,
                 }
                 for k, v in self.content_ai_scores.items()
             },
@@ -478,11 +491,8 @@ class Scraper(BaseScraper):
                 "found_rules": list(self.found_rule_breaks),
                 "rules": self.page_report_final
             },
-            "vyhlaseniePristupnost": {
-                "url": self.found_text_keywords.get("vyhlaseniePristupnost", []),
-                "rule_breaks": list(self.admitted_rule_breaks)
-            },
-            "pages_visited": len(self.visitedpages),
+
+            "pages_visited": self.page_counter-self.fail_counter,
             "pages_failed": self.fail_counter
         }
 
@@ -496,81 +506,69 @@ class Scraper(BaseScraper):
 
 
     async def page_content_search(self, browser, search_type, current_url, current_page, depth):
-        # sprostredkuje hladanie klucovych slov (keywords) na stranke
-        text = ""
-        result = await self.general_find(search_type, browser, current_url, current_page, depth)
+        results = await self.general_find(search_type, browser, current_url, current_page, depth)
         
-        if not result:
+        if not results:
             return
-        else:
-            text, found_url = result
 
-       
-        if search_type == "gdpr":
-            await self.check_content(text,found_url, search_type)
+        for text, found_url in results:
+            async with self.search_lock:
+                if self.search_state[search_type]["found"]:
+                    return
 
-        if search_type == "tabula":
-            await self.check_content(text,found_url, search_type)
-        
-        if search_type == "vyhlaseniePristupnost":
-            # treba to zlepit ako predtym
-            #regex1 = r"\b[1-4]\.[1-9]\.[1-9]\.?"
-            
-            #matches = re.findall(regex1, text)
-            #self.admitted_rule_breaks.update(matches)
-            self.accessibility_url = current_url
-            await self.check_content(text,found_url, search_type)
-            logger.debug(f"AMDITTED RULE BREAKS { self.admitted_rule_breaks}")
 
-        if search_type == "rss":
-            #kontroluje validitu rss kanalu
-            headers ={"user-agent":"Mozilla/5.0"}
-            valid_rss = False
-            with httpx.Client(headers=headers, follow_redirects=True) as usrClient:
-                response = usrClient.get(found_url)
-                content_type = response.headers.get("content-type", "")
-                
-                if "xml" in content_type or "rss" in content_type:
-                    feed = feedparser.parse(response.text)
-                    if not feed.bozo and len(feed.entries) > 0:
-                        logger.success(f"VALID RSS: {found_url}")
-                        valid_rss == True
-                else:
-                    if self.is_robots_allowed(found_url):
+            if search_type == "vyhlaseniePristupnost":
+                main_netloc = urlparse(self.start_url).netloc.removeprefix("www.")
+                found_netloc = urlparse(found_url).netloc.removeprefix("www.")
+                if found_netloc != main_netloc:
+                    continue
+            if search_type in ("vyhlaseniePristupnost", "objednavky", "faktury", "kompetencie", "tabula", "gdpr"):
+                await self.check_content(text, found_url, search_type, depth)
+
+            elif search_type == "rss":
+                with httpx.Client(headers={"user-agent": "Mozilla/5.0"}, follow_redirects=True) as usrClient:
+                    valid_rss = self.check_rss_url(found_url, usrClient)
+                    
+                    if not valid_rss and self.is_robots_allowed(found_url):
                         rss_page = await browser.new_page()
                         try:
-                            await rss_page.goto(found_url, wait_until="networkidle")
+                            await rss_page.goto(found_url, wait_until="domcontentloaded")
                             links = await rss_page.locator("a[href*='rss'], a[href*='feed'], a[href*='atom']").evaluate_all("x => x.map(y => y.href)")
-                            rss_links = [url for url in links if not url.endswith(".html")]
-                            #logger.debug(f"ALL RSS links: {rss_links}")
-                            for rss_url in rss_links:
-                                
-                                response = usrClient.get(rss_url)
-                                content_type = response.headers.get("content-type", "")
-                                if "xml" not in content_type and "rss" not in content_type:
-                                    continue
-                                feed = feedparser.parse(response.text)
-                                if not feed.bozo and len(feed.entries) >0:
-                                    logger.success(f"VALID RSS: {rss_url}")
-                                    valid_rss = True
-                                else:
-                                    logger.warning(f"NON-VALID RSS: {rss_url}")
+                            valid_rss = any(self.check_rss_url(u, usrClient) for u in links if not u.endswith(".html"))
                         finally:
                             await rss_page.close()
-                    else:
-                        logger.warning(f"NON-VALID RSS: {found_url}")
 
-            self.content_ai_scores["rss"] = {
-            "url": found_url,
-            "score": {"priemer": 10 if valid_rss else 0}}
+                async with self.search_lock:
+                    if valid_rss and not self.search_state["rss"]["found"]:
+                        self.search_state["rss"]["found"] = valid_rss
+                    self.content_ai_scores["rss"] = {"url": found_url, "score": {"priemer":10}, "depth":depth}
+
+           
+     
+            
+            
+    def check_rss_url(self, url, client):
+        try:
+            if not self.is_robots_allowed(url):
+                return False
+            response = client.get(url)
+            content_type = response.headers.get("content-type", "")
+            logger.debug(f"RSS check {url} ->type: {content_type}")
+            if "xml" not in content_type:
+                return False
+            feed = feedparser.parse(response.text)
+            if feed.bozo:
+                logger.warning(f"NON-VALID RSS: {url}")
+                return False
+            if len(feed.entries) == 0:
+                logger.warning(f"NON-VALID RSS: {url}")
+                return False
+            logger.success(f"VALID RSS: {url}")
+            return True
+        except Exception:
+            return False
         
-        if search_type == "objednavky":
-            await self.check_content(text,found_url, search_type)
-        if search_type == "faktury":
-            await self.check_content(text,found_url, search_type)
-        if search_type == "sluzby":
-            await self.check_content(text,found_url, search_type)
-    
+
     async def check_wcag(self,page, url):
         logger.debug(f"=====CHECKING WCAG ON {url}")
         # pustenie Axe-Core scriptu na najdenie WCAG 
@@ -578,6 +576,8 @@ class Scraper(BaseScraper):
         # !! STIAHNUT axe.min.js podľa README !!
         try:
             await page.add_script_tag(path="axe.min.js") #https://docs.loadforge.com/examples/qa-testing/axe-accessibility-testing#axe-core-accessibility-testing  to to je cez cdnjs
+            
+            
             results = await page.evaluate("""
                 () => {
                     return axe.run({
@@ -596,30 +596,28 @@ class Scraper(BaseScraper):
                     if t.startswith("wcag"):
                         #print(found_wcag_tags)
                         found_wcag_tags.append(t)
-                        if len(found_wcag_tags) >= 2:
-                            break
-                final_rule = None #finalny string v tvare "WCAGx.x.x LEVEL YY"
-                if len(found_wcag_tags) >= 2:
+                        
+                if len(found_wcag_tags) != 0:
                     #print(found_wcag_tags)
-                    for t in found_wcag_tags:
-                        if t[5] == "a":
-                            wcag_level = t[5:].upper()
-                        else:
-                            wcag_number = t[:4].upper() + t[4] + "." +t[5] + "." +t[6] + "."
-                    final_rule = wcag_number  # + " LEVEL: " + wcag_level
-                count = len(res.get("nodes", []))
-                self.found_rule_breaks.add(final_rule[4:-1])
-                if final_rule != None and final_rule not in self.page_report_final:
-                    self.page_report_final[final_rule] = {
-                        "count": 1,
-                        "description of curr rule": res.get("description", ""),
-                        "url": [url]
-                    }
-                elif final_rule != None and final_rule in self.page_report_final:
-                    self.page_report_final[final_rule]["count"] += count
-                    if url not in self.page_report_final[final_rule]["url"]:
-                        self.page_report_final[final_rule]["url"].append(url)
-        
+                    for tag in found_wcag_tags:
+                        if tag[4:].isdigit():
+                            
+                            count = len(res.get("nodes", []))
+                            self.found_rule_breaks.add(tag)
+                            if tag not in self.page_report_final:
+                                self.page_report_final[tag] = {
+                                    
+                                    "rule description": [res.get("description", "")],
+                                    "url": {url: count}
+                                }
+                            else:
+                                desc = res.get("description","")
+                                if desc not in self.page_report_final[tag]["rule description"]:
+                                    self.page_report_final[tag]["rule description"].append(desc)
+                                if url not in self.page_report_final[tag]["url"]:
+                                    self.page_report_final[tag]["url"][url] = count
+                                else:
+                                    self.page_report_final[tag]["url"][url] += count
         #niekedy nemusi prejst axe-core kvoli TrustedScript
         except Exception as e:
             logger.warning(f"Failed Axe-Core {url}: {e}")  
@@ -640,9 +638,3 @@ class Scraper(BaseScraper):
             return True
         return False
     
-#def start_app(url):
-#    s = Scraper(url)
-#    asyncio.run(s.start())
-
-s = Scraper("https://www.levice.sk")
-asyncio.run(s.start())

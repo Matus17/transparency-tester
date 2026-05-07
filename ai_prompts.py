@@ -8,31 +8,34 @@ PROMPTS = {
     #OCHRANA OSOBNÝCH ÚDAJOV
     "gdpr": """  
 Si hodnotiteľ textov o ochrane osobných údajov (GDPR).
-Tvojou úlohou je ohodnotiť zadaný text podľa 3 kritérií v 
-rozsahu (0-10). Text môže obsahovať navigáciu, pätičku 
+Tvojou úlohou je ohodnotiť zadaný text podľa kritérií. 
+Text môže obsahovať navigáciu, pätičku 
 alebo nerelevantný obsah ten ignoruj. Zameraj sa iba na obsah 
 týkajúci sa ochrany osobných údajov. Hodnoť len na základe toho 
 čo je uvedené v texte, nie zo svojich znalostí.
 
-Hodnotenie:
--> 0 = informácia úplne chýba
-- 1–5 = informácia je uvedená čiastočne
--> 6–10 = informácia je jasne a dobre vysvetlená
-
-
 
 Kritériá:
-1. ake_udaje: kategórie osobných údajov, ktoré sa zbierajú
-2. preco: účel spracovania údajov
+1. obsah: informácie o GDPR
 3. prava: práva používateľa (prístup k dátam, vymazanie dát, ...)
+
+Hodnotenie:
+1. obsah
+    - 0 = GDPR sa vôbec nespomína
+    - 5 = GDPR je opísané všeobecne napr. zákonom
+    - 10 = vysvetlený spôsob spracovania
+2. prava
+    - 0 = nespomínajú sa práva
+    - 5 = práva sú vymenované ale nie opísané
+    - 10 = práva sú vymenované a opísané
+
 
 
 Výstup:
 Odpovedz IBA v JSON formáte bez iného textu:
 Nevracaj žiadny ďalší text ani vysvetlenie.
 {{
-    "ake_udaje": <0-10>,
-    "preco": <0-10>,
+    "obsah": <0-10>,
     "prava": <0-10>,
     "priemer": <0-10>
 }}
@@ -43,28 +46,39 @@ Text:
 #ÚRADNÁ TABUĽA
 "tabula": """
 Si hodnotiteľ obsahu úradej tabule.
-Ohodnoť text podľa kritérií úradnej tabule (0-10). Text 
+Ohodnoť text podľa kritérií úradnej tabule. Text 
 môže obsahovať navigáciu, pätičku 
 alebo nerelevantný obsah ten ignoruj. Zameraj sa iba na obsah 
-týkajúci sa elektronickej úradnej tabule.
-Hodnoť len na základe toho čo je v texte. Ak text obsahuje iba 
-jeden dokument alebo detail jednej zmluvy/oznamu a ni cely zoznam, 
-vráť priemer 0. 
+týkajúci sa elektronickej úradnej tabule. Úradná tabuľa 
+zverejňuje úradné dokumenty ako vyhlášky, rozhodnutia, oznámenia.
 
 Znenie zákona:
 (1)Elektronická úradná tabuľa je elektronické úložisko, na ktoré sú zasielané a na ktorom sú zverejňované elektronické úradné dokumenty, ak to ustanovuje zákon.
 (2)Elektronické úradné dokumenty, ktoré sú podľa tohto zákona z hľadiska právnych účinkov totožné s dokumentom v listinnej podobe, o ktorom osobitné predpisy ustanovujú, že sa doručuje vyvesením na úradnej tabuli orgánu verejnej moci, verejnou vyhláškou alebo iným obdobným spôsobom zverejnenia pre neurčitý okruh osôb, orgán verejnej moci ich zverejňuje na elektronickej úradnej tabuli
 
-Hodnotenie:
--> 0 = nexistuje tu zoznam s informáciami o dokumentoch úplne chýbajú/ nachádza sa tu len jeden dokument, ak ide len o jeden dokument, vyhodnoť preimer ako 0
-- 1–5 = informácie sú uvedené čiastočne
--> 6–10 = informácie o oznamoch sú jasne definované
 
 Kritériá:
-1. dokumenty: Je zverejnený ZOZNAM elektronických dokumentov? (ak je len jeden/dva = 0)
+1. dokumenty: Je zverejnený ZOZNAM elektronických dokumentov? (ak je len jeden/dva, priemer = 0)
 2. datum: Je pri dokumentoch uvedený dátum zverejnenia?
-3. aktualnost: Sú dokumenty aktuálne?
 
+
+
+Hodnotenie:
+1. dokumenty
+    - 0 = nie je to zoznam úradných dokumentov, je iba jeden dokument
+    - 5 = je to zoznam ale chýbajú opisy alebo názvy dokumentov
+    - 10 = jasne opísaný zoznam dokumentov
+2. datum
+    - 0 = chýba dátum k dokumentom
+    - 5 = dátum tam je ale je neaktuálny
+    - 10 =  dátum je pri každom dokumente v zozname
+
+DÔLEŽITÉ:
+Úradná tabuľa NIE JE článok, oznam, jedna položka ani nesuvislý text.
+Ak text obsahuje iba jeden dokument, detail jedného rozhodnutia, alebo neštruktúrovaný obsah
+tak nie je to úradná tabuľa. Vráť priemer 0
+
+Ak "dokumenty" = 0 , všetky ostatné hodnoty aj "priemer" MUSIA byť 0.
 
 Výstup:
 Odpovedz IBA v JSON formáte bez iného textu:
@@ -135,10 +149,6 @@ b)o faktúre za tovary, služby a práce
 7a.meno a priezvisko fyzickej osoby, obchodné meno fyzickej osoby-podnikateľa alebo obchodné meno alebo názov právnickej osoby,
 7b.adresu trvalého pobytu fyzickej osoby, miesto podnikania fyzickej osoby-podnikateľa alebo sídlo právnickej osoby,
 7c.identifikačné číslo, ak ho má dodávateľ fakturovaného plnenia pridelené.
-Hodnotenie:
--> 0 = informácia úplne chýba
--> 1-5 = informácie sú uvedené čiastočne
--> 6-10 = informácie sú jasne a úplne uvedené
 
 Kritériá:
 1. cislo_faktury: Je uvedené číslo alebo identifikátor faktúry?
@@ -146,6 +156,20 @@ Kritériá:
 3. hodnota: Je uvedená celková hodnota faktúry vrátane informácie o DPH?
 4. datum_dorucenia: Je uvedený dátum doručenia faktúry?
 5. dodavatel: Sú uvedené identifikačné údaje dodávateľa (názov, adresa, IČO)?
+
+
+Hodnotenie:
+-> 0 = informácia úplne chýba
+-> 1-5 = informácie sú uvedené čiastočne
+-> 6-10 = informácie sú jasne a úplne uvedené
+
+
+DÔLEŽITÉ: 
+Faktúry majú zvyčajne názov "Faktúry" alebo "Faktúrovanie", 
+pravidelne aktualizovaný zoznam FAKTÚR.
+Ak sa medzi položkami v texte nenachádzajú faktúry a definované 
+kategórie hodnotenia, vráť priemer 0.
+
 
 Výstup:
 Odpovedz IBA v JSON formáte bez iného textu.
@@ -187,10 +211,6 @@ a)o vyhotovenej objednávke tovarov, služieb a prác
 7a.meno a priezvisko fyzickej osoby,
 7b.funkciu fyzickej osoby, ak takáto funkcia existuje,
 
-Hodnotenie:
--> 0 = informácia úplne chýba
--> 1-5 = informácie sú uvedené čiastočne
--> 6-10 = informácie sú jasne a úplne uvedené
 
 Kritériá:
 1. cislo_objednavky: Je uvedené číslo alebo identifikátor objednávky?
@@ -199,6 +219,18 @@ Kritériá:
 4. datum_vyhotovenia: Je uvedený dátum vyhotovenia objednávky?
 5. dodavatel: Sú uvedené identifikačné údaje dodávateľa (názov, adresa, IČO)?
 6. podpisatel: Je uvedené meno a funkcia osoby ktorá objednávku podpísala?
+
+Hodnotenie:
+-> 0 = informácia úplne chýba
+-> 1-5 = informácie sú uvedené čiastočne
+-> 6-10 = informácie sú jasne a úplne uvedené
+
+DÔLEŽITÉ: 
+Objednávky majú zvyčajne názov "Objednávky" alebo "Objednávanie", 
+pravidelne aktualizovaný zoznam OBJEDNÁVOK.
+Ak sa medzi položkami v texte nenachádzajú objednávky a definované 
+kategórie hodnotenia, vráť priemer 0.
+
 
 Výstup:
 Odpovedz IBA v JSON formáte bez iného textu.
@@ -217,37 +249,44 @@ Text:
 {text}
 """,
 
-#SLUŽBY
-"sluzby": """
-Si hodnotiteľ zverejňovania poskytovaných elektronických služieb na webovom sídle verejnej správy.
-Ohodnoť text na danej stránke podľa kritérií (0-10). Text 
+#KOMPETENCIE
+"kompetencie": """
+Si hodnotiteľ zverejňovania kompetencií správcu(mesta, obce, ministerstva) na webovom sídle verejnej správy.
+Ohodnoť text na danej stránke podľa kritérií. Text 
 môže obsahovať navigáciu, pätičku 
 alebo nerelevantný obsah ten ignoruj. Zameraj sa iba na obsah 
 týkajúci sa vymenovaniu kompetencií a poskytovaných služieb.
-Hodnoť len na základe toho čo je v texte, ak informácia 
-chýba daj 0, ak je čiastočná daj 1-5, ak je dobrá daj 6-10.
+Hodnoť len na základe toho čo je v texte.
 
 Znenie zákona:
 Štandardom minimálnych požiadaviek obsahu webového sídla je
-uvedenie informácií týkajúcich sa kompetencií a poskytovaných služieb správcu obsahu, ktoré vyplývajú z osobitných predpisov, a to na jednej webovej stránke webového sídla,
-
-Hodnotenie:
--> 0 = informácia úplne chýba/ nachádza sa tu len jeden dokument
-- 1–5 = informácie sú uvedené čiastočne
--> 6–10 = informácie o oznamoch sú jasne definované
+uvedenie informácií týkajúcich sa kompetencií správcu obsahu, ktoré vyplývajú z osobitných predpisov, a to na jednej webovej stránke webového sídla,
 
 Kritériá:
-1. služby: Je zverejnený zoznam poskytovaných služieb?
-2. kompetencie: Sú určené kompetencie správcu?
-3. up_to_date: Sú dokumenty aktuálne?
+1. kompetencie: Sú určené kompetencie správcu (mesta, obce, ministerstva) obsahu?
+2. legislativa: Je vymenovaná legislatíva, ktorou sa riadia kompetencie správcu?
 
+Hodnotenie:
+1. kompetencie
+    - 0 = stránka nespomína kompetencie
+    - 5 = odkazuje sa na kompetencie cez leislatívu
+    – 10 = text sa jasne týka opisi kompetencií správcu (mesto, obec, ministerstvo, zamestnanci)
+2. legislativa
+    - 0 = chýba legislatíva ku kompetenciám
+    - 5 = uvedené len všeobecne
+    - 10 = konkrétna legislatíva ku kompetenciám
+
+Dôležité:
+Ak sa stráka netýka vymenovania kompetencií správcu(obec, mesto, 
+ministerstvo) a spomína ich len okrajovo v rámci špecifickej 
+situácie, vráť VŠETKY kritériá 0.
 
 Výstup:
 Odpovedz IBA v JSON formáte bez iného textu:
 Nevracaj žiadny ďalší text ani vysvetlenie.
 {{
-    "sluzby": <0-10>,
     "kompetencie": <0-10>,
+    "legislativa": <0-10>,
     "priemer": <0-10>
 }}
 
@@ -277,16 +316,27 @@ a)uvedenie zrozumiteľného a aktuálneho vyhlásenia o prístupnosti webového 
 2.opis nedodržania pravidiel prístupnosti týkajúci sa konkrétnych častí obsahu webového sídla, najmä v podobe uvedenia konkrétnych nedodržaných pravidiel, uvedenie dôvodov ich nedodržania a opis poskytnutých prístupných alternatív, ak existujú,
 3.opis mechanizmu s uvedením odkazu naň, prostredníctvom ktorého môže každá osoba oznámiť správcovi obsahu webového sídla zlyhanie webového sídla, ak ide o plnenie požiadaviek na prístupnosť podľa § 14 a požiadať o informáciu, ktoré časti webového sídla nemusia spĺňať štandardy prístupnosti a z akého dôvodu,
 4.odkaz na postup vykonania nápravy, ak použitie mechanizmu podľa tretieho bodu neviedlo k náprave,
-Hodnotenie:
--> 0 = informácia úplne chýba/ nachádza sa tu len jeden dokument
-- 1–5 = informácie sú uvedené čiastočne
--> 6–10 = informácie o oznamoch sú jasne definované
+
 
 Kritériá:
-1. nesplnenie: Sú opísané konkrétne body pravidiel?
-2. dovod: Sú uvedené dôvody nesplnenia pravidiel?
+1. nesplnenie: Sú vypísané konkrétne pravidlá?
+2. dovod: Sú uvedené opisy k pravidlám a dôvody ich nedodržania?
 3. oznamenie: Opisuje mechanizmus na nahlásenie zlyhanie webového sídla?
 
+
+Hodnotenie:
+1. nesplnenie
+    - 0 = chýbajú pravidlá
+    - 5 = chýba opis pravidla alebo chýba číslo pravidla
+    - 10 = každé pravidlo je označené WCAG číslom a má opis
+2. dovod
+    - 0 = chýbajú dôvody nesplnenia
+    - 5 = dôvody sú uvedené čiastočne alebo bez vysvetlenia
+    - 10 = ku každému nesplnenému pravidlu je uvedený dôvod a prípadne alternatíva
+3. oznamenie
+    - 0 = chýba mechanizmus na nahlásenie problému
+    - 5 = mechanizmus je nejasný alebo neúplný
+    - 10 = jasne uvedený mechanizmus (kontakt/formulár)
 
 Výstup:
 Odpovedz IBA v JSON formáte bez iného textu:
