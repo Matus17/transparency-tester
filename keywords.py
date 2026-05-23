@@ -20,22 +20,21 @@ prevadzkovatel_kw = (
 
 
 tabule_kw = (
-    "úradn", "uradn", "tabu",
+    "tabu",
 )
 
 pristupnost_kw = (
-    "vyhlásenie o prístupnosti",
     "prístup", "pristup"
 )
 
 
 objednavky_kw = (
-    "objednávky", "objedn", "obstar",
+    "objedn", "obstar",
 
 )
 
 faktury_kw = (
-    "faktúry","faktú", "faktu","obstar",
+    "faktú", "faktu","obstar",
 )
 
 rss_kw = (
@@ -49,6 +48,6 @@ kompetencie = (
 
 
 mapa_stranky_kw = (
-    "mapa stránky", "mapa webu", "štruktúra webu"
+    "mapa stránk", "mapa webu", "štruktúra webu"
     "sitemap", "štruktúra stránky",
 )

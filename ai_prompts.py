@@ -75,7 +75,7 @@ Hodnotenie:
 
 DÔLEŽITÉ:
 Úradná tabuľa NIE JE článok, oznam, jedna položka ani nesuvislý text.
-Ak text obsahuje iba jeden dokument, detail jedného rozhodnutia, alebo neštruktúrovaný obsah
+Ak text obsahuje iba jeden-dva dokumenty, detail jedného rozhodnutia, alebo neštruktúrovaný obsah
 tak nie je to úradná tabuľa. Vráť priemer 0
 
 Ak "dokumenty" = 0 , všetky ostatné hodnoty aj "priemer" MUSIA byť 0.
@@ -86,7 +86,6 @@ Nevracaj žiadny ďalší text ani vysvetlenie.
 {{
     "dokumenty": <0-10>,
     "datum": <0-10>,
-    "aktualnost": <0-10>,
     "priemer": <0-10>
 }}
 
@@ -98,7 +97,8 @@ Text:
 """Si používateľ informačného systému verejnej správy. Našiel si 
 stránku s textom, ktorý je uvedený dole a chceš v ňom nájsť 
 správcu obsahu, ktorý zodpovedá za obsah. Kto to spravuje?
-konkrétne a oficiálne názvy bez adresy, čísel a mailov.
+konkrétne a oficiálne názvy bez adresy, čísel a mailov. Chceme presný 
+názov orgánu verejnej správy.
 
 
 Výstup:
@@ -215,10 +215,10 @@ a)o vyhotovenej objednávke tovarov, služieb a prác
 Kritériá:
 1. cislo_objednavky: Je uvedené číslo alebo identifikátor objednávky?
 2. popis_plnenia: Je uvedený popis objednaného plnenia?
-3. hodnota: Je uvedená celková hodnota plnenia vrátane informácie o DPH?
+3. hodnota: Je uvedená celková hodnota/suma plnenia vrátane informácie o DPH?
 4. datum_vyhotovenia: Je uvedený dátum vyhotovenia objednávky?
 5. dodavatel: Sú uvedené identifikačné údaje dodávateľa (názov, adresa, IČO)?
-6. podpisatel: Je uvedené meno a funkcia osoby ktorá objednávku podpísala?
+6. podpisatel: Je uvedené meno osoby ktorá objednávku podpísala?
 
 Hodnotenie:
 -> 0 = informácia úplne chýba
@@ -326,7 +326,7 @@ Kritériá:
 
 Hodnotenie:
 1. nesplnenie
-    - 0 = chýbajú pravidlá
+    - 0 = chýba vymenovanie pravidiel
     - 5 = chýba opis pravidla alebo chýba číslo pravidla
     - 10 = každé pravidlo je označené WCAG číslom a má opis
 2. dovod
@@ -336,7 +336,7 @@ Hodnotenie:
 3. oznamenie
     - 0 = chýba mechanizmus na nahlásenie problému
     - 5 = mechanizmus je nejasný alebo neúplný
-    - 10 = jasne uvedený mechanizmus (kontakt/formulár)
+    - 10 = jasne uvedený mechanizmus (definovaný kontakt/formulár)
 
 Výstup:
 Odpovedz IBA v JSON formáte bez iného textu:
