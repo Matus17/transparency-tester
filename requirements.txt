@@ -1,0 +1,8 @@
+streamlit
+playwright
+asyncio
+httpx
+feedparser
+loguru
+python-dotenv
+openai
