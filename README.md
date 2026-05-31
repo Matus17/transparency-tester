@@ -1,34 +1,21 @@
 # transparency-tester
 
-# Requirements ----
+Aplikácia na testovanie transparentnosti informačných systémov verejnej správy SR.
+
+# Required -------
 
 - Python 3.11+
-  
 - pip
+- stiahnutie axe-core, napríklad zo stránky: https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.10.3/axe.min.js
+- OpenAI API kľúč uložený v .env súbore
+              OPENAI_API_KEY=tajne_api
   
-- Playwright
-
-
 # Installation ----
 
-- Download https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.10.3/axe.min.js and add it to your source file
-
-pip install playwright
-
+pip install -r requirements.txt
 playwright install
 
-#pip install streamlit
-
-pip install openai
-
-pip install python-dotenv
-
-pip install httpx
-
-pip install uvicorn fastapi
 # Run app ---------
 
-python scrape.py
-
-#streamlit run app.py
+streamlit run app.py
 
