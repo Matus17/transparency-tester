@@ -13,7 +13,6 @@ import feedparser
 from collections import deque
 
 
-#https://loguru.readthedocs.io/en/stable/api/logger.html
 
 logger.remove()
 logger.add(
@@ -53,6 +52,10 @@ class BaseScraper:
         return urlparse(url).netloc.removeprefix("www.")
     
     async def get_domain_robots(self, url):
+        # Stiahne a sparsuje robots.txt domény, pri chybe povolí 
+        # všetko.
+        #
+
         parsed = urlparse(url)
         robots_url = f"{parsed.scheme}://{parsed.netloc}/robots.txt"
         try:
@@ -72,6 +75,10 @@ class BaseScraper:
         return rp
 
     async def is_robots_allowed(self, url):
+        # Skontroluje či je URL povolená podľa robots.txt domény 
+        # a výsledky cachuje.
+        #
+
         netloc = urlparse(url).netloc
         async with self.robots_lock:
             if netloc not in self.robots_cache:
@@ -83,6 +90,10 @@ class BaseScraper:
         return True
     
     async def general_find(self, search_type, browser, current_url, current_page, depth):
+        # Nájde odkazy na stránke podľa kľúčových slov a otvorí ich.
+        # Vráti zoznam [text, url] pre každú úspešne otvorenú stránku.
+        #
+        
         async with self.search_lock:
             state = self.search_state[search_type]
             word_set = self.type_of_keyword[search_type]
@@ -90,10 +101,8 @@ class BaseScraper:
                 return
             logger.debug(f"SEARCHING {search_type} on {current_url}")
 
-       
         # 1. hladaj link na stranke
         target_url_list = await self.find_target_url(word_set, current_page, current_url)
-        
 
         # 2. otvor cielovu stranku
         results = []
@@ -106,8 +115,7 @@ class BaseScraper:
                 results.append(result)
 
         return results if results else None
-       
-    
+
     async def is_href_visited(self, search_type, target_url):
         if not await self.is_robots_allowed(target_url):
             return True
@@ -130,6 +138,10 @@ class BaseScraper:
         return body_text
 
     async def open_target_page(self, search_type, target_url, depth, browser):
+        # Otvorí cieľovú stránku, extrahuje jej text a vráti ho 
+        # spolu s URL.
+        #
+
         if await self.is_href_visited(search_type, target_url):
             return None
 
@@ -142,7 +154,6 @@ class BaseScraper:
                 await asyncio.sleep(5)
                 return None
 
-            #await asyncio.sleep(4) ###vymenit
             text = await self.extract_page_text(helper_page)
             logger.success(f"OPENED {search_type} ON {target_url} depth {depth}")
             return [text, target_url]
@@ -154,7 +165,11 @@ class BaseScraper:
             await helper_page.close()
 
     async def find_target_url(self, word_set, current_page, current_url):
-        found_hrefs = set() # zoznam vsetkych najdenych href ukazka zo zvrejnovanie.bratislav
+        # Hľadá klúčové slová na stránke a vracia zoznam URL odkazov 
+        # ktoré sa nachádzajú v okolí nájdeného textu (rodičovský 
+        # element alebo predchádzajúci súrodenec).
+
+        found_hrefs = set()
         for word in word_set:
             regex = re.compile(word, re.IGNORECASE)
             locator = current_page.get_by_text(regex)
@@ -169,7 +184,6 @@ class BaseScraper:
                 visible = await element.is_visible()
                 if not visible:
                     continue
-                # https://developer.mozilla.org/en-US/docs/Web/API/Element/previousElementSibling
                 href = await element.evaluate("""
                     el => {
                         let curr_el = el;
@@ -197,19 +211,17 @@ class BaseScraper:
                 
                 if not await self.is_robots_allowed(href):
                     continue
-                
                 found_hrefs.add(href)
         
         return list(found_hrefs)
     
-    
+
     async def check_content(self, text, found_href, search_type, depth):
-        # vklada najdeny text do promptu a zavola opeani API
-        # na vyhodnotenie obsahu
-        # vrati priemer hodnotenia definovaneho v ai_prompts.py
+        # Pošle nájdený text do OpenAI API na vyhodnotenie obsahu,
+        # uloží najlepšie skóre a označí hľadanie za ukončené ak 
+        # priemer >= 7.5.
+
         prompt = PROMPTS[search_type].replace("{text}", text[:10000])
-        #logger.debug(f"TEXT: ({search_type}): {text[:3000]}")
-        #https://milvus.io/ai-quick-reference/how-do-i-call-openais-api-asynchronously-in-python
         response = await agent.chat.completions.create(
             model="gpt-4o-mini",
             messages=[{"role": "user", "content": prompt}],
@@ -232,6 +244,10 @@ class BaseScraper:
         return result
 
     def update_best_ai_score(self, search_type, found_href, result, depth):
+        # Aktualizuje najlepšie skóre pre daný typ hľadania ak je 
+        # priemer >= 5 a lepší ako predchádzajúci výsledok.
+        #
+
         priemer = result.get("priemer", 0)
         if priemer < 5:
             return
@@ -266,6 +282,10 @@ class MainPageScraper(BaseScraper):
         }
 
     async def load_main_page(self, browser):
+        # Načíta hlavnú stránku, skontroluje HTTPS a vyhľadávanie,
+        # a spustí hľadanie správcu, prevádzkovateľa a mapy stránky.
+        #
+
         goto_url = self.add_www(self.start_url)
         await self.check_https(goto_url)
         page = await browser.new_page()
@@ -281,6 +301,10 @@ class MainPageScraper(BaseScraper):
         self.save_json()
 
     async def check_https(self, url):
+        # Overí či stránka beží na HTTPS protokole odoslaním 
+        # GET požiadavky.
+        #
+
         if not url.startswith("https://"):
             return
         try:
@@ -293,6 +317,10 @@ class MainPageScraper(BaseScraper):
 
 
     async def check_search_element(self, page):
+        # Skontroluje či stránka obsahuje vyhľadávacie pole
+        # podľa atribútov input a button elementov.
+        #
+
         inputs = await page.locator("input, button").all()
         for i in inputs:
             for attr in ["id", "type","class", "name"]:
@@ -302,15 +330,20 @@ class MainPageScraper(BaseScraper):
                     return
 
 
-
     def save_json(self):
+        # Uloženie výstupného súboru, týkajúceho sa použiteľnosti 
+        # hlavnej stránky.
+        #
+
         with open("main_page_report.json", "w", encoding="utf-8") as f:
             json.dump(self.result, f, indent=2, ensure_ascii=False)
         logger.info("Saved main_page_report.json")
 
     async def main_page_content_search(self, browser, search_type, current_url, current_page, depth):
-        # sprostredkuje hladanie klucovych slov (keywords) na 
-        # hlavnej stranke, hladame spravcu a prevadzkovatela
+        # Sprostredkuje hľadanie kľúčových slov (keywords) na 
+        # hlavnej stránke, hľdáme správcu a prevádzkovateľa
+        #
+
         text = ""
         result = await self.general_find(search_type, browser, current_url, current_page, depth)
         
@@ -327,7 +360,10 @@ class MainPageScraper(BaseScraper):
             self.result[search_type] = True
         
     async def get_page_header_footer_text(self, browser):
-        # vrati 1. text  (header a footer)
+        # Získanie obsahu header a footer zo stránky.
+        # Používa sa na doplnenie kontextu pri hľadaní správcu a 
+        # prevádzkovateľa.
+
         helper_page = await browser.new_page()
         header =""
         footer = ""
@@ -344,7 +380,7 @@ class MainPageScraper(BaseScraper):
                 pass
             return header + "\n" + footer
         except Exception as e:
-            logger.warning(f"START PAGE OPEN FAILED (deader, footer): {e}")
+            logger.warning(f"START PAGE OPEN FAILED (header, footer): {e}")
             return ""
         finally:
             await helper_page.close()
@@ -356,8 +392,8 @@ class MainPageScraper(BaseScraper):
 ###################################################################
 class Scraper(BaseScraper):
     MAX_DEPTH = 3
-    MAX_PAGES_AT_ONCE = 3
-    MAX_PAGE_COUNT = 2000
+    MAX_PAGES_AT_ONCE = 8
+    MAX_PAGE_COUNT = 1500
     MAX_PAGES_PER_SUBDOMAIN = 20
     def __init__(self, start_url):
         super().__init__(start_url)
@@ -382,13 +418,16 @@ class Scraper(BaseScraper):
 
         self.page_counter = 0
         self.fail_counter = 0
-
+        self.wcag_check_counter = 0
         self.subdomain_counter = {}
         self.seen_subdomain_links = set()
 
 
     async def start(self):
-    
+        # Spustenie scrapovania. Načíta hlavnú stránku, prehľadáva 
+        # BFS do MAX_DEPTH, otvara MAX_PAGES_AT_ONCE stranok(async task).
+        #
+
         time_start = time.time()
         
         async with async_playwright() as p:
@@ -419,33 +458,30 @@ class Scraper(BaseScraper):
                 await asyncio.wait(tasks_set)
             await browser.close()
 
+            time_end = time.time()
         self.save_json()
         logger.success(f"SUBDOMAINS: {self.subdomain_counter}")
-        logger.success(f"Searched {self.start_url} for {int(time.time() - time_start)} seconds")
-        logger.success(f"BFS searched to depth: {self.MAX_DEPTH}")
-        logger.success(f"Search limit of {self.MAX_PAGE_COUNT} reached: {self.page_counter>=self.MAX_PAGE_COUNT}")
-        logger.success(f"FOUND {len(self.visitedpages)} pages, OPENED {self.page_counter-self.fail_counter}, FAILED {self.fail_counter}")
+        logger.success(f"SEARCHED {self.start_url} FOR {int(time_end - time_start)} SECONDS")
+        logger.success(f"BFS SEARCHED TO DEPTH: {self.MAX_DEPTH}")
+        logger.success(f"ASYNC TASKS: {self.MAX_PAGES_AT_ONCE}")
+        logger.success(f"SEARCH LIMIT OF {self.MAX_PAGE_COUNT} REACHED: {self.page_counter>=self.MAX_PAGE_COUNT}")
+        logger.success(f"FOUND {len(self.visitedpages)} PAGES, OPENED {self.page_counter-self.fail_counter}, FAILED {self.fail_counter}")
 
     async def scrape_curr_page(self, url, curr_depth, queue, browser):
-        # otvori stranku -> zavola hladanie klucovych slov
-        # -> zavola kontrolu WCAG -> pozbiera linky na stranke
-        await asyncio.sleep(0.3)
+        # Otvori stránku a zavolá hladanie kľúčových slov,
+        # kontrolu WCAG, zber nových odkazov.
+        #
 
+        await asyncio.sleep(0.3)
         async with self.counter_lock:
             self.page_counter += 1
-            
-            if self.page_counter >= 100:
-                do_wcag_check = False
-            else:
-                do_wcag_check = True
+
 
         if not await self.is_robots_allowed(url):
             async with self.counter_lock:
                 self.fail_counter += 1
             return
-            
-        
-        # otovrenie stranky
+
         page = await browser.new_page()
         try:
             goto_url = self.add_www(url)
@@ -459,12 +495,13 @@ class Scraper(BaseScraper):
 
             await self.keyword_search(browser, url, page, curr_depth)
 
-            if do_wcag_check and self.netloc_no_www(url) == self.netloc_no_www(self.start_url):
-                await self.check_wcag(page, url)
+            if self.wcag_check_counter < 100 and self.netloc_no_www(url) == self.netloc_no_www(self.start_url):
+                content_type = rs.headers.get("content-type", "")
+                if "text/html" in content_type:
+                    await self.check_wcag(page, url)
 
             if curr_depth < self.MAX_DEPTH:
                 await self.get_all_links( page, url, curr_depth, queue)
-
 
         except Exception as e:
             logger.warning(f"FAILED TO OPEN {url}: {e}")
@@ -476,6 +513,10 @@ class Scraper(BaseScraper):
             await page.close()
 
     async def keyword_search(self, browser, url, page, curr_depth):
+        # Spúšťa hľahanie odkazov, ktoré sa ešte nenašli, v 
+        # dostatočnom ohodnotení.
+        #
+
         for word_type in self.type_of_keyword.keys():
             async with self.search_lock:
                 is_found = self.search_state[word_type]["found"]
@@ -484,9 +525,10 @@ class Scraper(BaseScraper):
             await self.page_content_search(browser, word_type, url, page, curr_depth)
 
     async def get_all_links(self, page, url, curr_depth, queue):
-        #hlada vsetky linky na aktualnej stranke, kontroluje ci patria dodomeny
-        # alebo subdomeny a prida ich do queue
-        # a[href] 
+        # Hľadanie nových odkazov na aktuálnej stránke, ktoré sú v 
+        # doméne alebo subdoméne a ich pridávanie do queue. Počet 
+        # subdomén je obmedzený.
+
         links = await page.locator("a").evaluate_all("x => x.map(y => y.href)")
         main_domain_netloc = self.netloc_no_www(self.start_url)
         added = 0
@@ -498,7 +540,6 @@ class Scraper(BaseScraper):
                     link = link_parts._replace(netloc=link_parts.netloc.removeprefix("www.")).geturl()
                 current_netloc = self.netloc_no_www(link)
 
-                # pridavaju sa linky len z hlavnej domeny a subdomeny (az do self.max_pages_per_subdomain)
                 if self.check_if_skip_link(link, main_domain_netloc, current_netloc):
                     continue
                 if current_netloc !=main_domain_netloc:
@@ -521,6 +562,10 @@ class Scraper(BaseScraper):
             logger.debug(f"ADDED {added} links to queue from {url}")
 
     def save_json(self):
+        # Uloženie výstupných súborov na hodnotenie.
+        #
+        #
+
         keywords_data = {
             "keywords": {
                 k: {
@@ -553,8 +598,10 @@ class Scraper(BaseScraper):
 
 
     async def page_content_search(self, browser, search_type, current_url, current_page, depth):
+        # volanie príslušných funkcii na prehľadávanie stránky
+        #
+        #
         results = await self.general_find(search_type, browser, current_url, current_page, depth)
-        
         if not results:
             return
 
@@ -563,38 +610,45 @@ class Scraper(BaseScraper):
                 if self.search_state[search_type]["found"]:
                     return
 
-
             if search_type == "vyhlaseniePristupnost":
                 main_netloc = self.netloc_no_www(self.start_url)
                 found_netloc = self.netloc_no_www(found_url)
                 if found_netloc != main_netloc:
                     continue
+
             if search_type in ("vyhlaseniePristupnost", "objednavky", "faktury", "kompetencie", "tabula", "gdpr"):
                 await self.check_content(text, found_url, search_type, depth)
 
             elif search_type == "rss":
                 async with httpx.AsyncClient(headers={"user-agent": "Mozilla/5.0"},timeout=10, follow_redirects=True,verify=False) as c:
-                    valid_rss = await self.check_rss_url(found_url, c)
-                    
-                    if not valid_rss and await self.is_robots_allowed(found_url):
+                    is_valid_rss= await self.check_rss_url(found_url, c)
+                    rss_url = found_url
+                    if not is_valid_rss and await self.is_robots_allowed(found_url):
                         rss_page = await browser.new_page()
                         try:
                             goto_url = self.add_www(found_url)
                             await rss_page.goto(goto_url, wait_until="domcontentloaded")
                             links = await rss_page.locator("a[href*='rss'], a[href*='feed'], a[href*='atom']").evaluate_all("x => x.map(y => y.href)")
-                            checked = [await self.check_rss_url(u, c) for u in links]
-                            valid_rss = any(checked)
+                            for l in links:
+                                is_valid_rss = await self.check_rss_url(l, c)
+                                if is_valid_rss:
+                                    rss_url = l
+                                    break
                         finally:
                             await rss_page.close()
 
                 async with self.search_lock:
-                    if valid_rss and not self.search_state["rss"]["found"]:
-                        self.search_state["rss"]["found"] = valid_rss
-                        self.content_scores["rss"] = {"url": found_url, "score": {"priemer":10}, "depth":depth}
+                    if is_valid_rss and not self.search_state["rss"]["found"]:
+                        self.search_state["rss"]["found"] = True
+                        self.content_scores["rss"] = {"url": rss_url, "score": {"priemer":10}, "depth":depth}
 
 
 
     async def check_rss_url(self, url, client):
+        # Kontrola, či ide o RSS stránku, ktorá je 
+        # typu XML a obsahuje záznam.
+        #
+
         try:
             if not await self.is_robots_allowed(url):
                 return False
@@ -618,35 +672,31 @@ class Scraper(BaseScraper):
         
 
     async def check_wcag(self,page, url):
+        # Spustenie Axe-Core scriptu na kontrolu WCAG 2.2 pravidiel.
+        # Ukladanie chyby, URL a počtu.
+        #
+
         logger.debug(f"=====CHECKING WCAG ON {url}")
-        # pustenie Axe-Core scriptu na najdenie WCAG 
-        # pravidiel a ich zapisanie do zoznamu 
-        # !! STIAHNUT axe.min.js podľa README !!
         try:
-            await page.add_script_tag(path="axe.min.js") #https://docs.loadforge.com/examples/qa-testing/axe-accessibility-testing#axe-core-accessibility-testing  to to je cez cdnjs
-            
-            
+            await page.add_script_tag(path="axe.min.js")
             results = await page.evaluate("""
                 () => {
                     return axe.run({
                         runOnly: {
                             type: 'tag',
-                            values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22a', 'wcag21aa']
+                            values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22a', 'wcag22aa']
                         }
                                             });}""")
-            #print(results["violations"]) 
+
             for res in results["violations"]: #jeden prvok -> jedno pravidlo
                 current_tags = res.get("tags",[])
-                #print(f"{current_tags} {url}")
                 found_wcag_tags = []
                 for t in current_tags:
 
                     if t.startswith("wcag"):
-                        #print(found_wcag_tags)
                         found_wcag_tags.append(t)
                         
                 if len(found_wcag_tags) != 0:
-                    #print(found_wcag_tags)
                     for tag in found_wcag_tags:
                         if tag[4:].isdigit():
                             
@@ -666,12 +716,16 @@ class Scraper(BaseScraper):
                                     self.page_report_final[tag]["url"][url] = count
                                 else:
                                     self.page_report_final[tag]["url"][url] += count
-        #niekedy nemusi prejst axe-core kvoli TrustedScript
+            self.wcag_check_counter += 1
+
         except Exception as e:
-            logger.warning(f"Failed Axe-Core {url}: {e}")  
+            logger.warning(f"Failed Axe-Core {url}: {e}")
 
     def check_if_skip_link(self, link, main_domain_netloc, current_netloc):
-        # nepridavat do queue obrazky, subory, visited/zakazane/ mimo domain url, 
+        # Vráti True ak sa má link preskočiť. Súbory, mimo domény, 
+        # alebo už navštívené stránky
+        #
+
         extension = (".pdf", ".jpg", ".jpeg", ".png", ".gif",".svg", ".zip", ".docx", ".xlsx")
         
         path = urlparse(link).path.lower()
@@ -680,10 +734,7 @@ class Scraper(BaseScraper):
         main_netloc_no_www = main_domain_netloc.removeprefix("www.")
         if not (current_netloc == main_domain_netloc or current_netloc.endswith("." + main_netloc_no_www)):
             return True
-        if link in self.visitedpages: #!
-            #logger.debug(f"SKIP (visited): {link}")
+        if link in self.visitedpages:
             return True
-        #if not await self.is_robots_allowed(link):
-        #    return True
+
         return False
-    

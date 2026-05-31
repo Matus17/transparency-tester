@@ -1,0 +1,39 @@
+{
+  "keywords": {
+    "gdpr": {
+      "priemer": 7.5,
+      "found_on": "https://www.novabana.sk/ochrana-osobnych-udajov",
+      "depth": 0
+    },
+    "tabula": {
+      "priemer": 10,
+      "found_on": "https://www.novabana.sk/dokumenty/elektronicka-uradna-tabula",
+      "depth": 0
+    },
+    "vyhlaseniePristupnost": {
+      "priemer": 10,
+      "found_on": "https://www.novabana.sk/samosprava/vyhlasenie-o-pristupnosti",
+      "depth": 0
+    },
+    "rss": {
+      "priemer": 10,
+      "found_on": "https://www.novabana.sk/rss.xml",
+      "depth": 0
+    },
+    "kompetencie": {
+      "priemer": 10,
+      "found_on": "https://www.novabana.sk/aktuality/nova-bana/24",
+      "depth": 2
+    },
+    "objednavky": {
+      "priemer": 8.33,
+      "found_on": "https://www.novabana.sk/dokumenty/ostatne/objednavky",
+      "depth": 1
+    },
+    "faktury": {
+      "priemer": 10,
+      "found_on": "https://www.novabana.sk/dokumenty/ostatne/faktury",
+      "depth": 1
+    }
+  }
+}

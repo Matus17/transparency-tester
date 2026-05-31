@@ -1,0 +1,252 @@
+[
+  {
+    "nazov": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Number of cyclists crossing per hour according to counters"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Hlavné mesto SR Bratislava"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://data.bratislava.sk/api/download/v1/items/097b7c8bc4b94560a7e34c9e64139a5e/csv?layers=0"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/CSV"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2026-05-27T09:43:01.965Z"
+    }
+  },
+  {
+    "nazov": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Počet prejazdov cyklistov podľa sčítačov za hodinu"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Hlavné mesto SR Bratislava"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://data.bratislava.sk/api/download/v1/items/097b7c8bc4b94560a7e34c9e64139a5e/csv?layers=0"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/CSV"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2026-05-27T09:43:01.965Z"
+    }
+  },
+  {
+    "nazov": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Number of passing pedestrians per hour according to enumerators"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Hlavné mesto SR Bratislava"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://data.bratislava.sk/api/download/v1/items/84ba9f28423e4a52aae97c8cfb7d58e6/csv?layers=0"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/CSV"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2026-05-27T09:42:36.859Z"
+    }
+  },
+  {
+    "nazov": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Počet prechádzajúcich chodcov podľa sčítačov za hodinu"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Hlavné mesto SR Bratislava"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://data.bratislava.sk/api/download/v1/items/84ba9f28423e4a52aae97c8cfb7d58e6/csv?layers=0"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/CSV"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2026-05-27T09:42:36.859Z"
+    }
+  },
+  {
+    "nazov": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Number of vehicle passes per hour according to counters"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Hlavné mesto SR Bratislava"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://data.bratislava.sk/api/download/v1/items/7b5628f9234a461e8becfa37665290b3/csv?layers=0"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/CSV"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2026-05-27T09:42:11.489Z"
+    }
+  },
+  {
+    "nazov": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Počet prejazdov vozidiel podľa sčítačov za hodinu"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Hlavné mesto SR Bratislava"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://data.bratislava.sk/api/download/v1/items/7b5628f9234a461e8becfa37665290b3/csv?layers=0"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/CSV"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2026-05-27T09:42:11.489Z"
+    }
+  },
+  {
+    "nazov": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Orders of the Funeral Service of the City of Bratislava - MARIANUM"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Hlavné mesto SR Bratislava"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://data.bratislava.sk/api/download/v1/items/81abdb9566e84d00aaad5ffd953d791a/csv?layers=0"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/CSV"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2026-05-27T02:15:53.744Z"
+    }
+  },
+  {
+    "nazov": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Objednávky Pohrebníctva mesta Bratislava - MARIANUM"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Hlavné mesto SR Bratislava"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://data.bratislava.sk/api/download/v1/items/81abdb9566e84d00aaad5ffd953d791a/csv?layers=0"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/CSV"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2026-05-27T02:15:53.744Z"
+    }
+  },
+  {
+    "nazov": {
+      "xml:lang": "en",
+      "type": "literal",
+      "value": "Invoices of the Funeral Service of the City of Bratislava - MARIANUM"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Hlavné mesto SR Bratislava"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://data.bratislava.sk/api/download/v1/items/bd9ee647db7445ad9b33bf525c41908c/csv?layers=0"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/CSV"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2026-05-27T02:15:41.978Z"
+    }
+  },
+  {
+    "nazov": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Faktúry Pohrebníctva mesta Bratislava - MARIANUM"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Hlavné mesto SR Bratislava"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://data.bratislava.sk/api/download/v1/items/bd9ee647db7445ad9b33bf525c41908c/csv?layers=0"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/CSV"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2026-05-27T02:15:41.978Z"
+    }
+  }
+]

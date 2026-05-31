@@ -1,0 +1,39 @@
+{
+  "keywords": {
+    "gdpr": {
+      "priemer": 10,
+      "found_on": "https://www.tsk.sk/trenciansky-samospravny-kraj/urad-tsk/ochrana-osobnych-udajov.html?page_id=545126",
+      "depth": 0
+    },
+    "tabula": {
+      "priemer": 10,
+      "found_on": "https://www.tsk.sk/uradna-tabula.html?page_id=218054",
+      "depth": 0
+    },
+    "vyhlaseniePristupnost": {
+      "priemer": 10,
+      "found_on": "https://www.tsk.sk/vyhlasenie-o-pristupnosti.html?page_id=15741#footerMenu",
+      "depth": 1
+    },
+    "rss": {
+      "priemer": 10,
+      "found_on": "https://www.tsk.sk/rss-1/rss-export.html?page_id=2705&pid=125&days=30",
+      "depth": 0
+    },
+    "kompetencie": {
+      "priemer": 10,
+      "found_on": "https://www.tsk.sk/trenciansky-samospravny-kraj/kompetencie-trencianskeho-samospravneho-kraja.html?page_id=145",
+      "depth": 1
+    },
+    "objednavky": {
+      "priemer": 6,
+      "found_on": "https://www.tsk.sk/uradna-tabula/objednavky.html?page_id=24566",
+      "depth": 1
+    },
+    "faktury": {
+      "priemer": 8,
+      "found_on": "https://www.tsk.sk/uradna-tabula/faktury.html?page_id=24567",
+      "depth": 1
+    }
+  }
+}

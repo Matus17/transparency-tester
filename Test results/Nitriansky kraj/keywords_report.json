@@ -1,0 +1,39 @@
+{
+  "keywords": {
+    "gdpr": {
+      "priemer": 10,
+      "found_on": "https://www.unsk.sk/zobraz/sekciu/ochrana-osobnych-udajov",
+      "depth": 0
+    },
+    "tabula": {
+      "priemer": 10,
+      "found_on": "https://www.unsk.sk/zobraz/sekciu/elektronicka-uradna-tabula",
+      "depth": 1
+    },
+    "vyhlaseniePristupnost": {
+      "priemer": 8,
+      "found_on": "https://www.unsk.sk/zobraz/pristupnost",
+      "depth": 0
+    },
+    "rss": {
+      "priemer": 10,
+      "found_on": "https://www.unsk.sk/rss/index",
+      "depth": 0
+    },
+    "kompetencie": {
+      "priemer": 10,
+      "found_on": "https://www.unsk.sk/zobraz/sekciu/a163-informovanie-o-sposobe-zriadenia-vuc-o-jeho-pravomociach-a-kompetenciach",
+      "depth": 1
+    },
+    "objednavky": {
+      "priemer": 10,
+      "found_on": "https://www.unsk.sk/zobraz/obsah/65211",
+      "depth": 1
+    },
+    "faktury": {
+      "priemer": 10,
+      "found_on": "https://www.unsk.sk/zobraz/obsah/22492",
+      "depth": 1
+    }
+  }
+}

@@ -1,5 +1,5 @@
 import httpx
-from urllib.parse import urlparse
+
 import json
 def check_open_data_sparql(input):
     name = input.strip().lower()

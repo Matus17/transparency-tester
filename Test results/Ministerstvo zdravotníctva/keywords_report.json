@@ -1,0 +1,39 @@
+{
+  "keywords": {
+    "gdpr": {
+      "priemer": 10,
+      "found_on": "https://www.mzsr.sk/?informacna-povinnost",
+      "depth": 1
+    },
+    "tabula": {
+      "priemer": null,
+      "found_on": null,
+      "depth": null
+    },
+    "vyhlaseniePristupnost": {
+      "priemer": null,
+      "found_on": null,
+      "depth": null
+    },
+    "rss": {
+      "priemer": null,
+      "found_on": null,
+      "depth": null
+    },
+    "kompetencie": {
+      "priemer": 10,
+      "found_on": "https://www.mzsr.sk/?ikz-kompetencie",
+      "depth": 1
+    },
+    "objednavky": {
+      "priemer": 8.33,
+      "found_on": "http://zverejnovanie.mzsr.sk/ministerstvo-zdravotnictva-sr/objednavky/",
+      "depth": 2
+    },
+    "faktury": {
+      "priemer": 10,
+      "found_on": "http://zverejnovanie.mzsr.sk/ministerstvo-zdravotnictva-sr/faktury/",
+      "depth": 2
+    }
+  }
+}

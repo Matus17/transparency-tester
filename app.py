@@ -28,7 +28,7 @@ with tab1:
         c1.metric("Prístupnosť", f"{final['pristupnost']} %")
         c2.metric("Použiteľnosť", f"{final['pouzitelnost']} %")
         c3.metric("Informatívnosť", f"{final['informativnost']} %")
-        c4.markdown("TRANSPARENTNOSŤ", f"{final['transparentnost']} %")
+        c4.metric("TRANSPARENTNOSŤ", f"{final['transparentnost']} %")
 
         st.divider()
         st.header("Prístupnosť")
@@ -70,6 +70,18 @@ with tab1:
             else:
                 st.write(f"{label}: nenájdené")
 
+        st.divider()
+        st.subheader("Stiahnuť výstupné súbory")
+        c1, c2, c3, c4 = st.columns(4)
+
+        with open("scrape.log", encoding="utf-8") as f:
+            c1.download_button("scrape.log", f.read(), "scrape.log", "plain/text")
+        with open("keywords_report.json", encoding="utf-8") as f:
+            c2.download_button("keywords_report.json", f.read(), "keywords_report.json", "application/json")
+        with open("accessibility_report.json", encoding="utf-8") as f:
+            c3.download_button("accessibility_report.json", f.read(), "accessibility_report.json", "application/json")
+        with open("main_page_report.json", encoding="utf-8") as f:
+            c4.download_button("main_page_report.json", f.read(), "main_page_report.json", "application/json")
 
 ####################################
 # OTVORENÉ DÁTA ####################
@@ -89,4 +101,4 @@ with tab2:
                     st.write(f"**Aktualizácia:** {ds['uprava']}")
                     st.link_button("Otvoriť", ds["accessURL"])
         else:
-            st.warning("Žiadne datasety nenájdené")
+            st.warning("Žiadne datasety ")

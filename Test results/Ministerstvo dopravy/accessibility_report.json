@@ -1,0 +1,32 @@
+{
+  "wcag": {
+    "count": 2,
+    "found_rules": [
+      "wcag412",
+      "wcag244"
+    ],
+    "rules": {
+      "wcag244": {
+        "rule description": [
+          "Ensure links have discernible text"
+        ],
+        "url": {
+          "https://mindop.sk/ministerstvo/urad-ministerstva/dokumenty": 4
+        }
+      },
+      "wcag412": {
+        "rule description": [
+          "Ensure links have discernible text",
+          "Ensure <iframe> and <frame> elements have an accessible name"
+        ],
+        "url": {
+          "https://mindop.sk/ministerstvo/urad-ministerstva/dokumenty": 4,
+          "https://mindop.sk/transparentnost/verejne-obstaravanie": 1,
+          "https://mindop.sk/kontakt": 1
+        }
+      }
+    }
+  },
+  "pages_visited": 1285,
+  "pages_failed": 67
+}

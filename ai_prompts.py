@@ -9,8 +9,7 @@ PROMPTS = {
     "gdpr": """  
 Si hodnotiteľ textov o ochrane osobných údajov (GDPR).
 Tvojou úlohou je ohodnotiť zadaný text podľa kritérií. 
-Text môže obsahovať navigáciu, pätičku 
-alebo nerelevantný obsah ten ignoruj. Zameraj sa iba na obsah 
+Text môže obsahovať nerelevantný obsah ten ignoruj. Zameraj sa iba na obsah 
 týkajúci sa ochrany osobných údajov. Hodnoť len na základe toho 
 čo je uvedené v texte, nie zo svojich znalostí.
 
@@ -47,8 +46,7 @@ Text:
 "tabula": """
 Si hodnotiteľ obsahu úradej tabule.
 Ohodnoť text podľa kritérií úradnej tabule. Text 
-môže obsahovať navigáciu, pätičku 
-alebo nerelevantný obsah ten ignoruj. Zameraj sa iba na obsah 
+môže obsahovať nerelevantný obsah ten ignoruj. Zameraj sa iba na obsah 
 týkajúci sa elektronickej úradnej tabule. Úradná tabuľa 
 zverejňuje úradné dokumenty ako vyhlášky, rozhodnutia, oznámenia.
 
@@ -269,8 +267,8 @@ Kritériá:
 Hodnotenie:
 1. kompetencie
     - 0 = stránka nespomína kompetencie
-    - 5 = odkazuje sa na kompetencie cez leislatívu
-    – 10 = text sa jasne týka opisi kompetencií správcu (mesto, obec, ministerstvo, zamestnanci)
+    - 5 = odkazuje sa na kompetencie cez legislatívu
+    – 10 = text sa jasne týka opisu kompetencií správcu (mesto, obec, ministerstvo, zamestnanci)
 2. legislativa
     - 0 = chýba legislatíva ku kompetenciám
     - 5 = uvedené len všeobecne

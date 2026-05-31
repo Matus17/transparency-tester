@@ -1,0 +1,249 @@
+[
+  {
+    "nazov": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Dotacne schemy 2023"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Ministerstvo zdravotníctva SR"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://data.slovensko.sk/download?id=656953bb-c9d4-4140-9507-cff77fb123fe"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/XLSX"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2024-03-18T20:01:33Z"
+    }
+  },
+  {
+    "nazov": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Dotačné schémy za rok 2021"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Ministerstvo zdravotníctva SR"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://data.slovensko.sk/download?id=90371245-fd83-4d3f-a98d-a258cab5f668"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/XML"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2024-03-18T20:01:02Z"
+    }
+  },
+  {
+    "nazov": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Evidencia žiadostí MZ SR podľa § 211/2000 Zz za rok 2018"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Ministerstvo zdravotníctva SR"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://data.slovensko.sk/download?id=e7913667-9be6-4cc1-b323-f9cfe05c3dcc"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/XML"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2024-03-18T20:00:44Z"
+    }
+  },
+  {
+    "nazov": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Evidencia žiadostí MZ SR podľa § 211/2000 Zz za rok 2017"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Ministerstvo zdravotníctva SR"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://data.gov.sk/dataset/62600311-c839-4f54-b8e5-2a2ecc6edeb5/resource/291ad14b-623e-4966-9ead-2cba66ea55b4/download/2112017.xml"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/XML"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2024-03-18T20:00:27Z"
+    }
+  },
+  {
+    "nazov": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Dotačné schémy za rok 2017"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Ministerstvo zdravotníctva SR"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://data.slovensko.sk/download?id=c7f9aafd-3bf0-46ce-8584-a5a362f630df"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/XML"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2024-03-18T19:59:54Z"
+    }
+  },
+  {
+    "nazov": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Dotačné schémy za rok 2016"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Ministerstvo zdravotníctva SR"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://data.slovensko.sk/download?id=f20b8c67-9039-4fc5-9ac7-84748b7a52b1"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/XML"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2024-03-18T19:59:24Z"
+    }
+  },
+  {
+    "nazov": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Publikačné minimum"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Ministerstvo zdravotníctva SR"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://data.slovensko.sk/download?id=83298a1e-ca36-4e35-a37b-1d980f73fb0b"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/DOCX"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2024-03-18T19:58:41Z"
+    }
+  },
+  {
+    "nazov": {
+      "type": "literal",
+      "value": "Rezortný dátový katalóg k 31.3.2021."
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Ministerstvo zdravotníctva SR"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://data.slovensko.sk/download?id=8d599fd5-0abc-4b31-b497-a38839ae2853"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/XML"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2021-03-30T07:08:58Z"
+    }
+  },
+  {
+    "nazov": {
+      "type": "literal",
+      "value": "Všeobecný prehľad datasetov k 31.12.2019"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Ministerstvo zdravotníctva SR"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://data.slovensko.sk/download?id=2d9cd02c-725e-4668-9698-12fe6693fe96"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/XML"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2020-01-28T09:58:01Z"
+    }
+  },
+  {
+    "nazov": {
+      "type": "literal",
+      "value": "Všeobecný prehľad Datasetov 2018"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Ministerstvo zdravotníctva SR"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "http://vseobecny-prehlad-datasetov.xml/"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/XML"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2018-12-27T07:19:17Z"
+    }
+  }
+]

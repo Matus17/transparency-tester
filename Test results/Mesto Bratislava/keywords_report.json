@@ -1,0 +1,39 @@
+{
+  "keywords": {
+    "gdpr": {
+      "priemer": 7.5,
+      "found_on": "https://www.bratislava.sk/ochrana-osobnych-udajov",
+      "depth": 0
+    },
+    "tabula": {
+      "priemer": 10,
+      "found_on": "https://www.bratislava.sk/uradna-tabula",
+      "depth": 3
+    },
+    "vyhlaseniePristupnost": {
+      "priemer": 10,
+      "found_on": "https://www.bratislava.sk/vyhlasenie-o-pristupnosti",
+      "depth": 0
+    },
+    "rss": {
+      "priemer": 10,
+      "found_on": "https://msp.bratislava.sk/rss",
+      "depth": 2
+    },
+    "kompetencie": {
+      "priemer": 10,
+      "found_on": "https://www.bratislava.sk/mesto-bratislava/sprava-mesta/mestske-casti/vysvetlenie-rozdelenia-a-kompetencii",
+      "depth": 2
+    },
+    "objednavky": {
+      "priemer": 8.33,
+      "found_on": "https://zverejnovanie.bratislava.sk/bratislava/objednavky/",
+      "depth": 3
+    },
+    "faktury": {
+      "priemer": 10,
+      "found_on": "https://zverejnovanie.bratislava.sk/bratislava/faktury/",
+      "depth": 3
+    }
+  }
+}

@@ -1,0 +1,225 @@
+{
+  "wcag": {
+    "count": 6,
+    "found_rules": [
+      "wcag412",
+      "wcag141",
+      "wcag143",
+      "wcag213",
+      "wcag244",
+      "wcag211"
+    ],
+    "rules": {
+      "wcag143": {
+        "rule description": [
+          "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds"
+        ],
+        "url": {
+          "https://bratislavskykraj.sk/": 7,
+          "https://bratislavskykraj.sk/zivotne-prostredie/": 12,
+          "https://bratislavskykraj.sk/socialne-veci/": 12,
+          "https://bratislavskykraj.sk/urad-bsk/": 8,
+          "https://bratislavskykraj.sk/zdravie/": 9,
+          "https://bratislavskykraj.sk/kultura-a-volny-cas/": 13,
+          "https://bratislavskykraj.sk/doprava/": 12,
+          "https://bratislavskykraj.sk/urad-bsk/skolstvo-mladez-a-sport/": 10,
+          "https://bratislavskykraj.sk/zastupitelstvo/": 10,
+          "https://bratislavskykraj.sk/e-kniznica/": 10,
+          "https://bratislavskykraj.sk/urad-bsk/dotacie/": 11,
+          "https://bratislavskykraj.sk/regionalny-rozvoj/": 10,
+          "https://bratislavskykraj.sk/radapartnerstva/": 10,
+          "https://bratislavskykraj.sk/urad-bsk/eurofondy-a-regionalny-rozvoj/program-spoluprace-interact/": 12,
+          "https://bratislavskykraj.sk/rss-feed/": 9,
+          "https://bratislavskykraj.sk/gdpr/": 9,
+          "https://bratislavskykraj.sk/author/monika-kovacova/": 10,
+          "https://bratislavskykraj.sk/po-malych-karpatoch-na-bicykli-z-vinic-az-k-modranskemu-kastielu/": 11,
+          "https://bratislavskykraj.sk/bratislavsky-samospravny-kraj-aj-tento-rok-spustil-hlasovanie-verejnosti-v-ankete-osobnost-bratislavskeho-kraja-cena-verejnosti-2025/": 12,
+          "https://bratislavskykraj.sk/kampus-zdravia-a-sportu-v-petrzalke-vstupuje-do-realizacie-ma-zmenit-pohlad-na-sport-vzdelavanie-aj-prevenciu/": 12,
+          "https://bratislavskykraj.sk/citanie-ma-v-digitalnej-dobe-nezastupitelne-miesto-sutaz-vratme-knihy-do-skol-spojila-tisice-deti-z-celeho-slovenska/": 11,
+          "https://bratislavskykraj.sk/aktuality/": 9,
+          "https://bratislavskykraj.sk/tip-na-vylet-zo-stupavy-na-peknu-cestu-3/": 12,
+          "https://bratislavskykraj.sk/divadlo-astorka-uspesne-reprezentovalo-na-festivale-setkani-stretnutie/": 12,
+          "https://bratislavskykraj.sk/vyluka-na-trati-bratislava-hlavna-stanica-bratislava-petrzalka-potrva-od-juna-do-augusta/": 11,
+          "https://bratislavskykraj.sk/blizi-sa-projekcia-postupovej-sutaze-amaterskej-filmovej-tvorby-cineama-2026-pre-bratislavsky-kraj/": 16,
+          "https://bratislavskykraj.sk/forum-lidrov-interreg-potvrdilo-klucovu-ulohu-uzemnej-spoluprace-pre-buducnost-europy/": 18,
+          "https://bratislavskykraj.sk/ako-rozhybat-svoj-mozog-prednaska-o-mozgu-spojena-s-ukazkou-treningu-kognitivnych-funkcii/": 12,
+          "https://bratislavskykraj.sk/tyzdne-medialneho-vzdelavania-ako-rozoznat-pravdu-od-lzi-s-demagog-sk/": 12,
+          "https://bratislavskykraj.sk/vylukove-prace-na-trati-trnava-pezinok-ovplyvnia-osobnu-zeleznicnu-dopravu/": 11,
+          "https://bratislavskykraj.sk/divadelne-konfrontacie-priniesli-mnozstvo-inspirativnych-inscenacii/": 11,
+          "https://bratislavskykraj.sk/obec-rovinka-ziskala-prestizne-enviro-ocenenie-atlas-2026/": 11,
+          "https://bratislavskykraj.sk/podujatie/esencie-vystava-martiny-michnicovej/": 8,
+          "https://bratislavskykraj.sk/podujatie/otvoreny-atelier-s-michaelou-syrovou-caspar-david-friedrich-krajina-ako-obraz-duse/": 8,
+          "https://bratislavskykraj.sk/podujatie/komorny-koncert-szidi-tobias-uz-srdce-klopka-mi-studio-a2-4/": 8,
+          "https://bratislavskykraj.sk/podujatie/posledna-baronka-divadlo-astorka-korzo90-32/": 8,
+          "https://bratislavskykraj.sk/podujatie/tiso-divadlo-arena-organizovane-2/": 8,
+          "https://bratislavskykraj.sk/kategoria/samosprava/": 9,
+          "https://bratislavskykraj.sk/author/jana-santava/": 10,
+          "https://bratislavskykraj.sk/science-entertainment-you-veda-hrou-opat-prinesie-techniku-inovacie-a-zazitky-pod-jednu-strechu/": 13,
+          "https://bratislavskykraj.sk/bratislavsky-kraj-rozdeli-vyse-800-tisic-eur-na-regionalne-dotacie-podporu-ziska-takmer-250-projektov/": 11,
+          "https://bratislavskykraj.sk/bratislavsky-kraj-si-pripomenul-koniec-vojny-v-europe-a-81-vyrocie-vitazstva-nad-fasizmom/": 11,
+          "https://bratislavskykraj.sk/podujatia/": 8,
+          "https://bratislavskykraj.sk/kategoria/zdravie/": 9,
+          "https://bratislavskykraj.sk/matus-krncok-zdravie-nie-je-len-tema-nemocnic-bratislavsky-kraj-chce-menit-system-prevencie/": 15,
+          "https://bratislavskykraj.sk/author/michal-feik/": 10,
+          "https://bratislavskykraj.sk/velkonocne-sviatky-bez-starosti-bsk-prinasa-prehlad-pohotovosti/": 23,
+          "https://bratislavskykraj.sk/malacky-na-bicykli-mesto-kde-sa-cyklo-doprava-stava-prirodzenou-sucastou-zivota/": 11,
+          "https://bratislavskykraj.sk/dnes-je-svetovy-den-povedomia-o-autizme-pripomina-dolezitost-porozumenia-aj-dostupnej-pomoci/": 14,
+          "https://bratislavskykraj.sk/bratislavsky-kraj-sa-v-bruseli-zapaja-do-formovania-buducnosti-eurofondov-a-strategickych-investicii-eu/": 11,
+          "https://bratislavskykraj.sk/do-jedalnicka-sa-na-jar-odporuca-zaradit-medvedi-cesnak-ci-bylinky/": 12,
+          "https://bratislavskykraj.sk/kategoria/doprava/": 9,
+          "https://bratislavskykraj.sk/author/redakcia-bsk/": 10,
+          "https://bratislavskykraj.sk/medzinarodny-den-rodin-zvyhodnenych-rodinnych-cestovnych-listkov-sa-vlani-predalo-o-20-viac-ako-v-roku-2024/": 11,
+          "https://bratislavskykraj.sk/od-20-maja-2026-sa-meni-cestovny-poriadok-vlakov-v-useku-trnava-cifer/": 11,
+          "https://bratislavskykraj.sk/kategoria/skolstvo/": 9,
+          "https://bratislavskykraj.sk/mozog-potrebuje-kyslik-oddych-a-pravidelnost/": 12,
+          "https://bratislavskykraj.sk/rekonstrukcne-prace-obmedzia-vlakovu-dopravu-medzi-bratislavou-a-marcheggom/": 11,
+          "https://bratislavskykraj.sk/skoly-budu-mat-k-dispozicii-eticky-kodex-pre-vyuzivanie-ai/": 11,
+          "https://bratislavskykraj.sk/kategoria/socialne-veci/": 9,
+          "https://bratislavskykraj.sk/co-spaja-zenu-bez-domova-a-mytologicku-meduzu-divadlo-bez-domova-vas-srdecne-pozyva-na-divadelne-predstavenie-meduza-v-kuchyni/": 12,
+          "https://bratislavskykraj.sk/svata-omsa-v-dome-sv-martina/": 11,
+          "https://bratislavskykraj.sk/aprilove-aktivity-prijimatelov-socialnej-sluzby-v-css-merema/": 11,
+          "https://bratislavskykraj.sk/kategoria/volny-cas/": 9,
+          "https://bratislavskykraj.sk/navsteva-kina-edison/": 11,
+          "https://bratislavskykraj.sk/kategoria/zivotne-prostredie/": 9,
+          "https://bratislavskykraj.sk/otvorena-zupa/": 10,
+          "https://bratislavskykraj.sk/kontakty/": 10,
+          "https://bratislavskykraj.sk/miesto-kde-starostlivost-znamena-viac-nez-pomoc-a-aj-male-gesta-menia-zivoty-v-domove-socialnych-sluzieb-vytvaraju-ludom-skutocny-domov/": 11,
+          "https://bratislavskykraj.sk/majova-prespavacka-v-ekocentre-po-stopach-plazov/": 12,
+          "https://bratislavskykraj.sk/majove-neresenie-jarne-tajomstva-prirody/": 11,
+          "https://bratislavskykraj.sk/kategoria/projekty-bsk/": 9,
+          "https://bratislavskykraj.sk/fond-malych-projektov-prinasa-menej-byrokracie-a-viac-priestoru-pre-cezhranicne-iniciativy/": 11,
+          "https://bratislavskykraj.sk/otvorili-sme-zrekonstruovany-park-v-stupave/": 11,
+          "https://bratislavskykraj.sk/most-medzi-vrakunou-a-mostom-pri-bratislave-sa-zacne-opravovat-prace-potrvaju-do-polovice-juna/": 11,
+          "https://bratislavskykraj.sk/efektivny-rozvoj-regionov-sa-v-21-storoci-nezaobide-bez-kvalitnych-dat-a-ich-vzajomneho-zdielania/": 11,
+          "https://bratislavskykraj.sk/tag/bratislava": 10,
+          "https://bratislavskykraj.sk/tag/pezinok/": 10,
+          "https://bratislavskykraj.sk/tag/bratislava/": 10,
+          "https://bratislavskykraj.sk/tag/senec/": 10,
+          "https://bratislavskykraj.sk/tag/malacky/": 10,
+          "https://bratislavskykraj.sk/spoznajte-kraj/": 9,
+          "https://bratislavskykraj.sk/bratislava-region/": 7,
+          "https://bratislavskykraj.sk/tag/zelen-a-lesy/": 10,
+          "https://bratislavskykraj.sk/dolezite-dokumenty/": 9,
+          "https://bratislavskykraj.sk/tag/energetika/": 10,
+          "https://bratislavskykraj.sk/tag/zvierata/": 10,
+          "https://bratislavskykraj.sk/tag/ovzdusie/": 10,
+          "https://bratislavskykraj.sk/tag/odpady/": 10,
+          "https://bratislavskykraj.sk/tag/voda/": 10,
+          "https://bratislavskykraj.sk/tag/verejne-priestory/": 10,
+          "https://bratislavskykraj.sk/tag/ekocentrum-cunovo/": 10,
+          "https://bratislavskykraj.sk/tag/ekocentrum-stupava/": 10,
+          "https://bratislavskykraj.sk/tag/deinstitucionalizacia/": 10,
+          "https://bratislavskykraj.sk/regionalny-rozvoj/projekty/prebiehajuce/zlepsenie-kvality-ovzdusia-life-ip/": 12,
+          "https://bratislavskykraj.sk/tag/zariadenia-socialnych-sluzieb/": 10,
+          "https://bratislavskykraj.sk/tag/seniori/": 10,
+          "https://bratislavskykraj.sk/tag/ludia-bez-domova/": 10,
+          "https://bratislavskykraj.sk/socialne-veci/koncepcie-rozvoja-socialnych-sluzieb-bratislavskeho-samospravneho-kraja-na-roky-2027-2034-s-vyhladom-do-roku-2040/": 10,
+          "https://bratislavskykraj.sk/socialne-veci/pomoc-zenam-na-ktorych-je-pachane-nasilie/": 10,
+          "https://bratislavskykraj.sk/socialne-veci/financovanie-socialnych-sluzieb/": 10,
+          "https://bratislavskykraj.sk/socialne-veci/evidencia-prijimatelov-socialnych-sluzieb/": 10,
+          "https://bratislavskykraj.sk/socialne-veci/zss-v-zriadovatelskej-posobnosti-vuc/": 10
+        }
+      },
+      "wcag211": {
+        "rule description": [
+          "Ensure elements that have scrollable content are accessible by keyboard"
+        ],
+        "url": {
+          "https://bratislavskykraj.sk/": 1
+        }
+      },
+      "wcag213": {
+        "rule description": [
+          "Ensure elements that have scrollable content are accessible by keyboard"
+        ],
+        "url": {
+          "https://bratislavskykraj.sk/": 1
+        }
+      },
+      "wcag412": {
+        "rule description": [
+          "Ensure <iframe> and <frame> elements have an accessible name",
+          "Ensure links have discernible text"
+        ],
+        "url": {
+          "https://bratislavskykraj.sk/zivotne-prostredie/": 1,
+          "https://bratislavskykraj.sk/socialne-veci/": 2,
+          "https://bratislavskykraj.sk/zdravie/": 1,
+          "https://bratislavskykraj.sk/kultura-a-volny-cas/": 5,
+          "https://bratislavskykraj.sk/doprava/": 2,
+          "https://bratislavskykraj.sk/urad-bsk/skolstvo-mladez-a-sport/": 1,
+          "https://bratislavskykraj.sk/regionalny-rozvoj/": 6,
+          "https://bratislavskykraj.sk/radapartnerstva/": 24,
+          "https://bratislavskykraj.sk/urad-bsk/eurofondy-a-regionalny-rozvoj/program-spoluprace-interact/": 1,
+          "https://bratislavskykraj.sk/po-malych-karpatoch-na-bicykli-z-vinic-az-k-modranskemu-kastielu/": 122,
+          "https://bratislavskykraj.sk/bratislavsky-samospravny-kraj-aj-tento-rok-spustil-hlasovanie-verejnosti-v-ankete-osobnost-bratislavskeho-kraja-cena-verejnosti-2025/": 7,
+          "https://bratislavskykraj.sk/kampus-zdravia-a-sportu-v-petrzalke-vstupuje-do-realizacie-ma-zmenit-pohlad-na-sport-vzdelavanie-aj-prevenciu/": 6,
+          "https://bratislavskykraj.sk/tip-na-vylet-zo-stupavy-na-peknu-cestu-3/": 6,
+          "https://bratislavskykraj.sk/forum-lidrov-interreg-potvrdilo-klucovu-ulohu-uzemnej-spoluprace-pre-buducnost-europy/": 4,
+          "https://bratislavskykraj.sk/divadelne-konfrontacie-priniesli-mnozstvo-inspirativnych-inscenacii/": 7,
+          "https://bratislavskykraj.sk/obec-rovinka-ziskala-prestizne-enviro-ocenenie-atlas-2026/": 4,
+          "https://bratislavskykraj.sk/science-entertainment-you-veda-hrou-opat-prinesie-techniku-inovacie-a-zazitky-pod-jednu-strechu/": 6,
+          "https://bratislavskykraj.sk/bratislavsky-kraj-si-pripomenul-koniec-vojny-v-europe-a-81-vyrocie-vitazstva-nad-fasizmom/": 8,
+          "https://bratislavskykraj.sk/malacky-na-bicykli-mesto-kde-sa-cyklo-doprava-stava-prirodzenou-sucastou-zivota/": 9,
+          "https://bratislavskykraj.sk/dnes-je-svetovy-den-povedomia-o-autizme-pripomina-dolezitost-porozumenia-aj-dostupnej-pomoci/": 8,
+          "https://bratislavskykraj.sk/bratislavsky-kraj-sa-v-bruseli-zapaja-do-formovania-buducnosti-eurofondov-a-strategickych-investicii-eu/": 13,
+          "https://bratislavskykraj.sk/do-jedalnicka-sa-na-jar-odporuca-zaradit-medvedi-cesnak-ci-bylinky/": 5,
+          "https://bratislavskykraj.sk/kontakty/": 1,
+          "https://bratislavskykraj.sk/miesto-kde-starostlivost-znamena-viac-nez-pomoc-a-aj-male-gesta-menia-zivoty-v-domove-socialnych-sluzieb-vytvaraju-ludom-skutocny-domov/": 3,
+          "https://bratislavskykraj.sk/majova-prespavacka-v-ekocentre-po-stopach-plazov/": 6,
+          "https://bratislavskykraj.sk/majove-neresenie-jarne-tajomstva-prirody/": 1,
+          "https://bratislavskykraj.sk/fond-malych-projektov-prinasa-menej-byrokracie-a-viac-priestoru-pre-cezhranicne-iniciativy/": 3,
+          "https://bratislavskykraj.sk/otvorili-sme-zrekonstruovany-park-v-stupave/": 13,
+          "https://bratislavskykraj.sk/most-medzi-vrakunou-a-mostom-pri-bratislave-sa-zacne-opravovat-prace-potrvaju-do-polovice-juna/": 1,
+          "https://bratislavskykraj.sk/efektivny-rozvoj-regionov-sa-v-21-storoci-nezaobide-bez-kvalitnych-dat-a-ich-vzajomneho-zdielania/": 3,
+          "https://bratislavskykraj.sk/regionalny-rozvoj/projekty/prebiehajuce/zlepsenie-kvality-ovzdusia-life-ip/": 18
+        }
+      },
+      "wcag244": {
+        "rule description": [
+          "Ensure links have discernible text"
+        ],
+        "url": {
+          "https://bratislavskykraj.sk/socialne-veci/": 2,
+          "https://bratislavskykraj.sk/zdravie/": 1,
+          "https://bratislavskykraj.sk/kultura-a-volny-cas/": 4,
+          "https://bratislavskykraj.sk/doprava/": 2,
+          "https://bratislavskykraj.sk/urad-bsk/skolstvo-mladez-a-sport/": 1,
+          "https://bratislavskykraj.sk/regionalny-rozvoj/": 6,
+          "https://bratislavskykraj.sk/radapartnerstva/": 24,
+          "https://bratislavskykraj.sk/po-malych-karpatoch-na-bicykli-z-vinic-az-k-modranskemu-kastielu/": 122,
+          "https://bratislavskykraj.sk/bratislavsky-samospravny-kraj-aj-tento-rok-spustil-hlasovanie-verejnosti-v-ankete-osobnost-bratislavskeho-kraja-cena-verejnosti-2025/": 7,
+          "https://bratislavskykraj.sk/kampus-zdravia-a-sportu-v-petrzalke-vstupuje-do-realizacie-ma-zmenit-pohlad-na-sport-vzdelavanie-aj-prevenciu/": 6,
+          "https://bratislavskykraj.sk/tip-na-vylet-zo-stupavy-na-peknu-cestu-3/": 6,
+          "https://bratislavskykraj.sk/forum-lidrov-interreg-potvrdilo-klucovu-ulohu-uzemnej-spoluprace-pre-buducnost-europy/": 4,
+          "https://bratislavskykraj.sk/divadelne-konfrontacie-priniesli-mnozstvo-inspirativnych-inscenacii/": 7,
+          "https://bratislavskykraj.sk/obec-rovinka-ziskala-prestizne-enviro-ocenenie-atlas-2026/": 4,
+          "https://bratislavskykraj.sk/science-entertainment-you-veda-hrou-opat-prinesie-techniku-inovacie-a-zazitky-pod-jednu-strechu/": 6,
+          "https://bratislavskykraj.sk/bratislavsky-kraj-si-pripomenul-koniec-vojny-v-europe-a-81-vyrocie-vitazstva-nad-fasizmom/": 8,
+          "https://bratislavskykraj.sk/malacky-na-bicykli-mesto-kde-sa-cyklo-doprava-stava-prirodzenou-sucastou-zivota/": 9,
+          "https://bratislavskykraj.sk/dnes-je-svetovy-den-povedomia-o-autizme-pripomina-dolezitost-porozumenia-aj-dostupnej-pomoci/": 8,
+          "https://bratislavskykraj.sk/bratislavsky-kraj-sa-v-bruseli-zapaja-do-formovania-buducnosti-eurofondov-a-strategickych-investicii-eu/": 13,
+          "https://bratislavskykraj.sk/do-jedalnicka-sa-na-jar-odporuca-zaradit-medvedi-cesnak-ci-bylinky/": 5,
+          "https://bratislavskykraj.sk/miesto-kde-starostlivost-znamena-viac-nez-pomoc-a-aj-male-gesta-menia-zivoty-v-domove-socialnych-sluzieb-vytvaraju-ludom-skutocny-domov/": 3,
+          "https://bratislavskykraj.sk/majova-prespavacka-v-ekocentre-po-stopach-plazov/": 6,
+          "https://bratislavskykraj.sk/majove-neresenie-jarne-tajomstva-prirody/": 1,
+          "https://bratislavskykraj.sk/fond-malych-projektov-prinasa-menej-byrokracie-a-viac-priestoru-pre-cezhranicne-iniciativy/": 3,
+          "https://bratislavskykraj.sk/otvorili-sme-zrekonstruovany-park-v-stupave/": 13,
+          "https://bratislavskykraj.sk/most-medzi-vrakunou-a-mostom-pri-bratislave-sa-zacne-opravovat-prace-potrvaju-do-polovice-juna/": 1,
+          "https://bratislavskykraj.sk/efektivny-rozvoj-regionov-sa-v-21-storoci-nezaobide-bez-kvalitnych-dat-a-ich-vzajomneho-zdielania/": 3,
+          "https://bratislavskykraj.sk/regionalny-rozvoj/projekty/prebiehajuce/zlepsenie-kvality-ovzdusia-life-ip/": 17
+        }
+      },
+      "wcag141": {
+        "rule description": [
+          "Ensure links are distinguished from surrounding text in a way that does not rely on color"
+        ],
+        "url": {
+          "https://bratislavskykraj.sk/podujatie/komorny-koncert-szidi-tobias-uz-srdce-klopka-mi-studio-a2-4/": 1
+        }
+      }
+    }
+  },
+  "pages_visited": 1461,
+  "pages_failed": 40
+}

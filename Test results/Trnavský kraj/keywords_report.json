@@ -1,0 +1,39 @@
+{
+  "keywords": {
+    "gdpr": {
+      "priemer": 10,
+      "found_on": "https://trnava-vuc.sk/oboznamenie-k-spracuvaniu-osobnych-udajov-trnavskym-samospravnym-krajom/",
+      "depth": 0
+    },
+    "tabula": {
+      "priemer": 10,
+      "found_on": "https://osam.trnava-vuc.sk/eSluzby/uradnaTabula/#vucttsk/sk/dokumenty",
+      "depth": 0
+    },
+    "vyhlaseniePristupnost": {
+      "priemer": 8,
+      "found_on": "https://trnava-vuc.sk/prehlasenie-o-pristupnosti/",
+      "depth": 0
+    },
+    "rss": {
+      "priemer": null,
+      "found_on": null,
+      "depth": null
+    },
+    "kompetencie": {
+      "priemer": 10,
+      "found_on": "https://trnava-vuc.sk/utvar-hlavneho-kontrolora/kompetencie-a-pravomoci/",
+      "depth": 1
+    },
+    "objednavky": {
+      "priemer": 8.33,
+      "found_on": "https://crz.trnava-vuc.sk/trnavsky-samospravny-kraj/objednavky/",
+      "depth": 1
+    },
+    "faktury": {
+      "priemer": 10,
+      "found_on": "https://crz.trnava-vuc.sk/trnavsky-samospravny-kraj/objednavky/",
+      "depth": 1
+    }
+  }
+}

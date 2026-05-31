@@ -1,0 +1,140 @@
+{
+  "wcag": {
+    "count": 3,
+    "found_rules": [
+      "wcag244",
+      "wcag143",
+      "wcag412"
+    ],
+    "rules": {
+      "wcag143": {
+        "rule description": [
+          "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds"
+        ],
+        "url": {
+          "https://mincrs.sk/": 1,
+          "https://mincrs.sk/en/": 1,
+          "https://mincrs.sk/urad-ministerstva": 1,
+          "https://mincrs.sk/o-nas": 1,
+          "https://mincrs.sk/vyrocne-spravy": 1,
+          "https://mincrs.sk/navrh-zaverecneho-uctu-kapitoly": 1,
+          "https://mincrs.sk/statut-ministerstva": 1,
+          "https://mincrs.sk/prehlad-poskytnutych-verejnych-financii": 1,
+          "https://mincrs.sk/organizacny-poriadok": 1,
+          "https://mincrs.sk/oznamenie-o-poskytnuti-prostriedkov-na-statnu-reklamu": 1,
+          "https://mincrs.sk/podriadene-organizacie": 1,
+          "https://mincrs.sk/zastity": 1,
+          "https://mincrs.sk/gdpr": 1,
+          "https://mincrs.sk/verejne-obstaravanie": 1,
+          "https://mincrs.sk/informacie-pre-obcanov": 1,
+          "https://mincrs.sk/staznosti-a-peticie": 1,
+          "https://mincrs.sk/oznamovanie-protispolocenskej-cinnosti-2": 1,
+          "https://mincrs.sk/ziadost-o-informacie": 1,
+          "https://mincrs.sk/cestovny-ruch": 1,
+          "https://mincrs.sk/cestovny-ruch-na-slovensku": 1,
+          "https://mincrs.sk/marketing-a-propagacia": 1,
+          "https://mincrs.sk/cestovny-ruch-v-programovom-vyhlaseni-vlady-sr-2023-2027": 1,
+          "https://mincrs.sk/zoznam-ziadatelov-o-dotaciu-2025-2": 1,
+          "https://mincrs.sk/poskytovanie-dotacie-pre-organizacie-cestovneho-ruchu": 1,
+          "https://mincrs.sk/register-organizacii-cestovneho-ruchu": 1,
+          "https://mincrs.sk/legislativa-a-koncepcne-dokumenty": 1,
+          "https://mincrs.sk/vzdelavanie": 1,
+          "https://mincrs.sk/osobny-urad": 1,
+          "https://mincrs.sk/vyzvy": 1,
+          "https://mincrs.sk/vyzvy-pre-organizacie-v-cestovnom-ruchu-2026": 1,
+          "https://mincrs.sk/vyzvy-na-poskytnutie-dotacii-pre-oocr-kocr-odbor-destinacneho-manazmentu": 1,
+          "https://mincrs.sk/vyzvy-na-poskytnutie-prispevku-odboru-podpory-cr": 1,
+          "https://mincrs.sk/antidopingova-problematika": 1,
+          "https://mincrs.sk/prispevok-za-zasluhy-v-oblasti-sportu": 1,
+          "https://mincrs.sk/sportova-infrastruktura": 1,
+          "https://mincrs.sk/cestne-statne-tituly": 1,
+          "https://mincrs.sk/register-medailovych-oceneni": 1,
+          "https://mincrs.sk/vzdelavanie-na-ziskanie-odbornej-sposobilosti": 1,
+          "https://mincrs.sk/financovanie-sportu": 1,
+          "https://mincrs.sk/2026-2": 1,
+          "https://mincrs.sk/vseobecne-informacie-1": 1,
+          "https://mincrs.sk/prispevok-uznanemu-sportu-1": 1,
+          "https://mincrs.sk/legislativa-a-koncepcne-materialy-v-sporte": 1,
+          "https://mincrs.sk/dotacie-1": 1,
+          "https://mincrs.sk/prispevok-na-narodny-sportovy-projekt-1": 1,
+          "https://mincrs.sk/2025-2": 1,
+          "https://mincrs.sk/vseobecne-informacie": 1,
+          "https://mincrs.sk/prispevok-uznanemu-sportu": 1,
+          "https://mincrs.sk/dotacie": 1,
+          "https://mincrs.sk/prispevok-na-narodny-sportovy-projekt": 1,
+          "https://mincrs.sk/2024-2": 1,
+          "https://mincrs.sk/hlavny-kontrolor-sportu": 1,
+          "https://mincrs.sk/top-tim": 1,
+          "https://mincrs.sk/historia": 1,
+          "https://mincrs.sk/spravy-hks-z-vykonanych-financnych-kontrol-sucast-spravy-o-cinnosti-podla-%C2%A7-61-ods-7-zos": 1,
+          "https://mincrs.sk/pomocne-manualy-a-vzorova-dokumentacia": 1,
+          "https://mincrs.sk/sprava-o-cinnosti-hlavneho-kontrolora-sportu": 1,
+          "https://mincrs.sk/kontrolori-narodnych-sportovych-zvazov-a-narodnych-sportovych-organizacii": 1,
+          "https://mincrs.sk/preukazovanie-bezuhonnosti": 1,
+          "https://mincrs.sk/vypis-o-podnikani-sportoveho-odbornika-alebo-profesionalneho-sportovca": 1,
+          "https://mincrs.sk/odporucany-postup-pri-podavani-podnetu-hlavnemu-kontrolorovi-sportu": 1,
+          "https://mincrs.sk/media": 1,
+          "https://mincrs.sk/aktuality": 1,
+          "https://mincrs.sk/kontakty/ministerstvo": 1,
+          "https://mincrs.sk/kontakt": 1,
+          "https://mincrs.sk/zapis-do-is-sportu": 1,
+          "https://mincrs.sk/analyzy-data": 1,
+          "https://mincrs.sk/legislativa": 1,
+          "https://mincrs.sk/financovanie": 1,
+          "https://mincrs.sk/aktuality/preukazovanie-bezuhonnosti-na-ucely-prace-s-detmi-a-mladezou": 1,
+          "https://mincrs.sk/prispevok-na-sportovu-cinnost-dietata": 1,
+          "https://mincrs.sk/aktuality/varovanie-pred-phishingovou-kampanou-zneuzivajucou-informacie-ohladom-rezervacii-v-ubytovacich-zariadeniach": 1,
+          "https://mincrs.sk/aktuality/vyjadrenie-ministerstva-cestovneho-ruchu-a-sportu-sr-k-ziadosti-klientov-ck-happy-travel": 1,
+          "https://mincrs.sk/top-tim-v-roku-2023": 1,
+          "https://mincrs.sk/aktuality/ludia-a-hrady-najvacsi-projekt-obnovy-hradov-na-slovensku": 1,
+          "https://mincrs.sk/rada-europy-a-sport": 1,
+          "https://mincrs.sk/aktuality/nase-ministerstvo-pokracuje-v-pracovnych-stretnutiach-v-regionoch": 1,
+          "https://mincrs.sk/europska-unia-a-sport": 1,
+          "https://mincrs.sk/aktuality/ministerstvo-cestovneho-ruchu-a-sportu-sr-opat-podpori-slovenske-folklorne-festivaly": 1,
+          "https://mincrs.sk/unesco-a-sport": 1,
+          "https://mincrs.sk/medzinarodna-spolupraca": 1,
+          "https://mincrs.sk/vysehradska-stvorka-a-sport-v4": 1,
+          "https://mincrs.sk/informacie-formulare-vzory-pre-financovanie-sportu-v-roku-2023": 1,
+          "https://mincrs.sk/informacie-formulare-vzory-pre-financovanie-sportu-v-roku-2022": 1,
+          "https://mincrs.sk/alokacia-financnych-prostriedkov-na-sport-v-roku-2023-2": 1,
+          "https://mincrs.sk/financovanie-sportu-v-roku-2022": 1,
+          "https://mincrs.sk/alokacia-financnych-prostriedkov-na-sport-v-roku-2022": 1,
+          "https://mincrs.sk/zlozenie-komisie-ministerstva-cestovneho-ruchu-a-sportu-sr-na-oponenturu-planu-pripravy-sportovca-top-timu": 1,
+          "https://mincrs.sk/financovanie-sportu-v-roku-2023": 1,
+          "https://mincrs.sk/vyuctovanie-financnych-prostriedkov-poskytnutych-v-roku-2022": 1,
+          "https://mincrs.sk/kariera": 1,
+          "https://mincrs.sk/top-tim-v-roku-2024": 1,
+          "https://mincrs.sk/financovanie-sportu/financovanie-sportu-2025": 1,
+          "https://mincrs.sk/alokacia-financnych-prostriedkov-na-sport-v-roku-2024": 1,
+          "https://mincrs.sk/bezpecnostny-incident-v-kybernetickej-bezpecnosti": 1,
+          "https://mincrs.sk/vzdelavanie-v-sporte-2": 1,
+          "https://mincrs.sk/en": 1,
+          "https://mincrs.sk/ministerstvo/statut-ministerstva": 1,
+          "https://mincrs.sk/en/about-us": 1,
+          "https://mincrs.sk/en/patronage": 1,
+          "https://mincrs.sk/en/draft-of-the-final-account-of-the-chapter": 1,
+          "https://mincrs.sk/en/urad-ministerstva": 1,
+          "https://mincrs.sk/en/statute-of-the-ministry": 1
+        }
+      },
+      "wcag244": {
+        "rule description": [
+          "Ensure links have discernible text"
+        ],
+        "url": {
+          "https://mincrs.sk/financovanie-sportu-v-roku-2023": 1
+        }
+      },
+      "wcag412": {
+        "rule description": [
+          "Ensure links have discernible text"
+        ],
+        "url": {
+          "https://mincrs.sk/financovanie-sportu-v-roku-2023": 1
+        }
+      }
+    }
+  },
+  "pages_visited": 671,
+  "pages_failed": 232
+}

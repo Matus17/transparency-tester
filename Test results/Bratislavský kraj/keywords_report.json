@@ -1,0 +1,39 @@
+{
+  "keywords": {
+    "gdpr": {
+      "priemer": 7.5,
+      "found_on": "https://bratislavskykraj.sk/gdpr/",
+      "depth": 0
+    },
+    "tabula": {
+      "priemer": 10,
+      "found_on": "https://bratislavskykraj.sk/otvorena-zupa/uradna-tabula/",
+      "depth": 1
+    },
+    "vyhlaseniePristupnost": {
+      "priemer": null,
+      "found_on": null,
+      "depth": null
+    },
+    "rss": {
+      "priemer": 10,
+      "found_on": "https://bratislavskykraj.sk/feed/",
+      "depth": 0
+    },
+    "kompetencie": {
+      "priemer": 10,
+      "found_on": "https://bratislavskykraj.sk/urad-bsk/uzemne-planovanie-a-gis/kompetencie-oddelenia-uzemneho-planu-a-gis/",
+      "depth": 3
+    },
+    "objednavky": {
+      "priemer": 8.33,
+      "found_on": "https://zverejnovanie.region-bsk.sk/bratislavsky-samospravny-kraj/objednavky/",
+      "depth": 1
+    },
+    "faktury": {
+      "priemer": 10,
+      "found_on": "https://zverejnovanie.region-bsk.sk/bratislavsky-samospravny-kraj/faktury/",
+      "depth": 1
+    }
+  }
+}

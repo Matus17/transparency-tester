@@ -1,0 +1,252 @@
+[
+  {
+    "nazov": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "MDSR_Dotácie_Granty CEF_2025_06_30"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": " Ministerstvo dopravy Slovenskej republiky"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://data.slovensko.sk/download?id=64b8e33a-8300-4ebb-81ce-ac0d26553aa5"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/ODS"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2025-07-03T11:16:00Z"
+    }
+  },
+  {
+    "nazov": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "MDSR_Dotácie_Granty CEF_2025_06_30"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": " Ministerstvo dopravy Slovenskej republiky"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://data.slovensko.sk/download?id=bd0d98ef-9d5e-4a14-acab-20fd49d86113"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/CSV"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2025-07-03T11:16:00Z"
+    }
+  },
+  {
+    "nazov": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "MDSR_Žiadatelia_Rozvoj bývania a nájomné byty_2025_06_30"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": " Ministerstvo dopravy Slovenskej republiky"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://data.slovensko.sk/download?id=c1fb4788-5320-4046-9003-6c3c2b16c239"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/ODS"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2025-07-03T03:19:18Z"
+    }
+  },
+  {
+    "nazov": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "MDSR_Žiadatelia_Rozvoj bývania a nájomné byty_2025_06_30"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": " Ministerstvo dopravy Slovenskej republiky"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://data.slovensko.sk/download?id=eacb98e0-e9d1-4d51-9c73-bdc0749a7d75"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/CSV"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2025-07-03T03:19:18Z"
+    }
+  },
+  {
+    "nazov": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "MDSR_Žiadosti_Rozvoj bývania a nájomné byty_2025_06_30"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": " Ministerstvo dopravy Slovenskej republiky"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://data.slovensko.sk/download?id=9e7495ad-bf4a-49e4-84b6-0da5c8fb4708"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/CSV"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2025-07-03T03:18:12Z"
+    }
+  },
+  {
+    "nazov": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "MDSR_Žiadosti_Rozvoj bývania a nájomné byty_2025_06_30"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": " Ministerstvo dopravy Slovenskej republiky"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://data.slovensko.sk/download?id=feb8abdc-8dc2-423e-86f2-e1c22ac9b704"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/ODS"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2025-07-03T03:18:12Z"
+    }
+  },
+  {
+    "nazov": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "MDSR_Výzvy_Rozvoj bývania a nájomné byty_2025_06_30"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": " Ministerstvo dopravy Slovenskej republiky"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://data.slovensko.sk/download?id=747aeee1-d3f3-4f74-b1c5-c805e0219c4d"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/CSV"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2025-07-03T03:16:25Z"
+    }
+  },
+  {
+    "nazov": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "MDSR_Výzvy_Rozvoj bývania a nájomné byty_2025_06_30"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": " Ministerstvo dopravy Slovenskej republiky"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://data.slovensko.sk/download?id=9130920a-ecf5-4c3f-8fd7-2d1491f0771e"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/ODS"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2025-07-03T03:16:25Z"
+    }
+  },
+  {
+    "nazov": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "MDSR_Schémy_Rozvoj bývania a nájomné byty_2025_06_30"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": " Ministerstvo dopravy Slovenskej republiky"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://data.slovensko.sk/download?id=536e9208-0222-4715-88e4-45f79496ccf5"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/ODS"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2025-07-03T02:54:39Z"
+    }
+  },
+  {
+    "nazov": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "MDSR_Schémy_Rozvoj bývania a nájomné byty_2025_06_30"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": " Ministerstvo dopravy Slovenskej republiky"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://data.slovensko.sk/download?id=f3c1083b-c39c-4a54-b5f5-9a3e1d46df9b"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/CSV"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2025-07-03T02:54:39Z"
+    }
+  }
+]

@@ -1,0 +1,252 @@
+[
+  {
+    "nazov": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Zoznam faktúr TTSK"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Trnavský samosprávny kraj"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://opendata.trnava-vuc.sk/documents/94ecbdf9e0494f8098cc9da9384ed11d"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/XML"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2024-07-22T13:42:14Z"
+    }
+  },
+  {
+    "nazov": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": " Zoznam objednávok TTSK"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Trnavský samosprávny kraj"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://opendata.trnava-vuc.sk/documents/b78ef48fe32047dd80ffee20f22b4589/explore"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/XML"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2024-07-22T13:41:57Z"
+    }
+  },
+  {
+    "nazov": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Pasportizačný list národných kultúrnych pamiatok TTSK"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Trnavský samosprávny kraj"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://opendata.trnava-vuc.sk/documents/30d97232c06644c18fa823c53f93b2ca/about"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/CSV"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2024-07-22T13:33:35Z"
+    }
+  },
+  {
+    "nazov": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Cyklosčítače TTSK"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Trnavský samosprávny kraj"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://opendata.trnava-vuc.sk/datasets/27d16ca871e64bc08b9d771f5e5cfcd0_6/explore?location=48.320547%2C17.398988%2C9.34"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/SHP"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2024-07-22T13:31:28Z"
+    }
+  },
+  {
+    "nazov": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Neverejní poskytovatelia sociálnych služieb v TTSK"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Trnavský samosprávny kraj"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://opendata.trnava-vuc.sk/datasets/ca2e113b99904ccca3bce194613a74c8_0/explore?location=48.346673%2C17.667276%2C9.49"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/CSV"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2024-07-22T13:29:04Z"
+    }
+  },
+  {
+    "nazov": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Zariadenia sociálnych služieb TTSK"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Trnavský samosprávny kraj"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://opendata.trnava-vuc.sk/datasets/c8dc09d8d8704a9780c3472e71c65178_0/explore?location=48.321681%2C17.442289%2C9.41"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/CSV"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2024-07-22T13:27:37Z"
+    }
+  },
+  {
+    "nazov": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Žiadosti o sprístupnenie informácií podľa zákona č. 211/2000 Z. z. o slobodnom prístupe k informáciám"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Trnavský samosprávny kraj"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://opendata.trnava-vuc.sk/datasets/446f0f87f4314b2e9b5655913d45755f_0/explore"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/CSV"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2024-07-22T13:26:35Z"
+    }
+  },
+  {
+    "nazov": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Participatívny rozpočet TTSK"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Trnavský samosprávny kraj"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://opendata.trnava-vuc.sk/datasets/2fc2814bc73d41f8bc644439d136cee1_0/explore?location=48.351441%2C18.244975%2C9.45"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/CSV"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2024-07-22T13:25:31Z"
+    }
+  },
+  {
+    "nazov": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Štúdia rozvoja cyklotrasy TTSK"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Trnavský samosprávny kraj"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://opendata.trnava-vuc.sk/maps/2b78346a80b648139f94b4272732d7fd/about"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/SHP"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2024-07-22T13:24:06Z"
+    }
+  },
+  {
+    "nazov": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Cyklodoprava: No-regret oblasti"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Trnavský samosprávny kraj"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://opendata.trnava-vuc.sk/datasets/8499c45de8aa4598936c3557d58c7b06_0/explore?location=48.336807%2C17.552725%2C9.37"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/SHP"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2024-07-22T13:19:43Z"
+    }
+  }
+]

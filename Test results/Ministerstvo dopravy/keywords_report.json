@@ -1,0 +1,39 @@
+{
+  "keywords": {
+    "gdpr": {
+      "priemer": 7.5,
+      "found_on": "https://www.mindop.sk/pre-verejnost/ochrana-osobnych-udajov",
+      "depth": 0
+    },
+    "tabula": {
+      "priemer": null,
+      "found_on": null,
+      "depth": null
+    },
+    "vyhlaseniePristupnost": {
+      "priemer": null,
+      "found_on": null,
+      "depth": null
+    },
+    "rss": {
+      "priemer": null,
+      "found_on": null,
+      "depth": null
+    },
+    "kompetencie": {
+      "priemer": null,
+      "found_on": null,
+      "depth": null
+    },
+    "objednavky": {
+      "priemer": 10,
+      "found_on": "https://www.mindop.sk/transparentnost/rozpocet-a-financovanie/objednavky-vystavene-ministerstvom/2021",
+      "depth": 1
+    },
+    "faktury": {
+      "priemer": 10,
+      "found_on": "https://www.mindop.sk/transparentnost/rozpocet-a-financovanie/faktury-urcene-ministerstvu/2015",
+      "depth": 1
+    }
+  }
+}

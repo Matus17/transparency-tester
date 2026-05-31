@@ -1,0 +1,39 @@
+{
+  "keywords": {
+    "gdpr": {
+      "priemer": 7.5,
+      "found_on": "https://www.mincrs.sk/gdpr",
+      "depth": 0
+    },
+    "tabula": {
+      "priemer": null,
+      "found_on": null,
+      "depth": null
+    },
+    "vyhlaseniePristupnost": {
+      "priemer": null,
+      "found_on": null,
+      "depth": null
+    },
+    "rss": {
+      "priemer": null,
+      "found_on": null,
+      "depth": null
+    },
+    "kompetencie": {
+      "priemer": null,
+      "found_on": null,
+      "depth": null
+    },
+    "objednavky": {
+      "priemer": 8,
+      "found_on": "https://www.mincrs.sk/verejne-obstaravanie",
+      "depth": 1
+    },
+    "faktury": {
+      "priemer": 10,
+      "found_on": "https://www.mincrs.sk/verejne-obstaravanie",
+      "depth": 1
+    }
+  }
+}

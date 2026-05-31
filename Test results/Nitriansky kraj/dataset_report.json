@@ -1,0 +1,102 @@
+[
+  {
+    "nazov": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Zoznam prijímateľov dotácií na šport z rozpočtu Nitrianskeho samosprávneho kraja"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Nitriansky samosprávny kraj"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://www.unsk.sk/Files/ShowFile/94094"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/CSV"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2024-02-21T13:03:43Z"
+    }
+  },
+  {
+    "nazov": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Lekárenské zariadenia v Nitrianskom kraji"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Nitriansky samosprávny kraj"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://www.unsk.sk/Files/ShowFile/93972"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/CSV"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2024-02-21T13:03:42Z"
+    }
+  },
+  {
+    "nazov": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Sociálne zariadenia v Nitrianskom kraji"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Nitriansky samosprávny kraj"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://www.unsk.sk/Files/ShowFile/94009"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/CSV"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2024-02-21T13:03:42Z"
+    }
+  },
+  {
+    "nazov": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Zdravotnícke zariadenia v Nitrianskom kraji"
+    },
+    "poskytovatelMeno": {
+      "xml:lang": "sk",
+      "type": "literal",
+      "value": "Nitriansky samosprávny kraj"
+    },
+    "accessURL": {
+      "type": "uri",
+      "value": "https://www.unsk.sk/Files/ShowFile/93971"
+    },
+    "format": {
+      "type": "uri",
+      "value": "http://publications.europa.eu/resource/authority/file-type/CSV"
+    },
+    "uprava": {
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2024-02-21T13:03:41Z"
+    }
+  }
+]

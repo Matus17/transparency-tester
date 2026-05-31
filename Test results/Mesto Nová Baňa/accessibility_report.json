@@ -1,0 +1,216 @@
+{
+  "wcag": {
+    "count": 6,
+    "found_rules": [
+      "wcag213",
+      "wcag111",
+      "wcag412",
+      "wcag244",
+      "wcag211",
+      "wcag143"
+    ],
+    "rules": {
+      "wcag143": {
+        "rule description": [
+          "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds"
+        ],
+        "url": {
+          "https://novabana.sk/otazky-a-odpovede": 1,
+          "https://novabana.sk/aktuality/nova-bana/prerusenie-distribucie-elektriny-v-mesiaci-jun-2026": 5,
+          "https://novabana.sk/samosprava/mestsky-urad": 3,
+          "https://novabana.sk/aktuality/nova-bana/odstavka-vody-z-dovodu-vypadku-el-energie-dna-2752026": 5,
+          "https://novabana.sk/aktuality/nova-bana": 10,
+          "https://novabana.sk/kontakt": 2,
+          "https://novabana.sk/aktuality/oznamy": 10,
+          "https://novabana.sk/aktuality/kultura/novobanska-kvapka-krvi-07072026": 5,
+          "https://novabana.sk/aktuality/kultura": 10,
+          "https://novabana.sk/aktuality": 2,
+          "https://novabana.sk/obcan/ako-vybavit": 3,
+          "https://novabana.sk/obcan/zber-odpadu": 3,
+          "https://novabana.sk/obcan": 2,
+          "https://novabana.sk/obcan/vo/referendum-2026": 4,
+          "https://novabana.sk/obcan/pohotovostne-sluzby": 3,
+          "https://novabana.sk/navstevnik/mesto": 3,
+          "https://novabana.sk/navstevnik/tipy-na-vylet": 3,
+          "https://novabana.sk/navstevnik/fotogaleria": 3,
+          "https://novabana.sk/navstevnik/ubytovanie": 3,
+          "https://novabana.sk/navstevnik": 2,
+          "https://novabana.sk/navstevnik/tipy-na-vylet/turisticke-zaujimavosti": 4,
+          "https://novabana.sk/informacie/informacne-centrum": 3,
+          "https://novabana.sk/informacie/smutocne-oznamenia": 3,
+          "https://novabana.sk/samosprava/uradne-hodiny": 3,
+          "https://novabana.sk/online-rozhlas": 2,
+          "https://novabana.sk/informacie": 2,
+          "https://novabana.sk/aktuality/oznamy/odstranovania-havarijneho-stavu-na-teplovodnom-potrubi-na-ulici-nabrezna": 5,
+          "https://novabana.sk/aktuality/nova-bana/ahkoatleticky-miting-je-tu": 5,
+          "https://novabana.sk/informacie/zdravotnicke-organizacie": 3,
+          "https://novabana.sk/aktuality/mestske-zastupitestvo": 10,
+          "https://novabana.sk/aktuality/mestske-zastupitestvo/nazivo-mestske-zastupitestvo": 5,
+          "https://novabana.sk/aktuality/nova-bana/najkrajsia-novobanska-predzahradka": 5,
+          "https://novabana.sk/aktuality/nova-bana/plan-kosenia-verejnej-zelene-2026-k-25052026": 5,
+          "https://novabana.sk/obcan/zivot-v-meste": 3,
+          "https://novabana.sk/informacie/rozvoj-mesta": 9,
+          "https://novabana.sk/informacie/novobanske-noviny": 3,
+          "https://novabana.sk/dokumenty_del/geograficky-informacny-system": 3,
+          "https://novabana.sk/informacie/eurofondy-projekty": 45,
+          "https://novabana.sk/obcan/odpadove-hospodarstvo": 3,
+          "https://novabana.sk/navstevnik/osobnosti-novej-bane": 3,
+          "https://novabana.sk/samosprava/socialny-podnik": 3,
+          "https://novabana.sk/navstevnik/banictvo-v-novej-bani": 3,
+          "https://novabana.sk/obcan/otazky-odpovede": 3,
+          "https://novabana.sk/ochrana-osobnych-udajov": 2,
+          "https://novabana.sk/navstevnik/region-gron": 3,
+          "https://novabana.sk/obcan/poruchy": 3,
+          "https://novabana.sk/samosprava/vyhlasenie-o-pristupnosti": 3,
+          "https://novabana.sk/samosprava": 2,
+          "https://novabana.sk/samosprava/mestsky-urad/interne-smernice": 4,
+          "https://novabana.sk/samosprava/mestsky-urad/legislativa": 4,
+          "https://novabana.sk/samosprava/mestsky-urad/oddelenie-vystavby-investicii-stavebneho-uradu-zivotneho-prostredia-spravy-majetku": 4,
+          "https://novabana.sk/samosprava/mestsky-urad/spravne-oddelenie": 4,
+          "https://novabana.sk/samosprava/mestsky-urad/oddelenie-kultury-sportu-mladeze-vzdelavania-komunikacie-informacneho-centra-mestskej-kniznice": 4,
+          "https://novabana.sk/samosprava/mestsky-urad/financne-oddelenie": 4,
+          "https://novabana.sk/samosprava/mestsky-urad/organizacna-schema": 4,
+          "https://novabana.sk/samosprava/mestsky-urad/informacne-centrum": 4,
+          "https://novabana.sk/aktuality/nova-bana/stanovisko-mestskych-lesov-nova-bana-sro-k-prispevku-zo-dna-25052026-zverejneneho-na-anonymnej-fcb-stranke-pravda-o-novej-bani": 5,
+          "https://novabana.sk/samosprava/mesto-nova-bana/charakteristika-uzemia": 4,
+          "https://novabana.sk/samosprava/mesto-nova-bana": 3,
+          "https://novabana.sk/samosprava/mesto-nova-bana/geografia": 4,
+          "https://novabana.sk/samosprava/mesto-nova-bana/heraldika": 4,
+          "https://novabana.sk/samosprava/mesto-nova-bana/historia": 4,
+          "https://novabana.sk/samosprava/mesto-nova-bana/priroda": 4,
+          "https://novabana.sk/samosprava/mesto-nova-bana/historicke-pamiatky": 4,
+          "https://novabana.sk/samosprava/mesto-nova-bana/prehad-primatorov": 4,
+          "https://novabana.sk/samosprava/mesto-nova-bana/demografia": 4,
+          "https://novabana.sk/samosprava/primator/viceprimator": 4,
+          "https://novabana.sk/samosprava/primator": 4,
+          "https://novabana.sk/samosprava/mesto-nova-bana/kronika-mesta": 4,
+          "https://novabana.sk/samosprava/hlavna-kontrolorka": 3,
+          "https://novabana.sk/samosprava/hlavna-kontrolorka/spravy-o-cinnosti": 4,
+          "https://novabana.sk/samosprava/hlavna-kontrolorka/stanoviska-hlavneho-kontrolora": 4,
+          "https://novabana.sk/samosprava/hlavna-kontrolorka/plan-kontrolnej-cinnosti": 4,
+          "https://novabana.sk/samosprava/hlavna-kontrolorka/kontroly-plnenia-uzneseni": 4,
+          "https://novabana.sk/samosprava/hlavna-kontrolorka/staznosti-peticie": 4,
+          "https://novabana.sk/samosprava/prednostka": 3,
+          "https://novabana.sk/samosprava/hlavna-kontrolorka/kontroly-o-vyvoji-dlhu-mesta": 4,
+          "https://novabana.sk/samosprava/hlavna-kontrolorka/pravidla-kontrolnej-cinnosti-mesta-nova-bana": 4,
+          "https://novabana.sk/samosprava/mestske-zastupitestvo/poslanci-msz": 4,
+          "https://novabana.sk/samosprava/mestske-zastupitestvo": 3,
+          "https://novabana.sk/samosprava/mestske-zastupitestvo/dochadzka-poslancov": 4,
+          "https://novabana.sk/samosprava/hlavna-kontrolorka/spravy-z-kontrol": 4,
+          "https://novabana.sk/samosprava/mestske-zastupitestvo/eticky-kodex": 4,
+          "https://novabana.sk/samosprava/mestske-zastupitestvo/majetkove-oznamenia": 4,
+          "https://novabana.sk/samosprava/komisie-pri-msz": 3,
+          "https://novabana.sk/samosprava/mestske-zastupitestvo/dokumenty-msz": 4,
+          "https://novabana.sk/samosprava/poovnicka-spolocnost": 3,
+          "https://novabana.sk/samosprava/mestsky-futbalovy-klub": 3,
+          "https://novabana.sk/samosprava/mladeznicky-parlament": 3,
+          "https://novabana.sk/samosprava/novobansky-banicky-spolok": 3,
+          "https://novabana.sk/samosprava/denne-centrum-seniorov-lipa": 3,
+          "https://novabana.sk/samosprava/obcianske-zdruzenie-nova-bana": 3,
+          "https://novabana.sk/samosprava/zariadenie-pre-seniorov-usmev": 3,
+          "https://novabana.sk/samosprava/rada-seniorov": 3
+        }
+      },
+      "wcag244": {
+        "rule description": [
+          "Ensure links have discernible text"
+        ],
+        "url": {
+          "https://novabana.sk/aktuality/nova-bana/prerusenie-distribucie-elektriny-v-mesiaci-jun-2026": 1,
+          "https://novabana.sk/aktuality/nova-bana/odstavka-vody-z-dovodu-vypadku-el-energie-dna-2752026": 1,
+          "https://novabana.sk/aktuality/nova-bana": 1,
+          "https://novabana.sk/aktuality/oznamy": 1,
+          "https://novabana.sk/aktuality/kultura/novobanska-kvapka-krvi-07072026": 1,
+          "https://novabana.sk/aktuality/kultura": 1,
+          "https://novabana.sk/aktuality": 1,
+          "https://novabana.sk/navstevnik/mesto": 1,
+          "https://novabana.sk/navstevnik/fotogaleria": 4,
+          "https://novabana.sk/aktuality/oznamy/odstranovania-havarijneho-stavu-na-teplovodnom-potrubi-na-ulici-nabrezna": 1,
+          "https://novabana.sk/aktuality/nova-bana/ahkoatleticky-miting-je-tu": 1,
+          "https://novabana.sk/aktuality/nova-bana/najkrajsia-novobanska-predzahradka": 1,
+          "https://novabana.sk/aktuality/nova-bana/plan-kosenia-verejnej-zelene-2026-k-25052026": 1,
+          "https://novabana.sk/informacie/eurofondy-projekty": 15,
+          "https://novabana.sk/obcan/odpadove-hospodarstvo": 2,
+          "https://novabana.sk/navstevnik/osobnosti-novej-bane": 2,
+          "https://novabana.sk/navstevnik/banictvo-v-novej-bani": 1,
+          "https://novabana.sk/obcan/otazky-odpovede": 2,
+          "https://novabana.sk/obcan/poruchy": 1,
+          "https://novabana.sk/aktuality/nova-bana/stanovisko-mestskych-lesov-nova-bana-sro-k-prispevku-zo-dna-25052026-zverejneneho-na-anonymnej-fcb-stranke-pravda-o-novej-bani": 1,
+          "https://novabana.sk/samosprava/mestske-zastupitestvo/poslanci-msz": 3,
+          "https://novabana.sk/dokumenty/elektronicka-uradna-tabula": 1
+        }
+      },
+      "wcag412": {
+        "rule description": [
+          "Ensure links have discernible text",
+          "Ensure <iframe> and <frame> elements have an accessible name"
+        ],
+        "url": {
+          "https://novabana.sk/aktuality/nova-bana/prerusenie-distribucie-elektriny-v-mesiaci-jun-2026": 1,
+          "https://novabana.sk/aktuality/nova-bana/odstavka-vody-z-dovodu-vypadku-el-energie-dna-2752026": 1,
+          "https://novabana.sk/aktuality/nova-bana": 1,
+          "https://novabana.sk/aktuality/oznamy": 1,
+          "https://novabana.sk/aktuality/kultura/novobanska-kvapka-krvi-07072026": 1,
+          "https://novabana.sk/aktuality/kultura": 1,
+          "https://novabana.sk/aktuality": 1,
+          "https://novabana.sk/navstevnik/mesto": 1,
+          "https://novabana.sk/navstevnik/fotogaleria": 4,
+          "https://novabana.sk/aktuality/oznamy/odstranovania-havarijneho-stavu-na-teplovodnom-potrubi-na-ulici-nabrezna": 1,
+          "https://novabana.sk/aktuality/nova-bana/ahkoatleticky-miting-je-tu": 1,
+          "https://novabana.sk/aktuality/nova-bana/najkrajsia-novobanska-predzahradka": 1,
+          "https://novabana.sk/aktuality/nova-bana/plan-kosenia-verejnej-zelene-2026-k-25052026": 1,
+          "https://novabana.sk/informacie/eurofondy-projekty": 15,
+          "https://novabana.sk/obcan/odpadove-hospodarstvo": 2,
+          "https://novabana.sk/navstevnik/osobnosti-novej-bane": 2,
+          "https://novabana.sk/navstevnik/banictvo-v-novej-bani": 5,
+          "https://novabana.sk/obcan/otazky-odpovede": 2,
+          "https://novabana.sk/obcan/poruchy": 1,
+          "https://novabana.sk/aktuality/nova-bana/stanovisko-mestskych-lesov-nova-bana-sro-k-prispevku-zo-dna-25052026-zverejneneho-na-anonymnej-fcb-stranke-pravda-o-novej-bani": 1,
+          "https://novabana.sk/samosprava/mesto-nova-bana/kronika-mesta": 1,
+          "https://novabana.sk/samosprava/mestske-zastupitestvo/poslanci-msz": 3,
+          "https://novabana.sk/dokumenty/elektronicka-uradna-tabula": 1,
+          "https://novabana.sk/samosprava/mestsky-futbalovy-klub": 3
+        }
+      },
+      "wcag111": {
+        "rule description": [
+          "Ensure <img> elements have alternative text or a role of none or presentation"
+        ],
+        "url": {
+          "https://novabana.sk/obcan/zber-odpadu": 2,
+          "https://novabana.sk/navstevnik/fotogaleria": 4,
+          "https://novabana.sk/informacie/zdravotnicke-organizacie": 1,
+          "https://novabana.sk/informacie/novobanske-noviny": 1,
+          "https://novabana.sk/navstevnik/osobnosti-novej-bane": 1,
+          "https://novabana.sk/samosprava/socialny-podnik": 3,
+          "https://novabana.sk/navstevnik/banictvo-v-novej-bani": 2,
+          "https://novabana.sk/obcan/poruchy": 7,
+          "https://novabana.sk/samosprava/mesto-nova-bana": 1,
+          "https://novabana.sk/samosprava/primator/viceprimator": 1,
+          "https://novabana.sk/samosprava/hlavna-kontrolorka": 1,
+          "https://novabana.sk/samosprava/prednostka": 1,
+          "https://novabana.sk/samosprava/mestske-zastupitestvo/poslanci-msz": 13,
+          "https://novabana.sk/samosprava/mladeznicky-parlament": 1
+        }
+      },
+      "wcag211": {
+        "rule description": [
+          "Ensure elements that have scrollable content are accessible by keyboard"
+        ],
+        "url": {
+          "https://novabana.sk/samosprava/mestske-zastupitestvo/dochadzka-poslancov": 1
+        }
+      },
+      "wcag213": {
+        "rule description": [
+          "Ensure elements that have scrollable content are accessible by keyboard"
+        ],
+        "url": {
+          "https://novabana.sk/samosprava/mestske-zastupitestvo/dochadzka-poslancov": 1
+        }
+      }
+    }
+  },
+  "pages_visited": 1485,
+  "pages_failed": 15
+}

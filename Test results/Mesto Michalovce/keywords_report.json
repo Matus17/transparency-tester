@@ -1,0 +1,39 @@
+{
+  "keywords": {
+    "gdpr": {
+      "priemer": 7.5,
+      "found_on": "https://www.michalovce.sk/sk/clanok/ochrana-sukromia",
+      "depth": 0
+    },
+    "tabula": {
+      "priemer": 10,
+      "found_on": "https://www.michalovce.sk/sk/uradne-oznamy",
+      "depth": 0
+    },
+    "vyhlaseniePristupnost": {
+      "priemer": 8,
+      "found_on": "https://www.michalovce.sk/sk/clanok/prehlasenie-o-pristupnosti",
+      "depth": 0
+    },
+    "rss": {
+      "priemer": null,
+      "found_on": null,
+      "depth": null
+    },
+    "kompetencie": {
+      "priemer": null,
+      "found_on": null,
+      "depth": null
+    },
+    "objednavky": {
+      "priemer": 8.33,
+      "found_on": "https://zverejnovanie.esmao.sk/Dokument/Index/707269",
+      "depth": 1
+    },
+    "faktury": {
+      "priemer": 8,
+      "found_on": "https://zverejnovanie.esmao.sk/Faktura/Index/707269",
+      "depth": 1
+    }
+  }
+}

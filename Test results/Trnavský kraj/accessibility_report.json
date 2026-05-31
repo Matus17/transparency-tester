@@ -1,0 +1,174 @@
+{
+  "wcag": {
+    "count": 6,
+    "found_rules": [
+      "wcag131",
+      "wcag412",
+      "wcag244",
+      "wcag111",
+      "wcag141",
+      "wcag143"
+    ],
+    "rules": {
+      "wcag131": {
+        "rule description": [
+          "Ensure elements with an ARIA role that require parent roles are contained by them"
+        ],
+        "url": {
+          "https://trnava-vuc.sk/": 3
+        }
+      },
+      "wcag412": {
+        "rule description": [
+          "Ensure all ARIA attributes have valid values",
+          "Ensure buttons have discernible text",
+          "Ensure every ARIA button, link and menuitem has an accessible name",
+          "Ensure links have discernible text",
+          "Ensure interactive controls are not nested as they are not always announced by screen readers or can cause focus problems for assistive technologies",
+          "Ensure <iframe> and <frame> elements have an accessible name"
+        ],
+        "url": {
+          "https://trnava-vuc.sk/": 2,
+          "https://trnava-vuc.sk/hu/kezdolap/": 4,
+          "https://trnava-vuc.sk/homepage/": 4,
+          "https://trnava-vuc.sk/samosprava/": 1,
+          "https://trnava-vuc.sk/zupan-ttsk/": 1,
+          "https://trnava-vuc.sk/podpredsedovia-ttsk/": 1,
+          "https://trnava-vuc.sk/kancelaria-predsedu/": 1,
+          "https://trnava-vuc.sk/riaditel-uradu-ttsk/": 1,
+          "https://trnava-vuc.sk/zastupca-riaditela-uradu-ttsk/": 1,
+          "https://trnava-vuc.sk/zastupca-riaditela-uradu-ttsk/referat-investicnych-cinnosti/": 1,
+          "https://trnava-vuc.sk/kancelaria-riaditela-uradu/": 1,
+          "https://trnava-vuc.sk/kancelaria-riaditela-uradu/referat-krizoveho-riadenia-bozp-a-po/": 1,
+          "https://trnava-vuc.sk/kancelaria-riaditela-uradu/referat-kyberneticko-informacnej-bezpecnosti-ochrany-udajov-a-rozvoja-elektronickych-sluzieb/": 1,
+          "https://trnava-vuc.sk/kancelaria-riaditela-uradu/legislativa/": 1,
+          "https://trnava-vuc.sk/oddelenie-informatiky/": 1,
+          "https://trnava-vuc.sk/otvorena-zupa/pristup-k-informaciam/": 1,
+          "https://trnava-vuc.sk/doprava/": 1,
+          "https://trnava-vuc.sk/doprava/dopravna-obsluznost/": 1,
+          "https://trnava-vuc.sk/doprava/dopravna-obsluznost/autobusova-doprava/": 1,
+          "https://trnava-vuc.sk/doprava/dopravna-obsluznost/zeleznicna-doprava/": 1,
+          "https://trnava-vuc.sk/doprava/dopravna-obsluznost/ukrajina-a-bezplatna-preprava/": 1,
+          "https://trnava-vuc.sk/doprava/dopravna-obsluznost/pdo/": 1,
+          "https://trnava-vuc.sk/doprava/infrastruktura/mapy-cestnej-siete/": 1,
+          "https://trnava-vuc.sk/doprava/infrastruktura/": 1,
+          "https://trnava-vuc.sk/doprava/infrastruktura/sprava-a-udrzba-ciest/": 1,
+          "https://trnava-vuc.sk/urad/": 1,
+          "https://trnava-vuc.sk/doprava/referat-cyklodopravy/": 11,
+          "https://trnava-vuc.sk/doprava/referat-cyklodopravy/podujatia/": 1,
+          "https://trnava-vuc.sk/doprava/referat-cyklodopravy/dokumenty-cyklokoordinator/": 1,
+          "https://trnava-vuc.sk/doprava/referat-cyklodopravy/jarna-skola-cyklodopravy/": 2,
+          "https://trnava-vuc.sk/doprava/zamery-a-projekty/": 1,
+          "https://trnava-vuc.sk/doprava/referat-cyklodopravy/jesenna-skola-cyklodopravy/": 3,
+          "https://trnava-vuc.sk/doprava/referat-cyklodopravy/materialy/": 1,
+          "https://trnava-vuc.sk/doprava/referat-cyklodopravy/aktuality-cyklokoordinator/": 1,
+          "https://trnava-vuc.sk/doprava/referat-mobility/": 1,
+          "https://trnava-vuc.sk/mapa-stranok/": 2,
+          "https://trnava-vuc.sk/doprava/dopravna-obsluznost/legislativa/": 1,
+          "https://trnava-vuc.sk/financie/": 1,
+          "https://trnava-vuc.sk/financie/oddelenie-rozpoctu-a-financovania/": 1,
+          "https://trnava-vuc.sk/financie/oddelenie-financneho-manazmentu-projektov/": 1,
+          "https://trnava-vuc.sk/financie/oddelenie-rozpoctu-a-financovania-skolstva/": 1,
+          "https://trnava-vuc.sk/financie/oddelenie-uctovnictva/": 1,
+          "https://trnava-vuc.sk/financie/oddelenie-kontrolingu/": 1,
+          "https://trnava-vuc.sk/financie/rada-pre-rozpocet-ttsk/": 1,
+          "https://trnava-vuc.sk/financie/vybor-pre-audit/": 1,
+          "https://trnava-vuc.sk/financie/dolezite-dokumenty/": 1,
+          "https://trnava-vuc.sk/financie/dolezite-dokumenty/zaverecny-ucet/": 1,
+          "https://trnava-vuc.sk/financie/dolezite-dokumenty/vyrocne-spravy/": 1,
+          "https://trnava-vuc.sk/financie/dolezite-dokumenty/rozpocet/": 1,
+          "https://trnava-vuc.sk/financie/dolezite-dokumenty/informacia-o-cerpani-rozpoctu/": 1,
+          "https://trnava-vuc.sk/financie/strategia-financneho-riadenia-ttsk/": 1,
+          "https://trnava-vuc.sk/financie/cenove-vymery/": 1,
+          "https://trnava-vuc.sk/financie/zero-based-budgeting/": 1,
+          "https://trnava-vuc.sk/odbor-implementacie-operacnych-programov/": 1,
+          "https://trnava-vuc.sk/financie/zmeny-rozpoctu-ttsk-v-aktualnom-roku/": 1,
+          "https://trnava-vuc.sk/odbor-implementacie-operacnych-programov/oddelenie-implementacie-projektov/": 1,
+          "https://trnava-vuc.sk/odbor-implementacie-operacnych-programov/oddelenie-metodiky-a-koordinacie/": 1,
+          "https://trnava-vuc.sk/odbor-implementacie-operacnych-programov/so-pre-irop-po-2014-2020/": 1,
+          "https://trnava-vuc.sk/odbor-implementacie-operacnych-programov/so-pre-irop-po-2014-2020/ziadosti-o-nenavratny-financny-prispevok/": 1,
+          "https://trnava-vuc.sk/odbor-implementacie-operacnych-programov/so-pre-irop-po-2014-2020/projektove-zamery/": 1,
+          "https://trnava-vuc.sk/odbor-implementacie-operacnych-programov/so-pre-irop-po-2014-2020/irop/": 1,
+          "https://trnava-vuc.sk/odbor-implementacie-operacnych-programov/so-pre-irop-po-2014-2020/irop-a-rius/": 1,
+          "https://trnava-vuc.sk/odbor-implementacie-operacnych-programov/so-pre-irop-po-2014-2020/rada-partnerstva/": 1,
+          "https://trnava-vuc.sk/odbor-implementacie-operacnych-programov/so-pre-irop-po-2014-2020/zaverecne-spravy-z-vyziev/": 1,
+          "https://trnava-vuc.sk/odbor-implementacie-operacnych-programov/so-pre-irop-po-2014-2020/vzor-zmluvy-o-nfp/": 1,
+          "https://trnava-vuc.sk/odbor-implementacie-operacnych-programov/so-pre-irop-po-2014-2020/technicka-pomoc/": 1,
+          "https://trnava-vuc.sk/odbor-implementacie-operacnych-programov/so-pre-irop-po-2014-2020/uzitocne-linky/": 1,
+          "https://trnava-vuc.sk/so-ro-pre-rop-po-2007-2013/": 1,
+          "https://trnava-vuc.sk/so-ro-pre-rop-po-2007-2013/implementacia-rop/": 1,
+          "https://trnava-vuc.sk/so-ro-pre-rop-po-2007-2013/vybrane-zrealizovane-projekty/": 1,
+          "https://trnava-vuc.sk/odbor-komunikacie/": 1,
+          "https://trnava-vuc.sk/odbor-kultury/": 1,
+          "https://trnava-vuc.sk/odbor-implementacie-operacnych-programov/nahlasovanie-korupcie/": 1,
+          "https://trnava-vuc.sk/odbor-kultury/kulturne-podujatia/": 1,
+          "https://trnava-vuc.sk/odbor-kultury/nadchadzajuce-podujatia/": 1,
+          "https://trnava-vuc.sk/typ_institucie/kultura/": 1,
+          "https://trnava-vuc.sk/odbor-kultury/dokumenty-odboru-kultury/": 1,
+          "https://trnava-vuc.sk/odbor-ludskych-zdrojov/": 1,
+          "https://trnava-vuc.sk/odbor-ludskych-zdrojov/interne-predpisy/": 1,
+          "https://trnava-vuc.sk/pracovne-prilezitosti/": 1,
+          "https://trnava-vuc.sk/odbor-ludskych-zdrojov/trainee-program/": 7,
+          "https://trnava-vuc.sk/projekty/": 1,
+          "https://trnava-vuc.sk/projekty/oddelenie-projektov/": 1,
+          "https://trnava-vuc.sk/fond-malych-projektov/": 1,
+          "https://trnava-vuc.sk/projekty/informacno-poradenske-centrum-pre-eurofondy/informacie-o-europskych-strukturalnych-a-investicnych-fondoch/": 1,
+          "https://trnava-vuc.sk/projekty/informacno-poradenske-centrum-pre-eurofondy/": 1,
+          "https://trnava-vuc.sk/projekty/informacno-poradenske-centrum-pre-eurofondy/aktuality/": 1,
+          "https://trnava-vuc.sk/odbor-implementacie-operacnych-programov/so-pre-irop-po-2014-2020/aktualne/": 1,
+          "https://trnava-vuc.sk/projekty/informacno-poradenske-centrum-pre-eurofondy/priklady-dobrej-praxe/": 1,
+          "https://trnava-vuc.sk/projekty/informacno-poradenske-centrum-pre-eurofondy/kontakty/": 1,
+          "https://trnava-vuc.sk/oddelenie-cezhranicnej-spoluprace/": 1,
+          "https://trnava-vuc.sk/projekty/informacno-poradenske-centrum-pre-eurofondy/vyhlasene-vyzvy/": 1,
+          "https://trnava-vuc.sk/kategoria/cezhranicna-spolupraca/interreg-v-a-sk-cz/": 1,
+          "https://trnava-vuc.sk/kategoria/interreg-vi-a-sk-cz/": 1,
+          "https://trnava-vuc.sk/kategoria/interreg-vi-a-sk-at/": 1,
+          "https://trnava-vuc.sk/kategoria/interreg-vi-a-hu-sk/": 1,
+          "https://trnava-vuc.sk/kategoria/cezhranicna-spolupraca/interreg-europe/": 1,
+          "https://trnava-vuc.sk/kategoria/cezhranicna-spolupraca/interreg-v-a-sk-hu/": 1,
+          "https://trnava-vuc.sk/oddelenie-cezhranicnej-spoluprace/smart-strategia/": 1
+        }
+      },
+      "wcag143": {
+        "rule description": [
+          "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds"
+        ],
+        "url": {
+          "https://trnava-vuc.sk/newsletter/": 1
+        }
+      },
+      "wcag244": {
+        "rule description": [
+          "Ensure links have discernible text"
+        ],
+        "url": {
+          "https://trnava-vuc.sk/hu/kezdolap/": 1,
+          "https://trnava-vuc.sk/homepage/": 1,
+          "https://trnava-vuc.sk/doprava/referat-cyklodopravy/": 8,
+          "https://trnava-vuc.sk/doprava/referat-cyklodopravy/jarna-skola-cyklodopravy/": 1,
+          "https://trnava-vuc.sk/doprava/referat-cyklodopravy/jesenna-skola-cyklodopravy/": 2,
+          "https://trnava-vuc.sk/mapa-stranok/": 1,
+          "https://trnava-vuc.sk/odbor-ludskych-zdrojov/trainee-program/": 6
+        }
+      },
+      "wcag141": {
+        "rule description": [
+          "Ensure links are distinguished from surrounding text in a way that does not rely on color"
+        ],
+        "url": {
+          "https://trnava-vuc.sk/financie/cenova-regulacia/": 1
+        }
+      },
+      "wcag111": {
+        "rule description": [
+          "Ensure <img> elements have alternative text or a role of none or presentation"
+        ],
+        "url": {
+          "https://trnava-vuc.sk/odbor-ludskych-zdrojov/trainee-program/": 6
+        }
+      }
+    }
+  },
+  "pages_visited": 1472,
+  "pages_failed": 28
+}
